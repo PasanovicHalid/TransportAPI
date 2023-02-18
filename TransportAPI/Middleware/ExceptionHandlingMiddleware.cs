@@ -30,7 +30,7 @@ namespace TransportAPI.Middleware
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             string result = JsonConvert.SerializeObject(new {error = ex.Message});
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = "application/problem+json";
             if(ex.GetType().IsSubclassOf(typeof(StatusException)))
             {
                 StatusException exception = (StatusException)ex;

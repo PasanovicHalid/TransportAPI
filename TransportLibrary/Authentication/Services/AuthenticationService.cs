@@ -29,12 +29,12 @@ namespace TransportLibrary.Authentication.Services
 
             if (user == null)
             {
-                throw new ApplicationUserDoesntExistException(400, "User with username: " + username + " doesn't exist");
+                throw new ApplicationUserDoesntExistException("User with username: " + username + " doesn't exist");
             }
             SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
             if(!result.Succeeded) 
             {
-                throw new FailedLoginException(400, "Failed Login! Invalid Username or Password");
+                throw new FailedLoginException("Failed Login! Invalid Username or Password");
             }
 
             return _jwtService.GenerateToken(user);
@@ -44,7 +44,7 @@ namespace TransportLibrary.Authentication.Services
         {
             if(await _userManager.FindByEmailAsync(user.Email) != null)
             {
-                throw new ApplicationUserWithSameEmailExistsException(400, "User with same email exists already");
+                throw new ApplicationUserWithSameEmailExistsException("User with same email exists already");
             }
 
             IdentityResult result = await _userManager.CreateAsync(user, password);

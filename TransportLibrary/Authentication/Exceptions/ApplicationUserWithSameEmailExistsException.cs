@@ -10,7 +10,7 @@ namespace TransportLibrary.Authentication.Exceptions
 {
     public class ApplicationUserWithSameEmailExistsException : StatusException
     {
-        public ApplicationUserWithSameEmailExistsException(int status, string? message) : base(status, message)
+        public ApplicationUserWithSameEmailExistsException(string? message) : base(400, message)
         {
         }
     }

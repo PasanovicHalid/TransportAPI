@@ -6,12 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TransportLibrary.Shared;
 
-namespace TestLibrary.Users.Exceptions
+namespace TransportLibrary.Authentication.Exceptions
 {
 
     public class FailedLoginException : StatusException
     {
-        public FailedLoginException(int status, string? message) : base(status, message)
+        public FailedLoginException(string? message) : base(400, message)
         {
         }
     }

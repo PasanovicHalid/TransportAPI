@@ -10,7 +10,7 @@ namespace TransportLibrary.Authentication.Exceptions
 {
     public class ApplicationUserDoesntExistException : StatusException
     {
-        public ApplicationUserDoesntExistException(int status, string? message) : base(status, message)
+        public ApplicationUserDoesntExistException(string? message) : base(404, message)
         {
         }
     }
