@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 using System.Text.Json.Serialization;
-using TransportLibrary.Shared;
+using TransportLibrary.Shared.Exceptions;
 
 namespace TransportAPI.Middleware
 {

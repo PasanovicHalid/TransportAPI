@@ -1,4 +1,4 @@
-﻿namespace TestAPI.Users.DTOs
+﻿namespace TransportAPI.Authentication.DTOs
 {
     public class DriverRegisterResultDTO
     {

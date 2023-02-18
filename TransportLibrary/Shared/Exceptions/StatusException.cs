@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TransportLibrary.Shared
+namespace TransportLibrary.Shared.Exceptions
 {
     public abstract class StatusException : Exception
     {

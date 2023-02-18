@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TestAPI.Users.DTOs
+namespace TransportAPI.Authentication.DTOs
 {
     public class UserLoginDTO
     {

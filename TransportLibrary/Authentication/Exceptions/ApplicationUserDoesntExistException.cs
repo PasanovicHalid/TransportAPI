@@ -4,7 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
-using TransportLibrary.Shared;
+using TransportLibrary.Shared.Exceptions;
 
 namespace TransportLibrary.Authentication.Exceptions
 {
