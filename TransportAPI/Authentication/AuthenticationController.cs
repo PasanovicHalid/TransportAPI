@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using TestAPI.Users.DTOs;
+using TransportAPI.Authentication.DTOs;
 using TransportLibrary.Authentication;
 using TransportLibrary.Authentication.Exceptions;
 using TransportLibrary.Authentication.Services.Interfaces;
