@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TransportLibrary.Authentication
+namespace TransportLibrary.Authentication.Model
 {
     public class ApplicationUser : IdentityUser
     {

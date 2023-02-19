@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using TransportLibrary.Authentication;
+using TransportLibrary.Authentication.Model;
 using TransportLibrary.Authentication.Services;
 using TransportLibrary.Authentication.Services.Interfaces;
 using TransportLibrary.Initializer;

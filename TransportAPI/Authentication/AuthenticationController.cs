@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TransportAPI.Authentication.DTOs;
-using TransportLibrary.Authentication;
 using TransportLibrary.Authentication.Exceptions;
+using TransportLibrary.Authentication.Model;
 using TransportLibrary.Authentication.Services.Interfaces;
 
 namespace TransportAPI.Authentication

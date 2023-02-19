@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TransportLibrary.Authentication;
+using TransportLibrary.Authentication.Model;
 
 namespace TransportAPI.Controllers
 {

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TransportLibrary.Authentication;
+using TransportLibrary.Authentication.Model;
 using TransportLibrary.Settings;
 
 namespace TransportLibrary.Initializer

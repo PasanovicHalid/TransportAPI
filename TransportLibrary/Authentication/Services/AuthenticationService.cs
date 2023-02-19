@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TransportLibrary.Authentication.Exceptions;
+using TransportLibrary.Authentication.Model;
 using TransportLibrary.Authentication.Services.Interfaces;
 
 namespace TransportLibrary.Authentication.Services
@@ -27,14 +28,12 @@ namespace TransportLibrary.Authentication.Services
             ApplicationUser user = await _userManager.FindByEmailAsync(username);
 
             if (user == null)
-            {
                 throw new ApplicationUserDoesntExistException("User with username: " + username + " doesn't exist");
-            }
+
             SignInResult result = await _signInManager.PasswordSignInAsync(user, password, false, false);
+
             if(!result.Succeeded) 
-            {
                 throw new FailedLoginException("Failed Login! Invalid Username or Password");
-            }
 
             return _jwtService.GenerateToken(user);
         }
@@ -42,9 +41,7 @@ namespace TransportLibrary.Authentication.Services
         public async Task<string> RegisterDriverAsync(ApplicationUser user, string password)
         {
             if(await _userManager.FindByEmailAsync(user.Email) != null)
-            {
                 throw new ApplicationUserWithSameEmailExistsException("User with same email exists already");
-            }
 
             IdentityResult result = await _userManager.CreateAsync(user, password);
 
