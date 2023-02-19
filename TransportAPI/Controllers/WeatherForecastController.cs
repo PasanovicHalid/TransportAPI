@@ -5,7 +5,7 @@ using TransportLibrary.Authentication;
 namespace TransportAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [Authorize]
     public class WeatherForecastController : ControllerBase
     {
@@ -19,6 +19,19 @@ namespace TransportAPI.Controllers
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
             _logger = logger;
+        }
+
+        [HttpGet("TestNoLogin")]
+        [AllowAnonymous]
+        public IEnumerable<WeatherForecast> GetNoLogin()
+        {
+            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            {
+                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+                TemperatureC = Random.Shared.Next(-20, 55),
+                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+            })
+            .ToArray();
         }
 
         [HttpGet("TestAdmin")]
