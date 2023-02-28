@@ -26,6 +26,7 @@ namespace TransportLibrary.Initializer
         public void Initialize()
         {
             ApplyMigrations();
+            AddSuperAdminRole();
             AddAdminRole();
             AddDriverRole();
             AddAdminAccount();
@@ -60,7 +61,7 @@ namespace TransportLibrary.Initializer
 
                 ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "admin@gmail.com");
 
-                _userManager.AddToRoleAsync(user, ApplicationRolesConstants.Admin).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user, ApplicationRolesConstants.SuperAdmin).GetAwaiter().GetResult();
             }
         }
 
@@ -74,6 +75,12 @@ namespace TransportLibrary.Initializer
         {
             if (!_roleManager.RoleExistsAsync(ApplicationRolesConstants.Admin).GetAwaiter().GetResult())
                 _roleManager.CreateAsync(new ApplicationRole(ApplicationRolesConstants.Admin)).GetAwaiter().GetResult();
+        }
+
+        private void AddSuperAdminRole()
+        {
+            if (!_roleManager.RoleExistsAsync(ApplicationRolesConstants.SuperAdmin).GetAwaiter().GetResult())
+                _roleManager.CreateAsync(new ApplicationRole(ApplicationRolesConstants.SuperAdmin)).GetAwaiter().GetResult();
         }
     }
 }

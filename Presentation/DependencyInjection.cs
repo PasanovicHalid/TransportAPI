@@ -1,10 +1,11 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
 
-namespace TransportAPI.Expansions
+namespace Presentation
 {
-    public static class ProgramExpansions
+    public static class DependencyInjection
     {
-        public static void SetupSwagger(this IServiceCollection services)
+        public static IServiceCollection SetupPresentationLayer(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>
             {
@@ -41,6 +42,8 @@ namespace TransportAPI.Expansions
                 });
 
             });
+
+            return services;
         }
     }
 }

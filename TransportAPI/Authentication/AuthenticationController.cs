@@ -2,9 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using TransportAPI.Authentication.DTOs;
-using TransportLibrary.Authentication.Exceptions;
-using TransportLibrary.Authentication.Model;
-using TransportLibrary.Authentication.Services.Interfaces;
 
 namespace TransportAPI.Authentication
 {
@@ -12,43 +9,43 @@ namespace TransportAPI.Authentication
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly IAuthenticationService _authService;
+        //private readonly IAuthenticationService _authService;
 
-        public AuthenticationController(IAuthenticationService authService)
-        {
-            _authService = authService;
-        }
+        //public AuthenticationController(IAuthenticationService authService)
+        //{
+        //    _authService = authService;
+        //}
 
-        [HttpPost("login")]
-        public async Task<IActionResult> LoginUser([FromBody] UserLoginDTO loginInfo)
-        {
-            return Ok(await _authService.LoginAsync(loginInfo.Username, loginInfo.Password));
-        }
+        //[HttpPost("login")]
+        //public async Task<IActionResult> LoginUser([FromBody] UserLoginDTO loginInfo)
+        //{
+        //    return Ok(await _authService.LoginAsync(loginInfo.Username, loginInfo.Password));
+        //}
 
-        [HttpPost("register")]
-        public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationDTO registrationInfo)
-        {
-            ApplicationUser user = SetupUser(registrationInfo);
+        //[HttpPost("register")]
+        //public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationDTO registrationInfo)
+        //{
+        //    ApplicationUser user = SetupUser(registrationInfo);
 
-            string token = await _authService.RegisterDriverAsync(user, registrationInfo.Password);
+        //    string token = await _authService.RegisterDriverAsync(user, registrationInfo.Password);
 
-            return CreatedAtAction(nameof(RegisterDriver), new DriverRegisterResultDTO
-            {
-                Succeeded = true,
-                Token = new TokenDTO()
-                {
-                    Token = token
-                }
-            });
-        }
+        //    return CreatedAtAction(nameof(RegisterDriver), new DriverRegisterResultDTO
+        //    {
+        //        Succeeded = true,
+        //        Token = new TokenDTO()
+        //        {
+        //            Token = token
+        //        }
+        //    });
+        //}
 
-        private static ApplicationUser SetupUser(DriverRegistrationDTO registrationInfo)
-        {
-            ApplicationUser user = new ApplicationUser();
-            user.Email = registrationInfo.Email;
-            user.UserName = registrationInfo.Username;
-            user.PhoneNumber = registrationInfo.PhoneNumber;
-            return user;
-        }
+        //private static ApplicationUser SetupUser(DriverRegistrationDTO registrationInfo)
+        //{
+        //    ApplicationUser user = new ApplicationUser();
+        //    user.Email = registrationInfo.Email;
+        //    user.UserName = registrationInfo.Username;
+        //    user.PhoneNumber = registrationInfo.PhoneNumber;
+        //    return user;
+        //}
     }
 }

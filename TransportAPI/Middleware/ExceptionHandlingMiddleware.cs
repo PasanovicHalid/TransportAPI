@@ -2,7 +2,6 @@
 using System;
 using System.Net;
 using System.Text.Json.Serialization;
-using TransportLibrary.Shared.Exceptions;
 
 namespace TransportAPI.Middleware
 {
@@ -23,24 +22,24 @@ namespace TransportAPI.Middleware
             }
             catch(Exception ex)
             {
-                await HandleExceptionAsync(context, ex);
+                //await HandleExceptionAsync(context, ex);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception ex)
-        {
-            string result = JsonConvert.SerializeObject(new {error = ex.Message});
-            context.Response.ContentType = "application/problem+json";
-            if(ex.GetType().IsSubclassOf(typeof(StatusException)))
-            {
-                StatusException exception = (StatusException)ex;
-                context.Response.StatusCode = exception.Status;
-            }
-            else
-            {
-                context.Response.StatusCode = 500;
-            }
-            return context.Response.WriteAsync(result);
-        }
+        //private Task HandleExceptionAsync(HttpContext context, Exception ex)
+        //{
+        //    string result = JsonConvert.SerializeObject(new {error = ex.Message});
+        //    context.Response.ContentType = "application/problem+json";
+        //    if(ex is StatusException)
+        //    {
+        //        StatusException exception = (StatusException)ex;
+        //        context.Response.StatusCode = exception.Status;
+        //    }
+        //    else
+        //    {
+        //        context.Response.StatusCode = 500;
+        //    }
+        //    return context.Response.WriteAsync(result);
+        //}
     }
 }

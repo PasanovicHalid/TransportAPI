@@ -1,20 +1,21 @@
-using TransportAPI.Expansions;
+using Application;
+using Infrastructure;
+using Presentation;
 using TransportAPI.Middleware;
-using TransportLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddEndpointsApiExplorer()
+                .SetupPresentationLayer()
+                .SetupInfrastrucutureLayer(builder.Configuration)
+                .SetupApplicationLayer()
+                .AddSwaggerGen()
+                .AddControllers();
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.SetupDependencies();
-builder.Services.SetupAuthentication(builder.Configuration);
-builder.Services.SetupDBs(builder.Configuration);
-builder.Services.SetupSettings(builder.Configuration);
-builder.Services.SetupSwagger();
+//builder.Services.SetupDependencies();
+//builder.Services.SetupAuthentication(builder.Configuration);
+//builder.Services.SetupDBs(builder.Configuration);
+//builder.Services.SetupSettings(builder.Configuration);
 
 var app = builder.Build();
 
@@ -27,7 +28,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.InitializeDB();
+await app.InitializeDB();
 
 app.UseHttpsRedirection();
 
