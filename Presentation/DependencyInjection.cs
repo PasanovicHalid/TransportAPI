@@ -7,6 +7,11 @@ namespace Presentation
     {
         public static IServiceCollection SetupPresentationLayer(this IServiceCollection services)
         {
+            services.AddControllers()
+                .AddApplicationPart(typeof(DependencyInjection).Assembly);
+
+            services.AddAutoMapper(typeof(DependencyInjection).Assembly);
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("V1", new OpenApiInfo

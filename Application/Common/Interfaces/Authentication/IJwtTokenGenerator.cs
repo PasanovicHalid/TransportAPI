@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace Application.Common.Interfaces.Authentication
 {
     public interface IJwtTokenGenerator
     {
-        string GenerateToken();
+        Task<string> GenerateTokenAsync(IdentityUser user);
+
+        DateTime GetExpirationDate();
     }
 }

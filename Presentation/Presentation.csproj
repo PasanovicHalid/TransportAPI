@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Constants\Constants.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Contracts\Authentication\" />
-  </ItemGroup>
-
 </Project>

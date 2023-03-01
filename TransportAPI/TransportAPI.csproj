@@ -4,7 +4,15 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>32a5a4d8-0a1c-4b15-949f-5f95e117916d</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Controllers\**" />
+    <Content Remove="Controllers\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <None Remove="Controllers\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />
@@ -21,10 +29,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Presentation\Presentation.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

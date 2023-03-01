@@ -1,7 +1,6 @@
 using Application;
 using Infrastructure;
 using Presentation;
-using TransportAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +8,7 @@ builder.Services.AddEndpointsApiExplorer()
                 .SetupPresentationLayer()
                 .SetupInfrastrucutureLayer(builder.Configuration)
                 .SetupApplicationLayer()
-                .AddSwaggerGen()
-                .AddControllers();
+                .AddSwaggerGen();
 
 //builder.Services.SetupDependencies();
 //builder.Services.SetupAuthentication(builder.Configuration);
@@ -30,13 +28,13 @@ if (app.Environment.IsDevelopment())
 
 await app.InitializeDB();
 
+app.UseExceptionHandler("/error");
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 
 app.UseAuthorization();
-
-app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 

@@ -1,4 +1,5 @@
-﻿using Infrastructure.Authentication;
+﻿using Application.Common.Interfaces.Authentication;
+using Infrastructure.Authentication;
 using Infrastructure.Persistance;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -20,6 +21,7 @@ namespace Infrastructure
             services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             services.AddScoped<DbInitializer>();
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {

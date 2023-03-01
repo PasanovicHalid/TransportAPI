@@ -1,14 +1,15 @@
+using Application.Common.Interfaces.Authentication;
 using Constants;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Presentation.Common.Controllers;
 
 namespace Presentation.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
     [Authorize]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : ApiController
     {
         private static readonly string[] Summaries = new[]
         {
@@ -16,10 +17,14 @@ namespace Presentation.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly IJwtTokenGenerator _jwtTokenGenerator;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IJwtTokenGenerator jwtTokenGenerator, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
+            _jwtTokenGenerator = jwtTokenGenerator;
+            _userManager = userManager;
         }
 
         [HttpGet("TestNoLogin")]
@@ -33,6 +38,21 @@ namespace Presentation.Controllers
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
             .ToArray();
+        }
+
+        [HttpGet("TestJwt")]
+        [AllowAnonymous]
+        public async Task<string> GetNo()
+        {
+            var user = await _userManager.FindByEmailAsync("admin@gmail.com");
+            return await _jwtTokenGenerator.GenerateTokenAsync(user);
+        }
+
+        [HttpGet("TestException")] 
+        [AllowAnonymous]
+        public async Task<string> GetException()
+        {
+            throw new Exception("Test");
         }
 
         [HttpGet("TestAdmin")]
