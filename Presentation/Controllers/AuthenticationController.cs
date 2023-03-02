@@ -12,7 +12,8 @@ using AutoMapper;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Application.Authentication.Commands.Register.Exceptions;
-using Constants;
+using Application.Common.Behaviors;
+using Domain.Constants;
 
 namespace Presentation.Controllers
 {
@@ -28,32 +29,27 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> LoginUser([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             LoginQuery query = _mapper.Map<LoginQuery>(request);
 
-            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?) await _mediator.Send(query);
+            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?)await _mediator.Send(query);
 
-            if (result is null)
-                return Problem();
-
-            if (result!.IsFailed)
-            {
-                IError error = result.Errors[0];
-                return Problem(statusCode: (int) HttpStatusCode.NotFound, title: error.Message);
-            }
-
-            return Ok(_mapper.Map<AutheticationResponse>(result.Value));
+            return SetupLoginResponse(result);
         }
 
-        [HttpPost("register")]
+        [HttpPost("register/driver")]
         public async Task<IActionResult> RegisterDriver([FromBody] RegistrationRequest request)
         {
-            RegisterCommand command = _mapper.Map<RegisterCommand>(request);
-            command.UserType = ApplicationRolesConstants.Driver;
+            RegisterCommand command = SetupRegisterDriverCommand(request);
 
-            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?) await _mediator.Send(command);
+            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?)await _mediator.Send(command);
 
+            return SetupRegisterDriverResponse(result);
+        }
+
+        private IActionResult SetupRegisterDriverResponse(Result<AuthenticationResult>? result)
+        {
             if (result is null)
                 return Problem();
 
@@ -63,12 +59,43 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(RegisterDriver), _mapper.Map<AutheticationResponse>(result.Value));
         }
 
+        private RegisterCommand SetupRegisterDriverCommand(RegistrationRequest request)
+        {
+            RegisterCommand command = _mapper.Map<RegisterCommand>(request);
+            command.UserType = ApplicationRolesConstants.Driver;
+            return command;
+        }
+
+        private IActionResult SetupLoginResponse(Result<AuthenticationResult>? result)
+        {
+            if (result is null)
+                return Problem();
+
+            if (result.IsFailed)
+                return HandleLoginErrors(result.Errors);
+
+            return Ok(_mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        private IActionResult HandleLoginErrors(List<IError> errors)
+        {
+            IError error = errors[0];
+
+            if (error is ValidationError)
+                return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: error.Message);
+
+            return Problem(statusCode: (int)HttpStatusCode.NotFound, title: error.Message);
+        }
+
         private IActionResult HandleRegistrationErrors(List<IError> errors)
         {
             IError error = errors[0];
 
             if (error is UserWithSameEmailExists)
                 return Problem(statusCode: (int)HttpStatusCode.Forbidden, title: error.Message);
+
+            if (error is ValidationError)
+                return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: error.Message);
 
             return Problem(statusCode: (int)HttpStatusCode.InternalServerError, title: error.Message);
         }

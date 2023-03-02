@@ -28,12 +28,7 @@ namespace Application.Authentication.Commands.Register
             if (await _userManager.FindByEmailAsync(request.Email) != null)
                 return Result.Fail(new UserWithSameEmailExists());
 
-            IdentityUser user = new IdentityUser
-            {
-                UserName = request.Email,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber
-            };
+            IdentityUser user = SetupUser(request);
 
             IdentityResult result = await _userManager.CreateAsync(user, request.Password);
 
@@ -49,6 +44,16 @@ namespace Application.Authentication.Commands.Register
             {
                 Token = await _jwtGenerator.GenerateTokenAsync(user),
                 ExpirationDate = _jwtGenerator.GetExpirationDate()
+            };
+        }
+
+        private static IdentityUser SetupUser(RegisterCommand request)
+        {
+            return new IdentityUser
+            {
+                UserName = request.Email,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber
             };
         }
     }

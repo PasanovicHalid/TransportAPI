@@ -1,5 +1,5 @@
 using Application.Common.Interfaces.Authentication;
-using Constants;
+using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
