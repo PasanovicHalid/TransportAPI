@@ -54,7 +54,7 @@ namespace Presentation.Controllers
                 return Problem();
 
             if (result.IsFailed)
-                return HandleRegistrationErrors(result.Errors);
+                return HandleErrors(result.Errors[0]);
 
             return CreatedAtAction(nameof(RegisterDriver), _mapper.Map<AutheticationResponse>(result.Value));
         }
@@ -72,32 +72,9 @@ namespace Presentation.Controllers
                 return Problem();
 
             if (result.IsFailed)
-                return HandleLoginErrors(result.Errors);
+                return HandleErrors(result.Errors[0]);
 
             return Ok(_mapper.Map<AutheticationResponse>(result.Value));
-        }
-
-        private IActionResult HandleLoginErrors(List<IError> errors)
-        {
-            IError error = errors[0];
-
-            if (error is ValidationError)
-                return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: error.Message);
-
-            return Problem(statusCode: (int)HttpStatusCode.NotFound, title: error.Message);
-        }
-
-        private IActionResult HandleRegistrationErrors(List<IError> errors)
-        {
-            IError error = errors[0];
-
-            if (error is UserWithSameEmailExists)
-                return Problem(statusCode: (int)HttpStatusCode.Forbidden, title: error.Message);
-
-            if (error is ValidationError)
-                return Problem(statusCode: (int)HttpStatusCode.BadRequest, title: error.Message);
-
-            return Problem(statusCode: (int)HttpStatusCode.InternalServerError, title: error.Message);
         }
     }
 }

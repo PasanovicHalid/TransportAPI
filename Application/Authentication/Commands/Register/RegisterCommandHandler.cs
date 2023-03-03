@@ -35,7 +35,7 @@ namespace Application.Authentication.Commands.Register
             if (!result.Succeeded)
                 return Result.Fail(new Error("Something failed while creating user"));
 
-            result = await _userManager.AddToRoleAsync(user!, request.UserType);
+            result = await _userManager.AddToRoleAsync(user, request.UserType);
 
             if (!result.Succeeded)
                 return Result.Fail(new Error("Something failed while assigning role"));

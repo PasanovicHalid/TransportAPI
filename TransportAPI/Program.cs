@@ -10,11 +10,6 @@ builder.Services.AddEndpointsApiExplorer()
                 .SetupApplicationLayer()
                 .AddSwaggerGen();
 
-//builder.Services.SetupDependencies();
-//builder.Services.SetupAuthentication(builder.Configuration);
-//builder.Services.SetupDBs(builder.Configuration);
-//builder.Services.SetupSettings(builder.Configuration);
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Domain;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,12 @@ namespace Infrastructure.Persistance
 {
     public class TransportDbContext : IdentityDbContext
     {
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Driver> Drivers { get; set; }
+        public DbSet<DriversLicence> DriversLicences { get; set; }
         public TransportDbContext(DbContextOptions options) : base(options)
         {
-
         }
     }
 }

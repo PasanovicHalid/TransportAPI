@@ -27,20 +27,24 @@ namespace Application.Common.Behaviors
                                       RequestHandlerDelegate<TResponse> next,
                                       CancellationToken cancellationToken)
         {
-            if( _validator is null)
+            if (_validator is null)
                 return await next();
-            
+
             ValidationResult validatorResult = await _validator.ValidateAsync(request, cancellationToken);
 
             if (validatorResult.IsValid)
                 return await next();
 
+            return SetupErrorResponse(validatorResult);
+        }
+
+        private static TResponse SetupErrorResponse(ValidationResult validatorResult)
+        {
             var result = new TResponse();
 
-            //Means that validation failed 400 is that code
-            ValidationError validationErrors = new();
+            var validationErrors = new ValidationError();
 
-            List<Error> errors = validatorResult.Errors.ConvertAll(validationFailure => 
+            List<Error> errors = validatorResult.Errors.ConvertAll(validationFailure =>
                 new Error(validationFailure.PropertyName,
                           new Error(validationFailure.ErrorMessage)));
 

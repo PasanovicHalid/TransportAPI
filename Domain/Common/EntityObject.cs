@@ -9,8 +9,14 @@ namespace Domain.Common
 {
     public abstract class EntityObject
     {
+        protected EntityObject(ulong id, bool deleted)
+        {
+            Id = id;
+            Deleted = deleted;
+        }
+
         [Key]
-        public int Id { get; protected set; }
+        public ulong Id { get; protected set; }
 
         public bool Deleted { get; set; }
 

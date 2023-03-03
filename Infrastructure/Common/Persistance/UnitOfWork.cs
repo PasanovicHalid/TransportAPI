@@ -13,7 +13,7 @@ namespace Infrastructure.Common.Persistance
     public class UnitOfWork : IUnitOfWork
     {
         private readonly TransportDbContext _context;
-        private IUserRepository _userRepository;
+        private IUserRepository? _userRepository;
 
         public UnitOfWork(TransportDbContext context)
         {
