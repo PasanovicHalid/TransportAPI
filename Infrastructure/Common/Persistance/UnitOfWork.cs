@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistance;
+﻿using Application.Common.Interfaces.Persistance;
+using Application.Common.Interfaces.Persistance.Employees;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
 using System;

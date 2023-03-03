@@ -1,4 +1,4 @@
-﻿using Application.Common.Interfaces.Authentication;
+﻿using Application.Common.Interfaces.Persistance.Employees;
 using Infrastructure.Common.Persistance;
 using Microsoft.AspNetCore.Identity;
 using System;

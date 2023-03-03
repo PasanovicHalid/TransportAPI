@@ -9,16 +9,16 @@ namespace Domain.Common
 {
     public abstract class EntityObject
     {
+        [Key]
+        public ulong Id { get; protected set; }
+
+        public bool Deleted { get; set; }
+
         protected EntityObject(ulong id, bool deleted)
         {
             Id = id;
             Deleted = deleted;
         }
-
-        [Key]
-        public ulong Id { get; protected set; }
-
-        public bool Deleted { get; set; }
 
         public override bool Equals(object? obj)
         {

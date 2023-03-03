@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Application.Authentication.Commands.Register.Exceptions;
 using Application.Common.Behaviors;
 using Domain.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Presentation.Controllers
 {
@@ -38,17 +39,18 @@ namespace Presentation.Controllers
             return SetupLoginResponse(result);
         }
 
-        [HttpPost("register/driver")]
-        public async Task<IActionResult> RegisterDriver([FromBody] RegistrationRequest request)
+        [HttpPost("register/superAdmin")]
+        [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
+        public async Task<IActionResult> RegisterSuperAdmin([FromBody] RegistrationRequest request)
         {
-            RegisterCommand command = SetupRegisterDriverCommand(request);
+            RegisterCommand command = SetupRegisterSuperAdminCommand(request);
 
             Result<AuthenticationResult>? result = (Result<AuthenticationResult>?)await _mediator.Send(command);
 
-            return SetupRegisterDriverResponse(result);
+            return SetupRegisterSuperAdminResponse(result);
         }
 
-        private IActionResult SetupRegisterDriverResponse(Result<AuthenticationResult>? result)
+        private IActionResult SetupRegisterSuperAdminResponse(Result<AuthenticationResult>? result)
         {
             if (result is null)
                 return Problem();
@@ -56,13 +58,13 @@ namespace Presentation.Controllers
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
 
-            return CreatedAtAction(nameof(RegisterDriver), _mapper.Map<AutheticationResponse>(result.Value));
+            return CreatedAtAction(nameof(RegisterSuperAdmin), _mapper.Map<AutheticationResponse>(result.Value));
         }
 
-        private RegisterCommand SetupRegisterDriverCommand(RegistrationRequest request)
+        private RegisterCommand SetupRegisterSuperAdminCommand(RegistrationRequest request)
         {
             RegisterCommand command = _mapper.Map<RegisterCommand>(request);
-            command.UserType = ApplicationRolesConstants.Driver;
+            command.UserType = ApplicationRolesConstants.SuperAdmin;
             return command;
         }
 

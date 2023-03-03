@@ -18,7 +18,7 @@ namespace Application.Common.Behaviors
     {
         private readonly IValidator<TRequest>? _validator;
 
-        public ValidationBehavior(IValidator<TRequest>? validator = null )
+        public ValidationBehavior(IValidator<TRequest>? validator = null)
         {
             _validator = validator;
         }
