@@ -7,16 +7,16 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Authentication.Queries.Login.Exceptions
+namespace Application.Authentication.Commands.Register.Errors
 {
-    internal class LoginFailed : IStatusCodeError
+    public class UserWithSameEmailExists : IStatusCodeError
     {
         public List<IError> Reasons { get; } = new();
 
-        public string Message { get; } = "Failed Login!";
+        public string Message { get; } = "User with same email already exists";
 
         public Dictionary<string, object> Metadata { get; } = new();
 
-        public HttpStatusCode Code { get; } = HttpStatusCode.NotFound;
+        public HttpStatusCode Code { get; } = HttpStatusCode.Conflict;
     }
 }

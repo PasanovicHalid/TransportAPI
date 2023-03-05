@@ -1,4 +1,4 @@
-﻿using Application.Authentication.Commands.Register;
+﻿using Application.Authentication.Commands.Register.SuperAdmin;
 using Application.Authentication.Queries.Login;
 using AutoMapper;
 using System;
@@ -13,7 +13,7 @@ namespace Presentation.Contracts.Authentication.Adapters
     {
         public RegisterAdapter()
         {
-            CreateMap<RegistrationRequest, RegisterCommand>();
+            CreateMap<RegistrationRequest, RegisterSuperAdminCommand>();
         }
     }
 }

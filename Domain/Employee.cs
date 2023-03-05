@@ -34,16 +34,14 @@ namespace Domain
         [ForeignKey(nameof(CompanyId))]
         public Company? Company { get; private set; }
 
-        public Employee(ulong id,
-                        bool deleted,
-                        string identityId,
+        public Employee(string identityId,
                         string role,
                         string firstName,
                         string? middleName,
                         string lastName,
                         double salary,
                         Address address,
-                        ulong companyId) : base(id, deleted)
+                        ulong companyId)
         {
             IdentityId = identityId;
             Role = role;
@@ -55,16 +53,14 @@ namespace Domain
             CompanyId = companyId;
         }
 
-        public Employee(ulong id,
-                        bool deleted,
-                        IdentityUser user,
+        public Employee(IdentityUser user,
                         string role,
                         string firstName,
                         string? middleName,
                         string lastName,
                         double salary,
                         Address address,
-                        Company company) : base(id, deleted)
+                        Company company)
         {
             User = user;
             IdentityId = user.Id;
@@ -78,16 +74,34 @@ namespace Domain
             CompanyId = company.Id;
         }
 
-        public Employee(ulong id,
-                        bool deleted,
-                        string identityId,
+        public Employee(IdentityUser user,
                         string role,
                         string firstName,
                         string? middleName,
                         string lastName,
                         double salary,
                         Address address,
-                        Company company) : base(id, deleted)
+                        ulong companyId)
+        {
+            User = user;
+            IdentityId = user.Id;
+            Role = role;
+            FirstName = firstName;
+            MiddleName = middleName;
+            LastName = lastName;
+            Salary = salary;
+            Address = address;
+            CompanyId = companyId;
+        }
+
+        public Employee(string identityId,
+                        string role,
+                        string firstName,
+                        string? middleName,
+                        string lastName,
+                        double salary,
+                        Address address,
+                        Company company)
         {
             IdentityId = identityId;
             Role = role;
@@ -100,8 +114,7 @@ namespace Domain
             CompanyId = company.Id;
         }
 
-        protected Employee(ulong id,
-                        bool deleted) : base(id, deleted)
+        protected Employee()
         {
         }
     }

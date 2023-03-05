@@ -10,10 +10,11 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
-    public class ErrorController : ApiController
+    [AllowAnonymous]
+    [ApiExplorerSettings(IgnoreApi = true)]
+    public class ErrorController : ControllerBase
     {
-        [ApiExplorerSettings(IgnoreApi = true)]
-        [HttpGet("/error")]   
+        [Route("error")]
         public IActionResult Error()
         {
             Exception? exception = HttpContext.Features.Get<IExceptionHandlerFeature>()?.Error;

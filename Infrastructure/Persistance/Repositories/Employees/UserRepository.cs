@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Persistance.Repositories
+namespace Infrastructure.Persistance.Repositories.Employees
 {
     public class UserRepository : Repository<IdentityUser>, IUserRepository
     {

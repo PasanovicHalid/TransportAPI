@@ -1,5 +1,5 @@
 ﻿using Application.Authentication.Contracts;
-using Application.Authentication.Queries.Login.Exceptions;
+using Application.Authentication.Queries.Login.Errors;
 using Application.Common.Interfaces.Authentication;
 using FluentResults;
 using MediatR;
@@ -27,14 +27,19 @@ namespace Application.Authentication.Queries.Login
 
         public async Task<Result<AuthenticationResult>> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            SignInResult result = await _signInManager.PasswordSignInAsync(request.Email, request.Password, false, false);
+            IdentityUser? user = await _userManager.FindByNameAsync(request.Email);
+
+            if(user == null)
+                return Result.Fail(new LoginFailed());
+
+            SignInResult result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);
 
             if (!result.Succeeded)
                 return Result.Fail(new LoginFailed());
 
             return new AuthenticationResult
             {
-                Token = await _jwtGenerator.GenerateTokenAsync(await _userManager.FindByEmailAsync(request.Email)),
+                Token = await _jwtGenerator.GenerateTokenAsync(user),
                 ExpirationDate = _jwtGenerator.GetExpirationDate()
             };
         }

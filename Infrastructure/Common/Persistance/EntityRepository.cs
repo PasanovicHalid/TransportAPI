@@ -38,11 +38,15 @@ namespace Infrastructure.Common.Persistance
         }
 
         public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null,
+                                     Expression<Func<T, object>>? orderBy = null,
+                                     bool desc = false,
                                      List<string>? includeProperties = null,
                                      bool withDeleted = false,
                                      bool tracked = true)
         {
             IQueryable<T> query = SetupTracking(tracked);
+
+            query = SetupSorting(orderBy, desc, query);
 
             if (filter != null)
                 query = query.Where(filter);
@@ -52,6 +56,29 @@ namespace Infrastructure.Common.Persistance
             query = IncludeProperties(includeProperties, query);
 
             return query.ToList();
+        }
+
+        public async Task<PaginatedList<T>> GetPage(Expression<Func<T, bool>>? filter = null,
+                                      Expression<Func<T, object>>? orderBy = null,
+                                      bool desc = false,
+                                      List<string>? includeProperties = null,
+                                      bool withDeleted = false,
+                                      bool tracked = true,
+                                      int pageIndex = 1,
+                                      int pageSize = 10)
+        {
+            IQueryable<T> query = SetupTracking(tracked);
+
+            query = SetupSorting(orderBy, desc, query);
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            query = FilterDeleted(withDeleted, query);
+
+            query = IncludeProperties(includeProperties, query);
+
+            return await PaginatedList<T>.CreateAsync(query, pageIndex, pageSize);
         }
 
         public T? GetFirstOrDefault(Expression<Func<T, bool>> filter,
@@ -123,6 +150,16 @@ namespace Infrastructure.Common.Persistance
         {
             if (!deleted)
                 query = query.Where(u => u.Deleted == false);
+            return query;
+        }
+
+        private static IQueryable<T> SetupSorting(Expression<Func<T, object>>? orderBy, bool desc, IQueryable<T> query)
+        {
+            if (orderBy != null)
+                if (desc)
+                    return query.OrderByDescending(orderBy);
+                else
+                    return query.OrderBy(orderBy);
             return query;
         }
     }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TransportDbContext))]
-    [Migration("20230303171552_Addition_of_drivers_and_drivers_licences")]
+    [Migration("20230305142413_Addition_of_drivers_and_drivers_licences")]
     partial class Addition_of_drivers_and_drivers_licences
     {
         /// <inheritdoc />

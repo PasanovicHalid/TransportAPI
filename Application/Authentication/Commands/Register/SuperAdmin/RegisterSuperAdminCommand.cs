@@ -1,4 +1,5 @@
 ﻿using Application.Authentication.Contracts;
+using Domain.Constants;
 using FluentResults;
 using FluentValidation;
 using MediatR;
@@ -8,20 +9,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Authentication.Queries.Login
+namespace Application.Authentication.Commands.Register.SuperAdmin
 {
-    public class LoginQuery : IRequest<Result<AuthenticationResult>>
+    public class RegisterSuperAdminCommand : IRequest<Result<AuthenticationResult>>
     {
         public string Email { get; set; }
         public string Password { get; set; }
+        public string PhoneNumber { get; set; }
     }
 
-    public class LoginQueryValidator : AbstractValidator<LoginQuery>
+    public class RegisterSuperAdminValidator : AbstractValidator<RegisterSuperAdminCommand>
     {
-        public LoginQueryValidator()
+        public RegisterSuperAdminValidator()
         {
             RuleFor(x => x.Email).NotEmpty()
                                  .EmailAddress();
+
+            RuleFor(x => x.PhoneNumber).NotEmpty();
 
             RuleFor(x => x.Password).NotEmpty();
         }

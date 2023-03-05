@@ -1,5 +1,4 @@
-﻿using Application.Authentication.Commands.Register;
-using FluentResults;
+﻿using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -11,10 +10,11 @@ using Application.Authentication.Queries.Login;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNetCore.Http.HttpResults;
-using Application.Authentication.Commands.Register.Exceptions;
 using Application.Common.Behaviors;
 using Domain.Constants;
 using Microsoft.AspNetCore.Authorization;
+using Application.Authentication.Commands.Register.SuperAdmin;
+using Application.Authentication.Commands.Register.Admin;
 
 namespace Presentation.Controllers
 {
@@ -34,26 +34,21 @@ namespace Presentation.Controllers
         {
             LoginQuery query = _mapper.Map<LoginQuery>(request);
 
-            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?)await _mediator.Send(query);
+            Result<AuthenticationResult> result = await _mediator.Send(query);
 
-            return SetupLoginResponse(result);
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return Ok(_mapper.Map<AutheticationResponse>(result.Value));
         }
 
         [HttpPost("register/superAdmin")]
         [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
         public async Task<IActionResult> RegisterSuperAdmin([FromBody] RegistrationRequest request)
         {
-            RegisterCommand command = SetupRegisterSuperAdminCommand(request);
+            RegisterSuperAdminCommand command = _mapper.Map<RegisterSuperAdminCommand>(request);
 
-            Result<AuthenticationResult>? result = (Result<AuthenticationResult>?)await _mediator.Send(command);
-
-            return SetupRegisterSuperAdminResponse(result);
-        }
-
-        private IActionResult SetupRegisterSuperAdminResponse(Result<AuthenticationResult>? result)
-        {
-            if (result is null)
-                return Problem();
+            Result<AuthenticationResult> result = await _mediator.Send(command);
 
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
@@ -61,22 +56,32 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(RegisterSuperAdmin), _mapper.Map<AutheticationResponse>(result.Value));
         }
 
-        private RegisterCommand SetupRegisterSuperAdminCommand(RegistrationRequest request)
+        [HttpPost("register/initial/admin")]
+        [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
+        public async Task<IActionResult> RegisterInitialAdminForCompany([FromBody] AdminRegistrationRequest request)
         {
-            RegisterCommand command = _mapper.Map<RegisterCommand>(request);
-            command.UserType = ApplicationRolesConstants.SuperAdmin;
-            return command;
-        }
+            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
 
-        private IActionResult SetupLoginResponse(Result<AuthenticationResult>? result)
-        {
-            if (result is null)
-                return Problem();
+            Result<AuthenticationResult> result = await _mediator.Send(command);
 
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
 
-            return Ok(_mapper.Map<AutheticationResponse>(result.Value));
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        [HttpPost("register/admin")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request)
+        {
+            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
+
+            Result<AuthenticationResult> result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
         }
     }
 }

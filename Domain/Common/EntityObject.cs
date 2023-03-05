@@ -14,10 +14,8 @@ namespace Domain.Common
 
         public bool Deleted { get; set; }
 
-        protected EntityObject(ulong id, bool deleted)
+        protected EntityObject()
         {
-            Id = id;
-            Deleted = deleted;
         }
 
         public override bool Equals(object? obj)
@@ -42,7 +40,7 @@ namespace Domain.Common
             }
         }
 
-        public static bool operator ==(EntityObject a, EntityObject b)
+        public static bool operator ==(EntityObject? a, EntityObject? b)
         {
             if (ReferenceEquals(a, null) && ReferenceEquals(b, null))
                 return true;
@@ -53,7 +51,7 @@ namespace Domain.Common
             return a.Equals(b);
         }
 
-        public static bool operator !=(EntityObject a, EntityObject b)
+        public static bool operator !=(EntityObject? a, EntityObject? b)
         {
             return !(a == b);
         }

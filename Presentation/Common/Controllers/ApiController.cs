@@ -15,6 +15,7 @@ namespace Presentation.Common.Controllers
     [Route("api/[controller]")]
     public class ApiController : ControllerBase
     {
+        [NonAction]
         protected virtual IActionResult HandleErrors(IError error)
         {
             if (error is not IStatusCodeError)

@@ -10,13 +10,8 @@ namespace Presentation.Contracts.Authentication
     public class RegistrationRequest
     {
         [EmailAddress]
-        [Required]
-        public string Email { get; set; } = String.Empty;
-
-        [Required]
-        public string Password { get; set; } = String.Empty;
-
-        [Required]
-        public string PhoneNumber { get; set; } = String.Empty;
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public string PhoneNumber { get; set; }
     }
 }

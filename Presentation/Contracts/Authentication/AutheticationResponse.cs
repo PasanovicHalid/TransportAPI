@@ -8,7 +8,7 @@ namespace Presentation.Contracts.Authentication
 {
     public class AutheticationResponse
     {
-        public string Token { get; set; } = string.Empty;
-        public DateTime ValidUntil { get; set; } = DateTime.MinValue;
+        public string Token { get; set; }
+        public DateTime ValidUntil { get; set; }
     }
 }

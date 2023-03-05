@@ -21,22 +21,18 @@ namespace Domain
         [ForeignKey(nameof(DriverId))]
         public Driver? Driver { get; private set; }
 
-        public DriversLicence(ulong id,
-                              bool deleted,
-                              string category,
+        public DriversLicence(string category,
                               DateTime expirationDate,
-                              ulong driverId) : base(id, deleted)
+                              ulong driverId)
         {
             Category = category;
             ExpirationDate = expirationDate;
             DriverId = driverId;
         }
 
-        public DriversLicence(ulong id,
-                             bool deleted,
-                             string category,
+        public DriversLicence(string category,
                              DateTime expirationDate,
-                             Driver driver) : base(id, deleted)
+                             Driver driver)
         {
             Category = category;
             ExpirationDate = expirationDate;
@@ -44,8 +40,7 @@ namespace Domain
             DriverId = driver.Id;
         }
 
-        protected DriversLicence(ulong id,
-                                 bool deleted) : base(id, deleted)
+        protected DriversLicence()
         {
         }
     }
