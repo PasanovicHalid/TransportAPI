@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Drivers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,12 +8,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Drivers
+namespace Domain
 {
     [Owned]
     public class DriversLicence : EntityObject
     {
         public string Category { get; private set; }
+
+        public DateTime IssuingDate { get; private set; }
 
         public DateTime ExpirationDate { get; private set; }
 
@@ -23,21 +26,25 @@ namespace Domain.Drivers
 
         public DriversLicence(string category,
                               DateTime expirationDate,
-                              ulong driverId)
+                              ulong driverId,
+                              DateTime issuingDate)
         {
             Category = category;
             ExpirationDate = expirationDate;
             DriverId = driverId;
+            IssuingDate = issuingDate;
         }
 
         public DriversLicence(string category,
                              DateTime expirationDate,
-                             Driver driver)
+                             Driver driver,
+                             DateTime issuingDate)
         {
             Category = category;
             ExpirationDate = expirationDate;
             Driver = driver;
             DriverId = driver.Id;
+            IssuingDate = issuingDate;
         }
 
         protected DriversLicence()

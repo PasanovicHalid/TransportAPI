@@ -52,7 +52,7 @@ namespace Infrastructure
                 {
                     ValidIssuer = configuration["Jwt:ValidIssuer"],
                     ValidAudience = configuration["Jwt:ValidAudience"],
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]!)),
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,

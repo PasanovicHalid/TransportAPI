@@ -39,7 +39,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Domain.DriversLicence", b =>
@@ -67,7 +67,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("DriversLicences");
+                    b.ToTable("DriversLicences", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Employee", b =>
@@ -116,7 +116,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("IdentityId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Employee");
 
@@ -353,7 +353,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.Employee.Address#Domain.Address", "Address", b1 =>
                         {
                             b1.Property<decimal>("EmployeeId")
                                 .HasColumnType("decimal(20,0)");
@@ -380,12 +380,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("EmployeeId");
 
-                            b1.ToTable("Employees");
+                            b1.ToTable("Employees", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EmployeeId");
 
-                            b1.OwnsOne("Domain.GpsCoordinate", "GpsCoordinate", b2 =>
+                            b1.OwnsOne("Domain.Employee.Address#Domain.Address.GpsCoordinate#Domain.GpsCoordinate", "GpsCoordinate", b2 =>
                                 {
                                     b2.Property<decimal>("AddressEmployeeId")
                                         .HasColumnType("decimal(20,0)");
@@ -398,7 +398,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("AddressEmployeeId");
 
-                                    b2.ToTable("Employees");
+                                    b2.ToTable("Employees", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressEmployeeId");

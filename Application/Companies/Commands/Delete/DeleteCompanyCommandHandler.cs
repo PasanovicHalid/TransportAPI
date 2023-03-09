@@ -1,5 +1,5 @@
-﻿using Application.Common.Interfaces.Persistance;
-using Application.Companies.Errors;
+﻿using Application.Common.Errors;
+using Application.Common.Interfaces.Persistance;
 using Domain.Companies;
 using FluentResults;
 using MediatR;
@@ -24,7 +24,7 @@ namespace Application.Companies.Commands.Delete
             Company? company = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.Id);
 
             if(company == null)
-                return Result.Fail(new CompanyDoesntExist(request.Id));
+                return Result.Fail(new EntityDoesntExist(request.Id, nameof(Company)));
 
             _unitOfWork.Companies.Remove(company);
             _unitOfWork.Save();

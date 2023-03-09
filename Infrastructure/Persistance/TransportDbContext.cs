@@ -1,4 +1,5 @@
-﻿using Domain.Companies;
+﻿using Domain;
+using Domain.Companies;
 using Domain.Drivers;
 using Domain.Employees;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
