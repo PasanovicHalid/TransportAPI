@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Common
 {
-    public abstract class ValueObject
+    public abstract class ValueObject : ValidationObject
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
 

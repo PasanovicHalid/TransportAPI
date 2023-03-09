@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Common
 {
-    public abstract class EntityObject
+    public abstract class EntityObject : ValidationObject
     {
         [Key]
         public ulong Id { get; protected set; }
