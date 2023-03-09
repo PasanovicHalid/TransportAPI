@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistance.Companies;
-using Domain;
+using Domain.Companies;
 using Infrastructure.Common.Persistance;
 using System;
 using System.Collections.Generic;

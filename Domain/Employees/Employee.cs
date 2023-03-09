@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Domain.Companies;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Employees
 {
     public class Employee : EntityObject
     {

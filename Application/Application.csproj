@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Folder Include="Authentication\Commands\Register\Driver\" />
+    <Folder Include="Vehicles\" />
   </ItemGroup>
 
 </Project>

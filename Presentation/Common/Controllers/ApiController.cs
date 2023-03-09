@@ -18,11 +18,11 @@ namespace Presentation.Common.Controllers
         [NonAction]
         protected virtual IActionResult HandleErrors(IError error)
         {
-            if (error is not IStatusCodeError)
-                return Problem(title: error.Message);
-
             if (error is ValidationError)
                 return HandleValidationErrors(error);
+
+            if (error is not IStatusCodeError)
+                return Problem(title: error.Message);
 
             return HandleSimpleStatusCodeErrors(error);
         }

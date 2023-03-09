@@ -33,11 +33,7 @@ namespace Domain.Common
 
         public override int GetHashCode()
         {
-            unchecked
-            {
-                int hash = 17;
-                return hash * 23 + Id.GetHashCode();
-            }
+            return Id.GetHashCode();
         }
 
         public static bool operator ==(EntityObject? a, EntityObject? b)

@@ -6,7 +6,7 @@ using Application.Companies.Commands.Delete;
 using Application.Companies.Commands.Update;
 using Application.Companies.Queries.FindCompanyById;
 using AutoMapper;
-using Domain;
+using Domain.Companies;
 using Domain.Constants;
 using FluentResults;
 using MediatR;

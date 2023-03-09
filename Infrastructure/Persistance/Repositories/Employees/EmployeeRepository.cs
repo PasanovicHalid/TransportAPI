@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistance.Employees;
-using Domain;
+using Domain.Employees;
 using Infrastructure.Common.Persistance;
 using System;
 using System.Collections.Generic;

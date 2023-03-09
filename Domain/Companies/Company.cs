@@ -1,6 +1,7 @@
 ﻿using Domain.Common;
+using Domain.Employees;
 
-namespace Domain
+namespace Domain.Companies
 {
     public class Company : EntityObject
     {

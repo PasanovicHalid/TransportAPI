@@ -1,7 +1,7 @@
 ﻿using Application.Authentication.Commands.Register.SuperAdmin;
 using Application.Authentication.Contracts;
 using Application.Common.Interfaces.Persistance;
-using Domain;
+using Domain.Companies;
 using FluentResults;
 using MediatR;
 using System;

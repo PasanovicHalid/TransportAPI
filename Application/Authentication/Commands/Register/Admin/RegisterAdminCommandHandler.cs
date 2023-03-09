@@ -5,6 +5,7 @@ using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistance;
 using Domain;
 using Domain.Constants;
+using Domain.Employees;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

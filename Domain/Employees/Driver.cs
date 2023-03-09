@@ -1,4 +1,6 @@
-﻿using Domain.Constants;
+﻿using Domain.Companies;
+using Domain.Constants;
+using Domain.Employees;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain
+namespace Domain.Drivers
 {
     public class Driver : Employee
     {
