@@ -1,5 +1,4 @@
 ﻿using Application.Authentication.Commands.Register.Errors;
-using Application.Authentication.Commands.Register.SuperAdmin;
 using Application.Authentication.Contracts;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistance;
@@ -9,13 +8,8 @@ using Domain.Employees;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Authentication.Commands.Register.Admin
+namespace Application.Authentication.Commands.Register.Admins
 {
     public class RegisterAdminCommandHandler : IRequestHandler<RegisterAdminCommand, Result<AuthenticationResult>>
     {
@@ -38,7 +32,6 @@ namespace Application.Authentication.Commands.Register.Admin
             Employee admin = SetupAdmin(request);
 
             using var transtaction = _unitOfWork.BeginTransaction();
-
             try
             {
                 IdentityResult result = await _userManager.CreateAsync(admin.User!, request.Password);
@@ -72,12 +65,12 @@ namespace Application.Authentication.Commands.Register.Admin
         private static Employee SetupAdmin(RegisterAdminCommand request)
         {
             return new Employee(
-                                user: new IdentityUser() 
+                                user: new IdentityUser()
                                 {
                                     UserName = request.Email,
                                     Email = request.Email,
                                     PhoneNumber = request.PhoneNumber
-                                }, 
+                                },
                                 role: ApplicationRolesConstants.Admin,
                                 firstName: request.FirstName,
                                 middleName: request.MiddleName,

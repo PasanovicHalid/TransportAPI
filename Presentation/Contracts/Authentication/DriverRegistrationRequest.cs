@@ -1,18 +1,18 @@
-﻿using Application.Authentication.Commands.Register.Admins;
+﻿using Application.Authentication.Commands.Register.Drivers;
 using AutoMapper;
 using System.ComponentModel.DataAnnotations;
 
 namespace Presentation.Contracts.Authentication
 {
-    public class AdminRegistrationAdapter : Profile
+    public class DriverRegistrationAdapter : Profile
     {
-        public AdminRegistrationAdapter()
+        public DriverRegistrationAdapter() 
         {
-            CreateMap<AdminRegistrationRequest, RegisterAdminCommand>();
+            CreateMap<DriverRegistrationRequest, RegisterDriverCommand>();
         }
     }
 
-    public class AdminRegistrationRequest
+    public class DriverRegistrationRequest
     {
         [EmailAddress]
         public string Email { get; set; }
@@ -39,7 +39,5 @@ namespace Presentation.Contracts.Authentication
         public string PostalCode { get; set; }
 
         public string Country { get; set; }
-
-        public ulong CompanyId { get; set; }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Companies.Commands.Delete
 {
@@ -25,7 +20,7 @@ namespace Application.Companies.Commands.Delete
 
     public class DeleteCompanyValidator : AbstractValidator<DeleteCompanyCommand>
     {
-        public DeleteCompanyValidator() 
+        public DeleteCompanyValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
         }

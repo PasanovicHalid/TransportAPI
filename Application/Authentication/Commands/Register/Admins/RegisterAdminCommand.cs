@@ -1,40 +1,24 @@
-﻿using Application.Authentication.Commands.Register.SuperAdmin;
-using Application.Authentication.Contracts;
+﻿using Application.Authentication.Contracts;
 using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Authentication.Commands.Register.Admin
+namespace Application.Authentication.Commands.Register.Admins
 {
     public class RegisterAdminCommand : IRequest<Result<AuthenticationResult>>
     {
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-
         public string FirstName { get; private set; }
-
         public string? MiddleName { get; private set; }
-
         public string LastName { get; private set; }
-
         public double Salary { get; private set; }
-
         public string Street { get; private set; }
-
         public string City { get; private set; }
-
         public string State { get; private set; }
-
         public string PostalCode { get; private set; }
-
         public string Country { get; private set; }
-
         public ulong CompanyId { get; private set; }
     }
 

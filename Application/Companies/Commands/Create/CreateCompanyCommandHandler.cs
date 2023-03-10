@@ -1,14 +1,7 @@
-﻿using Application.Authentication.Commands.Register.SuperAdmin;
-using Application.Authentication.Contracts;
-using Application.Common.Interfaces.Persistance;
+﻿using Application.Common.Interfaces.Persistance;
 using Domain.Companies;
 using FluentResults;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Companies.Commands.Create
 {

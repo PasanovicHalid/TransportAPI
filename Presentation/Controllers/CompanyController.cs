@@ -1,10 +1,9 @@
-﻿using Application.Authentication.Contracts;
-using Application.Common.Commands;
+﻿using Application.Common.Commands;
 using Application.Common.Interfaces.Persistance;
 using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Delete;
 using Application.Companies.Commands.Update;
-using Application.Companies.Queries.FindCompanyById;
+using Application.Companies.Queries.FindById;
 using AutoMapper;
 using Domain.Companies;
 using Domain.Constants;
@@ -13,14 +12,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
-using Presentation.Contracts.Authentication;
 using Presentation.Contracts.Companies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Presentation.Controllers
 {

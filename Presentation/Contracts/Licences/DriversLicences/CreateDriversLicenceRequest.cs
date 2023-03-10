@@ -1,11 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.Licences.DriverLicences.Commands.Create;
+using AutoMapper;
 
 namespace Presentation.Contracts.Licences.DriversLicences
 {
+    public class DriversLicenceAdapter : Profile
+    {
+        public DriversLicenceAdapter()
+        {
+            CreateMap<CreateDriversLicenceRequest, CreateDriversLicenceCommand>();
+        }
+    }
     public class CreateDriversLicenceRequest
     {
         public string Category { get; set; }

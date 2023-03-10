@@ -7,12 +7,7 @@ using Infrastructure.Persistance.Repositories.Companies;
 using Infrastructure.Persistance.Repositories.Employees;
 using Infrastructure.Persistance.Repositories.Licences;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Common.Persistance
 {
@@ -38,7 +33,7 @@ namespace Infrastructure.Common.Persistance
 
         public IDriverLicenseRepository DriverLicenses => _driverLicenceRepository ??= new DriverLicenceRepository(_context);
 
-        public ICompanyRepository Companies => _companyRepository ??=  new CompanyRepository(_context);
+        public ICompanyRepository Companies => _companyRepository ??= new CompanyRepository(_context);
 
         public IDbTransaction BeginTransaction()
         {

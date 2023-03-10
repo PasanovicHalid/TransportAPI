@@ -3,13 +3,8 @@ using Application.Common.Interfaces.Persistance;
 using Domain.Companies;
 using FluentResults;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Companies.Queries.GetCompanyPage
+namespace Application.Companies.Queries.GetPage
 {
     public class GetCompanyPageCommandHandler : IRequestHandler<PageCommand<Company>, Result<PaginatedList<Company>>>
     {
@@ -22,7 +17,7 @@ namespace Application.Companies.Queries.GetCompanyPage
 
         public async Task<Result<PaginatedList<Company>>> Handle(PageCommand<Company> request, CancellationToken cancellationToken)
         {
-            PaginatedList<Company> companyPage = 
+            PaginatedList<Company> companyPage =
             await _unitOfWork.Companies.GetPage(filter: request.Filter,
                                                 orderBy: request.OrderBy,
                                                 desc: request.Desc,

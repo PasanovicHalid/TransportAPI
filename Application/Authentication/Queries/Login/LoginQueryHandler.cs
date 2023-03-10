@@ -4,11 +4,6 @@ using Application.Common.Interfaces.Authentication;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Authentication.Queries.Login
 {
@@ -29,7 +24,7 @@ namespace Application.Authentication.Queries.Login
         {
             IdentityUser? user = await _userManager.FindByNameAsync(request.Email);
 
-            if(user == null)
+            if (user == null)
                 return Result.Fail(new LoginFailed());
 
             SignInResult result = await _signInManager.PasswordSignInAsync(user, request.Password, false, false);

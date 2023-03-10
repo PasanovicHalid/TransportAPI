@@ -2,11 +2,6 @@
 using Domain.Constants;
 using Domain.Employees;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Drivers
 {
@@ -45,6 +40,24 @@ namespace Domain.Drivers
                                               salary,
                                               address,
                                               company)
+        {
+
+        }
+
+        public Driver(IdentityUser user,
+                      string firstName,
+                      string? middleName,
+                      string lastName,
+                      double salary,
+                      Address address,
+                      ulong companyId) : base(user,
+                                              ApplicationRolesConstants.Driver,
+                                              firstName,
+                                              middleName,
+                                              lastName,
+                                              salary,
+                                              address,
+                                              companyId)
         {
 
         }

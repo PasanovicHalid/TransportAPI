@@ -1,11 +1,6 @@
 ﻿using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Companies.Commands.Update
 {
@@ -15,9 +10,9 @@ namespace Application.Companies.Commands.Update
         public string Name { get; set; } = null!;
     }
 
-    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand> 
+    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand>
     {
-        public UpdateCompanyValidator() 
+        public UpdateCompanyValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Id).NotEmpty();

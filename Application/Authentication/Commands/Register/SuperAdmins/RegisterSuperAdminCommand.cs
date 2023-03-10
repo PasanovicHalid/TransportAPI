@@ -1,15 +1,9 @@
 ﻿using Application.Authentication.Contracts;
-using Domain.Constants;
 using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Authentication.Commands.Register.SuperAdmin
+namespace Application.Authentication.Commands.Register.SuperAdmins
 {
     public class RegisterSuperAdminCommand : IRequest<Result<AuthenticationResult>>
     {

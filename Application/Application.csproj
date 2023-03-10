@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Authentication\Commands\Register\Driver\" />
     <Folder Include="Licences\DriverLicences\Commands\Delete\" />
     <Folder Include="Licences\DriverLicences\Commands\Update\" />
     <Folder Include="Licences\DriverLicences\Queries\FindById\" />

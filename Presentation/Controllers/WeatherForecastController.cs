@@ -48,7 +48,7 @@ namespace Presentation.Controllers
             return await _jwtTokenGenerator.GenerateTokenAsync(user);
         }
 
-        [HttpGet("TestException")] 
+        [HttpGet("TestException")]
         [AllowAnonymous]
         public async Task<string> GetException()
         {

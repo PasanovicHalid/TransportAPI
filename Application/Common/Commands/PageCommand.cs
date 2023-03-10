@@ -1,14 +1,8 @@
 ﻿using Application.Common.Interfaces.Persistance;
-using Domain;
 using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Common.Commands
 {

@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Application.Authentication.Queries.Login;
+using AutoMapper;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Authentication
 {
+    public class LoginAdapter : Profile
+    {
+        public LoginAdapter()
+        {
+            CreateMap<LoginRequest, LoginQuery>();
+        }
+    }
     public class LoginRequest
     {
         [EmailAddress]

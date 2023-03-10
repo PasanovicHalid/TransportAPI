@@ -6,13 +6,8 @@ using Domain.Constants;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Authentication.Commands.Register.SuperAdmin
+namespace Application.Authentication.Commands.Register.SuperAdmins
 {
     public class RegisterSuperAdminCommandHandler : IRequestHandler<RegisterSuperAdminCommand, Result<AuthenticationResult>>
     {

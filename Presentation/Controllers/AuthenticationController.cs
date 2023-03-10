@@ -1,20 +1,17 @@
-﻿using FluentResults;
-using MediatR;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Presentation.Common.Controllers;
-using Presentation.Contracts.Authentication;
+﻿using Application.Authentication.Commands.Register.Admins;
+using Application.Authentication.Commands.Register.Drivers;
+using Application.Authentication.Commands.Register.SuperAdmins;
 using Application.Authentication.Contracts;
 using Application.Authentication.Queries.Login;
 using AutoMapper;
-using System.Net;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Application.Common.Behaviors;
 using Domain.Constants;
+using FluentResults;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Application.Authentication.Commands.Register.SuperAdmin;
-using Application.Authentication.Commands.Register.Admin;
+using Microsoft.AspNetCore.Mvc;
+using Presentation.Common.Controllers;
+using Presentation.Contracts.Authentication;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -75,6 +72,21 @@ namespace Presentation.Controllers
         public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request)
         {
             RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
+
+            Result<AuthenticationResult> result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        [HttpPost("register/driver")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
+        {
+            RegisterDriverCommand command = _mapper.Map<RegisterDriverCommand>(request);
+            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result<AuthenticationResult> result = await _mediator.Send(command);
 

@@ -16,7 +16,8 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options => {
+    app.UseSwaggerUI(options =>
+    {
         options.SwaggerEndpoint("/swagger/V1/swagger.json", "Transport Application");
     });
 }

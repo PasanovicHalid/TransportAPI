@@ -1,12 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Application.Authentication.Commands.Register.SuperAdmins;
+using AutoMapper;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Authentication
 {
+    public class RegisterAdapter : Profile
+    {
+        public RegisterAdapter()
+        {
+            CreateMap<RegistrationRequest, RegisterSuperAdminCommand>();
+        }
+    }
+
     public class RegistrationRequest
     {
         [EmailAddress]

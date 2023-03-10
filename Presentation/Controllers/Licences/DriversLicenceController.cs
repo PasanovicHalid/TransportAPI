@@ -1,5 +1,4 @@
-﻿using Application.Companies.Commands.Create;
-using Application.Licences.DriverLicences.Commands.Create;
+﻿using Application.Licences.DriverLicences.Commands.Create;
 using AutoMapper;
 using Domain.Constants;
 using FluentResults;
@@ -7,15 +6,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
-using Presentation.Contracts.Companies;
 using Presentation.Contracts.Licences.DriversLicences;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers.Licences
 {
@@ -35,7 +27,7 @@ namespace Presentation.Controllers.Licences
         public async Task<IActionResult> Create([FromBody] CreateDriversLicenceRequest request)
         {
             CreateDriversLicenceCommand command = _mapper.Map<CreateDriversLicenceCommand>(request);
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);
 
