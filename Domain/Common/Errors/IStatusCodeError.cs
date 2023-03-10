@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System.Net;
 
-namespace Application.Common.Errors
+namespace Domain.Common.Errors
 {
     public interface IStatusCodeError : IError
     {

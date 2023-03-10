@@ -3,9 +3,9 @@ using AutoMapper;
 
 namespace Presentation.Contracts.Licences.DriversLicences
 {
-    public class DriversLicenceAdapter : Profile
+    public class CreateDriversLicenceAdapter : Profile
     {
-        public DriversLicenceAdapter()
+        public CreateDriversLicenceAdapter()
         {
             CreateMap<CreateDriversLicenceRequest, CreateDriversLicenceCommand>();
         }

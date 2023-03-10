@@ -1,4 +1,4 @@
-﻿using Domain.Drivers;
+﻿using Domain.Employees;
 
 namespace Application.Common.Interfaces.Persistance.Employees
 {

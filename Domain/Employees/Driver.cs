@@ -1,9 +1,8 @@
 ﻿using Domain.Companies;
 using Domain.Constants;
-using Domain.Employees;
 using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Drivers
+namespace Domain.Employees
 {
     public class Driver : Employee
     {

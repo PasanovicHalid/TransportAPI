@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using Domain.Common.Errors;
+using FluentResults;
 using System.Net;
 
 namespace Application.Common.Errors
@@ -28,7 +29,7 @@ namespace Application.Common.Errors
 
         public List<IError> Reasons => new();
 
-        public string Message => _name + "with Id:" + _id + " doesn't exist in database";
+        public string Message => _name + " with Id:" + _id + " doesn't exist in database";
 
         public Dictionary<string, object> Metadata => new();
     }

@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistance.Employees;
-using Domain.Drivers;
+using Domain.Employees;
 using Infrastructure.Common.Persistance;
 
 namespace Infrastructure.Persistance.Repositories.Employees

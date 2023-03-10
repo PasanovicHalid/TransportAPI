@@ -1,4 +1,4 @@
-﻿using Application.Common.Errors;
+﻿using Domain.Common.Errors;
 using FluentResults;
 using System.Net;
 

@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Licences\DriverLicences\Commands\Delete\" />
-    <Folder Include="Licences\DriverLicences\Commands\Update\" />
-    <Folder Include="Licences\DriverLicences\Queries\FindById\" />
-    <Folder Include="Licences\DriverLicences\Queries\GetPage\" />
     <Folder Include="Vehicles\" />
   </ItemGroup>
 

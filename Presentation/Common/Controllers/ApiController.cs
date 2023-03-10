@@ -1,5 +1,6 @@
 ﻿using Application.Common.Behaviors;
-using Application.Common.Errors;
+using Domain.Common.Errors;
+using Domain.Errors;
 using FluentResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -13,6 +14,9 @@ namespace Presentation.Common.Controllers
         [NonAction]
         protected virtual IActionResult HandleErrors(IError error)
         {
+            if (error is ObjectInInvalidState)
+                return HandleObjectErrors(error);
+
             if (error is ValidationError)
                 return HandleValidationErrors(error);
 
@@ -20,6 +24,23 @@ namespace Presentation.Common.Controllers
                 return Problem(title: error.Message);
 
             return HandleSimpleStatusCodeErrors(error);
+        }
+
+        private IActionResult HandleObjectErrors(IError error)
+        {
+            ObjectInInvalidState validationError = (ObjectInInvalidState)error;
+
+            ModelStateDictionary errorMap = new ModelStateDictionary();
+
+            foreach (IError property in validationError.Reasons)
+            {
+                foreach (IError propertyError in property.Reasons)
+                {
+                    errorMap.AddModelError(property.Message, propertyError.Message);
+                }
+            }
+
+            return ValidationProblem(errorMap);
         }
 
         private IActionResult HandleSimpleStatusCodeErrors(IError error)

@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
-using Domain.Drivers;
+using Domain.Employees;
+using FluentResults;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,7 @@ namespace Domain
     [Owned]
     public class DriversLicence : EntityObject
     {
-        public string Category { get; private set; }
+        public string Category { get; set; }
 
         public DateTime IssuingDate { get; private set; }
 
@@ -44,6 +45,24 @@ namespace Domain
 
         protected DriversLicence()
         {
+        }
+
+        public void ChangeIssuingDate(DateTime newIssuingDate)
+        {
+            IssuingDate = newIssuingDate;
+            ValidateObject();
+        }
+
+        public void ChangeExpirationDate(DateTime newExpirationDate)
+        {
+            ExpirationDate = newExpirationDate;
+            ValidateObject();
+        }
+
+        private void ValidateObject()
+        {
+            if (IssuingDate >= ExpirationDate)
+                ValidationResult.Reasons.Add(new Error(nameof(IssuingDate), new Error("Issuing date is greater or equal to Expiration Date")));
         }
     }
 }
