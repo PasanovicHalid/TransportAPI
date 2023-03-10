@@ -28,22 +28,9 @@ namespace Application.Licences.DriverLicences.Commands.Create
 
         public async Task<Result> Handle(CreateDriversLicenceCommand request, CancellationToken cancellationToken)
         {
-            Employee? admin = _unitOfWork.Employees.GetFirstOrDefault(e => e.IdentityId == request.AdminIdentityId);
-
-            if (admin is null)
-                return Result.Fail(new AdminDoesntExist());
-
-            Employee? driver = _unitOfWork.Employees.GetFirstOrDefault(e => e.Id == request.DriverId);
-
-            if(driver is null)
-                return Result.Fail(new EntityDoesntExist(request.DriverId, "Driver", HttpStatusCode.BadRequest));
-
-            if (!driver.Role.Equals(ApplicationRolesConstants.Driver))
-                return Result.Fail(new EmployeeIsntDriver());
-
             Company? adminAndDriverCompany = _unitOfWork.Companies.GetFirstOrDefault(
-                c => c.Employees.Select(e => e.IdentityId == admin.IdentityId).Count() == 1 
-                && c.Employees.Select(e => e.Id == request.DriverId).Count() == 1);
+                c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId && e.Role.Equals(ApplicationRolesConstants.Admin)) 
+                && c.Employees.Any(e => e.Id == request.DriverId && e.Role.Equals(ApplicationRolesConstants.Driver)));
 
             if (adminAndDriverCompany is null)
                 return Result.Fail(new DriverIsntWorkingForAdmin());
