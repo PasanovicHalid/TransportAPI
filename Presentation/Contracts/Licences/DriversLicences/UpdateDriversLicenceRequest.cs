@@ -13,7 +13,7 @@ namespace Presentation.Contracts.Licences.DriversLicences
     {
         public UpdateDriversLicenceAdapter()
         {
-            CreateMap<UpdateDriversLicenceRequest, UpdateDriversLicenceCommand>();
+            CreateMap<UpdateDriversLicenceRequest, UpdateDriversLicenseCommand>();
         }
     }
     public class UpdateDriversLicenceRequest

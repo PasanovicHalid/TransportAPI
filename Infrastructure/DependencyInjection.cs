@@ -1,8 +1,6 @@
 ﻿using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistance;
 using Infrastructure.Authentication;
-using Infrastructure.Common.Persistance;
-using Infrastructure.Persistance;
+using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -11,12 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Application.Common.Interfaces.Persistence;
+using Infrastructure.Common.Persistence;
 
 namespace Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection SetupInfrastrucutureLayer(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection SetupInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<TransportDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TransportDB")));
 
@@ -63,12 +63,10 @@ namespace Infrastructure
             return services;
         }
 
-        public static async Task InitializeDB(this WebApplication app)
+        public static async Task InitializeDb(this WebApplication app)
         {
-            using (IServiceScope scope = app.Services.CreateScope())
-            {
-                await scope.ServiceProvider.GetRequiredService<DbInitializer>().Initialize();
-            }
+            using IServiceScope scope = app.Services.CreateScope();
+            await scope.ServiceProvider.GetRequiredService<DbInitializer>().Initialize();
         }
     }
 

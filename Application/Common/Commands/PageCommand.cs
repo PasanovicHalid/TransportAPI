@@ -1,8 +1,8 @@
-﻿using Application.Common.Interfaces.Persistance;
-using FluentResults;
+﻿using FluentResults;
 using FluentValidation;
 using MediatR;
 using System.Linq.Expressions;
+using Application.Common.Interfaces.Persistence;
 
 namespace Application.Common.Commands
 {

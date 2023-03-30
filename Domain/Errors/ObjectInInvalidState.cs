@@ -11,7 +11,7 @@ namespace Domain.Errors
 {
     public class ObjectInInvalidState : IStatusCodeError
     {
-        private string _className;
+        private readonly string _className;
 
         public ObjectInInvalidState(string className, List<IError> reasons)
         {
@@ -21,7 +21,7 @@ namespace Domain.Errors
 
         public HttpStatusCode Code => HttpStatusCode.BadRequest;
 
-        public List<IError> Reasons { get; set; }
+        public List<IError> Reasons { get; private set; }
 
         public string Message => _className + " is in an invalid state";
 

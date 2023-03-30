@@ -2,11 +2,11 @@
 using Application.Authentication.Contracts;
 using Application.Common.Errors;
 using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistance;
+using Application.Common.Interfaces.Persistence;
 using Domain;
-using Domain.Companies;
 using Domain.Constants;
-using Domain.Employees;
+using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;

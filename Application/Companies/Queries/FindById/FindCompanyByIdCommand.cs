@@ -1,4 +1,4 @@
-﻿using Domain.Companies;
+﻿using Domain.Entities;
 using FluentResults;
 using FluentValidation;
 using MediatR;

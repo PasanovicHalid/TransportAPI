@@ -1,5 +1,6 @@
-﻿using Application.Common.Interfaces.Persistance;
-using Domain.Companies;
+﻿using Application.Common.Interfaces.Persistence;
+using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 
@@ -16,7 +17,12 @@ namespace Application.Companies.Commands.Create
 
         public async Task<Result> Handle(CreateCompanyCommand request, CancellationToken cancellationToken)
         {
-            Company company = new Company(request.Name);
+            Company company = new(request.Name,
+                                  new Address(request.Street,
+                                              request.City,
+                                              request.State,
+                                              request.PostalCode,
+                                              request.Country));
 
             _unitOfWork.Companies.Add(company);
             _unitOfWork.Save();

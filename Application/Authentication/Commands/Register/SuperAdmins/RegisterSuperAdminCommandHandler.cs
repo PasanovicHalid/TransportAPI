@@ -1,7 +1,7 @@
 ﻿using Application.Authentication.Commands.Register.Errors;
 using Application.Authentication.Contracts;
 using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistance;
+using Application.Common.Interfaces.Persistence;
 using Domain.Constants;
 using FluentResults;
 using MediatR;

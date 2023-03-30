@@ -7,7 +7,7 @@ namespace Presentation.Contracts.Licences.DriversLicences
     {
         public CreateDriversLicenceAdapter()
         {
-            CreateMap<CreateDriversLicenceRequest, CreateDriversLicenceCommand>();
+            CreateMap<CreateDriversLicenceRequest, CreateDriversLicenseCommand>();
         }
     }
     public class CreateDriversLicenceRequest

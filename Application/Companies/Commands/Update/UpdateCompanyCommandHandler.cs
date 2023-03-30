@@ -1,6 +1,7 @@
 ﻿using Application.Common.Errors;
-using Application.Common.Interfaces.Persistance;
-using Domain.Companies;
+using Application.Common.Interfaces.Persistence;
+using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 
@@ -22,12 +23,22 @@ namespace Application.Companies.Commands.Update
             if (companyFromDb == null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Company)));
 
-            companyFromDb.Name = request.Name;
+            SetupUpdatedCompany(request, companyFromDb);
 
             _unitOfWork.Companies.Update(companyFromDb);
             _unitOfWork.Save();
 
             return Result.Ok();
+        }
+
+        private static void SetupUpdatedCompany(UpdateCompanyCommand request, Company companyFromDb)
+        {
+            companyFromDb.Name = request.Name;
+            companyFromDb.Address = new Address(request.Street,
+                request.City,
+                request.State,
+                request.PostalCode,
+                request.Country);
         }
     }
 }

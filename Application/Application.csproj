@@ -19,7 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Vehicles\" />
+    <Folder Include="Drivers\" />
+    <Folder Include="Vehicles\Truck\Commands\" />
+    <Folder Include="Vehicles\Truck\Queries\" />
+    <Folder Include="Vehicles\Van\Commands\" />
+    <Folder Include="Vehicles\Van\Queries\" />
   </ItemGroup>
 
 </Project>

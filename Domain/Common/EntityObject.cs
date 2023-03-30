@@ -2,7 +2,7 @@
 
 namespace Domain.Common
 {
-    public abstract class EntityObject : ValidationObject
+    public abstract class EntityObject
     {
         [Key]
         public ulong Id { get; protected set; }

@@ -1,12 +1,12 @@
 ﻿using Application.Common.Commands;
-using Application.Common.Interfaces.Persistance;
+using Application.Common.Interfaces.Persistence;
 using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Delete;
 using Application.Companies.Commands.Update;
 using Application.Companies.Queries.FindById;
 using AutoMapper;
-using Domain.Companies;
 using Domain.Constants;
+using Domain.Entities;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

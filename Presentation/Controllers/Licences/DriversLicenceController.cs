@@ -4,8 +4,8 @@ using Application.Licences.DriverLicences.Commands.Update;
 using Application.Licences.DriverLicences.Queries.FindByIdByAdmin;
 using Application.Licences.DriverLicences.Queries.FindByIdByDriver;
 using AutoMapper;
-using Domain;
 using Domain.Constants;
+using Domain.Entities;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,7 +33,7 @@ namespace Presentation.Controllers.Licences
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
         public async Task<IActionResult> Create([FromBody] CreateDriversLicenceRequest request)
         {
-            CreateDriversLicenceCommand command = _mapper.Map<CreateDriversLicenceCommand>(request);
+            CreateDriversLicenseCommand command = _mapper.Map<CreateDriversLicenseCommand>(request);
             command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);
@@ -49,7 +49,7 @@ namespace Presentation.Controllers.Licences
         public async Task<IActionResult> Delete([FromRoute] ulong id)
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            DeleteDriversLicenceCommand command = new DeleteDriversLicenceCommand(id, userId);
+            DeleteDriversLicenseCommand command = new DeleteDriversLicenseCommand(id, userId);
 
             Result response = await _mediator.Send(command);
 
@@ -64,7 +64,7 @@ namespace Presentation.Controllers.Licences
         public async Task<IActionResult> Update([FromBody] UpdateDriversLicenceRequest request)
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            UpdateDriversLicenceCommand command = _mapper.Map<UpdateDriversLicenceCommand>(request);
+            UpdateDriversLicenseCommand command = _mapper.Map<UpdateDriversLicenseCommand>(request);
             command.AdminIdentityId = userId;
 
             Result response = await _mediator.Send(command);
@@ -80,13 +80,13 @@ namespace Presentation.Controllers.Licences
         public async Task<IActionResult> GetById([FromRoute] ulong id)
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            FindDriversLicenceByIdByDriverCommand command = new FindDriversLicenceByIdByDriverCommand
+            FindDriversLicenseByIdByDriverCommand command = new FindDriversLicenseByIdByDriverCommand
             {
                 Id = id,
                 DriverIdentityId = userId
             };
 
-            Result<DriversLicence> response = await _mediator.Send(command);
+            Result<DriversLicense> response = await _mediator.Send(command);
 
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);
@@ -99,13 +99,13 @@ namespace Presentation.Controllers.Licences
         public async Task<IActionResult> GetByIdAdmin([FromRoute] ulong id)
         {
             string userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-            FindDriversLicenceByIdByAdminCommand command = new FindDriversLicenceByIdByAdminCommand
+            FindDriversLicenseByIdByAdminCommand command = new FindDriversLicenseByIdByAdminCommand
             {
                 Id = id,
                 AdminIdentityId = userId
             };
 
-            Result<DriversLicence> response = await _mediator.Send(command);
+            Result<DriversLicense> response = await _mediator.Send(command);
 
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);

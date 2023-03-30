@@ -1,6 +1,9 @@
-﻿namespace Domain.Common
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace Domain.Common
 {
-    public abstract class ValueObject : ValidationObject
+    [Owned]
+    public abstract class ValueObject
     {
         protected abstract IEnumerable<object> GetEqualityComponents();
 

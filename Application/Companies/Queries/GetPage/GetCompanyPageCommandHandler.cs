@@ -1,6 +1,6 @@
 ﻿using Application.Common.Commands;
-using Application.Common.Interfaces.Persistance;
-using Domain.Companies;
+using Application.Common.Interfaces.Persistence;
+using Domain.Entities;
 using FluentResults;
 using MediatR;
 

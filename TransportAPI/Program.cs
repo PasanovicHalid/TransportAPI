@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer()
                 .SetupPresentationLayer()
-                .SetupInfrastrucutureLayer(builder.Configuration)
+                .SetupInfrastructureLayer(builder.Configuration)
                 .SetupApplicationLayer()
                 .AddSwaggerGen();
 
@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-await app.InitializeDB();
+await app.InitializeDb();
 
 app.UseExceptionHandler("/error");
 
