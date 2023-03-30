@@ -1,11 +1,11 @@
-﻿using Application.Licences.DriverLicences.Commands.Update;
-using AutoMapper;
+﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Application.Drivers.Commands.DriverLicenses.Update;
 
 namespace Presentation.Contracts.Licences.DriversLicences
 {
@@ -22,5 +22,6 @@ namespace Presentation.Contracts.Licences.DriversLicences
         public string Category { get; set; }
         public DateTime IssuingDate { get; set; }
         public DateTime ExpirationDate { get; set; }
+        public ulong DriverId { get; set; }
     }
 }

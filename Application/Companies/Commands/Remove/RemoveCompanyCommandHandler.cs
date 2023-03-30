@@ -4,17 +4,17 @@ using Domain.Entities;
 using FluentResults;
 using MediatR;
 
-namespace Application.Companies.Commands.Delete
+namespace Application.Companies.Commands.Remove
 {
-    public class DeleteCompanyCommandHandler : IRequestHandler<DeleteCompanyCommand, Result>
+    public class RemoveCompanyCommandHandler : IRequestHandler<RemoveCompanyCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
-        public DeleteCompanyCommandHandler(IUnitOfWork unitOfWork)
+        public RemoveCompanyCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(DeleteCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(RemoveCompanyCommand request, CancellationToken cancellationToken)
         {
             Company? company = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.Id);
 

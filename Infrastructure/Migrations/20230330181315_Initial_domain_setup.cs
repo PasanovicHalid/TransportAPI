@@ -306,7 +306,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Transportation",
+                name: "Transportations",
                 columns: table => new
                 {
                     Id = table.Column<decimal>(type: "decimal(20,0)", nullable: false)
@@ -324,15 +324,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Transportation", x => x.Id);
+                    table.PrimaryKey("PK_Transportations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Transportation_Companies_CompanyId",
+                        name: "FK_Transportations_Companies_CompanyId",
                         column: x => x.CompanyId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Transportation_Employees_DriverId",
+                        name: "FK_Transportations_Employees_DriverId",
                         column: x => x.DriverId,
                         principalTable: "Employees",
                         principalColumn: "Id");
@@ -358,9 +358,9 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Stop", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Stop_Transportation_TransportationId",
+                        name: "FK_Stop_Transportations_TransportationId",
                         column: x => x.TransportationId,
-                        principalTable: "Transportation",
+                        principalTable: "Transportations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -440,13 +440,13 @@ namespace Infrastructure.Migrations
                 column: "VehicleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transportation_CompanyId",
-                table: "Transportation",
+                name: "IX_Transportations_CompanyId",
+                table: "Transportations",
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Transportation_DriverId",
-                table: "Transportation",
+                name: "IX_Transportations_DriverId",
+                table: "Transportations",
                 column: "DriverId");
 
             migrationBuilder.CreateIndex(
@@ -486,7 +486,7 @@ namespace Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Transportation");
+                name: "Transportations");
 
             migrationBuilder.DropTable(
                 name: "Employees");

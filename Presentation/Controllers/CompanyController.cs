@@ -1,8 +1,8 @@
 ﻿using Application.Common.Commands;
 using Application.Common.Interfaces.Persistence;
 using Application.Companies.Commands.Create;
-using Application.Companies.Commands.Delete;
-using Application.Companies.Commands.Update;
+using Application.Companies.Commands.Remove;
+using Application.Companies.Commands.UpdateInformation;
 using Application.Companies.Queries.FindById;
 using AutoMapper;
 using Domain.Constants;
@@ -46,7 +46,7 @@ namespace Presentation.Controllers
         [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
         public async Task<IActionResult> Update([FromBody] UpdateCompanyRequest request)
         {
-            UpdateCompanyCommand command = _mapper.Map<UpdateCompanyCommand>(request);
+            UpdateCompanyInformationCommand command = _mapper.Map<UpdateCompanyInformationCommand>(request);
 
             Result response = await _mediator.Send(command);
 
@@ -60,7 +60,7 @@ namespace Presentation.Controllers
         [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
         public async Task<IActionResult> Delete([FromRoute] ulong id)
         {
-            Result response = await _mediator.Send(new DeleteCompanyCommand(id));
+            Result response = await _mediator.Send(new RemoveCompanyCommand(id));
 
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);

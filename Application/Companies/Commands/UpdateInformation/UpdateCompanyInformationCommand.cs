@@ -2,9 +2,9 @@
 using FluentValidation;
 using MediatR;
 
-namespace Application.Companies.Commands.Update
+namespace Application.Companies.Commands.UpdateInformation
 {
-    public class UpdateCompanyCommand : IRequest<Result>
+    public class UpdateCompanyInformationCommand : IRequest<Result>
     {
         public ulong Id { get; set; }
         public string Name { get; set; }
@@ -19,9 +19,9 @@ namespace Application.Companies.Commands.Update
         public string Country { get; set; }
     }
 
-    public class UpdateCompanyValidator : AbstractValidator<UpdateCompanyCommand>
+    public class UpdateCompanyInformationValidator : AbstractValidator<UpdateCompanyInformationCommand>
     {
-        public UpdateCompanyValidator()
+        public UpdateCompanyInformationValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Id).NotEmpty();

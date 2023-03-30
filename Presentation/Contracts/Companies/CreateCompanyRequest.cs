@@ -1,5 +1,4 @@
 ﻿using Application.Companies.Commands.Create;
-using Application.Companies.Commands.Update;
 using AutoMapper;
 
 namespace Presentation.Contracts.Companies

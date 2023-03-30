@@ -1,16 +1,12 @@
 ﻿using Application.Common.Errors;
+using Application.Common.Interfaces.Persistence;
+using Application.Drivers.Errors;
 using Domain.Constants;
 using Domain.Entities;
 using FluentResults;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Common.Interfaces.Persistence;
 
-namespace Application.Licences.DriverLicences.Commands.Delete
+namespace Application.Drivers.Commands.DriverLicenses.Delete
 {
     public class DeleteDriversLicenseCommandHandler : IRequestHandler<DeleteDriversLicenseCommand, Result>
     {
@@ -23,12 +19,19 @@ namespace Application.Licences.DriverLicences.Commands.Delete
 
         public async Task<Result> Handle(DeleteDriversLicenseCommand request, CancellationToken cancellationToken)
         {
-            DriversLicense? driversLicense = _unitOfWork.DriverLicenses.GetFirstOrDefault(d => d.Id == request.Id && d.Driver!.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId && e.Role == ApplicationRolesConstants.Admin));
+            Driver? driver = _unitOfWork.Drivers.GetFirstOrDefault(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
+
+            if (driver is null)
+                return Result.Fail(new DriverIsntWorkingForAdmin());
+
+            DriversLicense? driversLicense = driver.DriversLicenses.Find(e => e.Id == request.Id);
 
             if (driversLicense is null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(DriversLicense)));
 
-            _unitOfWork.DriverLicenses.Remove(driversLicense);
+            driversLicense.Deleted = true;
+
+            _unitOfWork.Drivers.Update(driver);
             _unitOfWork.Save();
 
             return Result.Ok();

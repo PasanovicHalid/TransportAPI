@@ -17,7 +17,7 @@ namespace Domain.Entities
 
         public Cargo Transporting { get; private set; }
 
-        public IEnumerable<Stop> Stops { get; private set; } = new List<Stop>();
+        public List<Stop> Stops { get; private set; } = new();
 
         [ForeignKey(nameof(DriverId))]
         public Driver? DrivenBy { get; private set; }

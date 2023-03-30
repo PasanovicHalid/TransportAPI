@@ -1,11 +1,12 @@
-﻿using Application.Common.Interfaces.Persistence;
-using Application.Licences.DriverLicences.Errors;
+﻿using Application.Common.Errors;
+using Application.Common.Interfaces.Persistence;
+using Application.Drivers.Errors;
 using Domain.Constants;
 using Domain.Entities;
 using FluentResults;
 using MediatR;
 
-namespace Application.Licences.DriverLicences.Commands.Create
+namespace Application.Drivers.Commands.DriverLicenses.Create
 {
     public class CreateDriversLicenseCommandHandler : IRequestHandler<CreateDriversLicenseCommand, Result>
     {
@@ -25,9 +26,18 @@ namespace Application.Licences.DriverLicences.Commands.Create
             if (adminAndDriverCompany is null)
                 return Result.Fail(new DriverIsntWorkingForAdmin());
 
-            DriversLicense driversLicense = new DriversLicense(request.Category, request.ExpirationDate, request.DriverId, request.IssuingDate);
+            Driver? driver = _unitOfWork.Drivers.GetFirstOrDefault(d => d.Id == request.DriverId);
 
-            _unitOfWork.DriverLicenses.Add(driversLicense);
+            if (driver is null)
+                return Result.Fail(new EntityDoesntExist(request.DriverId, nameof(Driver)));
+
+            DriversLicense driversLicense = new DriversLicense(request.Category,
+                                                               request.ExpirationDate,
+                                                               request.DriverId,
+                                                               request.IssuingDate);
+            driver.DriversLicenses.Add(driversLicense);
+
+            _unitOfWork.Drivers.Update(driver);
             _unitOfWork.Save();
 
             return Result.Ok();

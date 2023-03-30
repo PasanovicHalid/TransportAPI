@@ -1,8 +1,8 @@
-﻿using Domain.Common.Errors;
+﻿using System.Net;
+using Domain.Common.Errors;
 using FluentResults;
-using System.Net;
 
-namespace Application.Licences.DriverLicences.Errors
+namespace Application.Drivers.Errors
 {
     public class DriverIsntWorkingForAdmin : IStatusCodeError
     {

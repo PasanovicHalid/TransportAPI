@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TransportDbContext))]
-    [Migration("20230330144521_Initial_domain_setup")]
+    [Migration("20230330181315_Initial_domain_setup")]
     partial class Initial_domain_setup
     {
         /// <inheritdoc />
@@ -89,7 +89,7 @@ namespace Infrastructure.Migrations
 
                     b.ToTable("Employees");
 
-                    b.HasDiscriminator<string>("Role").IsComplete(false).HasValue("Employee");
+                    b.HasDiscriminator<string>("Role").HasValue("Employee");
 
                     b.UseTphMappingStrategy();
                 });
@@ -170,7 +170,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("Transportation");
+                    b.ToTable("Transportations");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>
@@ -409,6 +409,13 @@ namespace Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Admininistrator", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Employee");
+
+                    b.HasDiscriminator().HasValue("Admin");
                 });
 
             modelBuilder.Entity("Domain.Entities.Driver", b =>
@@ -728,7 +735,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("TransportationId");
 
-                            b1.ToTable("Transportation");
+                            b1.ToTable("Transportations");
 
                             b1.WithOwner()
                                 .HasForeignKey("TransportationId");
@@ -749,7 +756,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("CargoTransportationId");
 
-                                    b2.ToTable("Transportation");
+                                    b2.ToTable("Transportations");
 
                                     b2.WithOwner()
                                         .HasForeignKey("CargoTransportationId");

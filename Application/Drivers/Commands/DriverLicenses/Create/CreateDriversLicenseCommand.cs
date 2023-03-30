@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace Application.Licences.DriverLicences.Commands.Create
+namespace Application.Drivers.Commands.DriverLicenses.Create
 {
     public class CreateDriversLicenseCommand : IRequest<Result>
     {

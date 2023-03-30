@@ -1,17 +1,13 @@
 ﻿using Application.Common.Errors;
+using Application.Common.Interfaces.Persistence;
+using Application.Drivers.Errors;
 using Domain.Constants;
+using Domain.Entities;
+using Domain.Errors;
 using FluentResults;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Common.Interfaces.Persistence;
-using Domain.Errors;
-using Domain.Entities;
 
-namespace Application.Licences.DriverLicences.Commands.Update
+namespace Application.Drivers.Commands.DriverLicenses.Update
 {
     internal class UpdateDriversLicenceCommandHandler : IRequestHandler<UpdateDriversLicenseCommand, Result>
     {
@@ -24,19 +20,22 @@ namespace Application.Licences.DriverLicences.Commands.Update
 
         public async Task<Result> Handle(UpdateDriversLicenseCommand request, CancellationToken cancellationToken)
         {
-            DriversLicense? driversLicence = _unitOfWork.DriverLicenses.GetFirstOrDefault(d => d.Id == request.Id && d.Driver!.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId && e.Role == ApplicationRolesConstants.Admin));
+            Driver? driver = _unitOfWork.Drivers.GetFirstOrDefault(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
 
-            if (driversLicence is null)
+            if (driver is null)
+                return Result.Fail(new DriverIsntWorkingForAdmin());
+
+            DriversLicense? driversLicense = driver.DriversLicenses.Find(e => e.Id == request.Id);
+
+            if (driversLicense is null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(DriversLicense)));
 
-            driversLicence.Category = request.Category;
-
-            Result result = UpdateDriversLicenseInformation(request, driversLicence);
+            Result result = UpdateDriversLicenseInformation(request, driversLicense);
 
             if (result.IsFailed)
                 return result;
 
-            _unitOfWork.DriverLicenses.Update(driversLicence);
+            _unitOfWork.Drivers.Update(driver);
             _unitOfWork.Save();
 
             return Result.Ok();
@@ -44,6 +43,8 @@ namespace Application.Licences.DriverLicences.Commands.Update
 
         private static Result UpdateDriversLicenseInformation(UpdateDriversLicenseCommand request, DriversLicense driversLicense)
         {
+            driversLicense.Category = request.Category;
+
             Result result = driversLicense.ChangeIssuingDate(request.IssuingDate);
 
             if (result.IsFailed)

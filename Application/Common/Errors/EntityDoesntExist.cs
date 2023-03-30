@@ -6,11 +6,11 @@ namespace Application.Common.Errors
 {
     public class EntityDoesntExist : IStatusCodeError
     {
-        private ulong _id;
+        private readonly ulong _id;
 
-        private string _name;
+        private readonly string _name;
 
-        private HttpStatusCode _statusCode = HttpStatusCode.NotFound;
+        private readonly HttpStatusCode _statusCode = HttpStatusCode.NotFound;
 
         public EntityDoesntExist(ulong id, string name)
         {

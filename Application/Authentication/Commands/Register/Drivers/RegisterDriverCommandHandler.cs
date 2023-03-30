@@ -28,13 +28,13 @@ namespace Application.Authentication.Commands.Register.Drivers
 
         public async Task<Result<AuthenticationResult>> Handle(RegisterDriverCommand request, CancellationToken cancellationToken)
         {
+            Company? adminCompany = _unitOfWork.Companies.GetFirstOrDefault(c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId));
+
+            if (adminCompany is null)
+                return Result.Fail(new AdminCompanyDoesntExist());
+
             if (await _userManager.FindByNameAsync(request.Email) != null)
                 return Result.Fail(new UserWithSameEmailExists());
-
-            Company? adminCompany = _unitOfWork.Companies.GetFirstOrDefault(c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId), tracked: false);
-
-            if(adminCompany is null)
-                return Result.Fail(new AdminCompanyDoesntExist());
 
             Driver driver = SetupDriver(request, adminCompany);
 
@@ -51,7 +51,9 @@ namespace Application.Authentication.Commands.Register.Drivers
                 if (!result.Succeeded)
                     return Result.Fail(new Error("Something failed while assigning role"));
 
-                _unitOfWork.Drivers.Add(driver);
+                adminCompany.Employees.Add(driver);
+
+                _unitOfWork.Companies.Update(adminCompany);
                 _unitOfWork.Save();
 
                 transtaction.Commit();

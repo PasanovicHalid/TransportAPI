@@ -1,5 +1,6 @@
 ﻿using Application.Authentication.Commands.Register.Errors;
 using Application.Authentication.Contracts;
+using Application.Common.Errors;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain;
@@ -27,10 +28,15 @@ namespace Application.Authentication.Commands.Register.Admins
 
         public async Task<Result<AuthenticationResult>> Handle(RegisterAdminCommand request, CancellationToken cancellationToken)
         {
+            Company? company = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.CompanyId);
+
+            if (company is null)
+                return Result.Fail(new EntityDoesntExist(request.CompanyId, nameof(Company)));
+
             if (await _userManager.FindByNameAsync(request.Email) != null)
                 return Result.Fail(new UserWithSameEmailExists());
 
-            Employee admin = SetupAdmin(request);
+            Admininistrator admin = SetupAdmin(request);
 
             using var transtaction = _unitOfWork.BeginTransaction();
             try
@@ -45,7 +51,9 @@ namespace Application.Authentication.Commands.Register.Admins
                 if (!result.Succeeded)
                     return Result.Fail(new Error("Something failed while assigning role"));
 
-                _unitOfWork.Employees.Add(admin);
+                company.Employees.Add(admin);
+
+                _unitOfWork.Companies.Update(company);
                 _unitOfWork.Save();
 
                 transtaction.Commit();
@@ -63,9 +71,9 @@ namespace Application.Authentication.Commands.Register.Admins
             }
         }
 
-        private static Employee SetupAdmin(RegisterAdminCommand request)
+        private static Admininistrator SetupAdmin(RegisterAdminCommand request)
         {
-            return new Employee(
+            return new Admininistrator(
                                 user: new IdentityUser()
                                 {
                                     UserName = request.Email,

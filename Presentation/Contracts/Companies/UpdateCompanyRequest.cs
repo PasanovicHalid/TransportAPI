@@ -1,5 +1,5 @@
 ﻿using Application.Companies.Commands.Create;
-using Application.Companies.Commands.Update;
+using Application.Companies.Commands.UpdateInformation;
 using AutoMapper;
 
 namespace Presentation.Contracts.Companies
@@ -8,7 +8,7 @@ namespace Presentation.Contracts.Companies
     {
         public UpdateCompanyAdapter()
         {
-            CreateMap<UpdateCompanyRequest, UpdateCompanyCommand>();
+            CreateMap<UpdateCompanyRequest, UpdateCompanyInformationCommand>();
         }
     }
     public class UpdateCompanyRequest

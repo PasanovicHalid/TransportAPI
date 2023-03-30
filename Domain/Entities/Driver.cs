@@ -7,9 +7,9 @@ namespace Domain.Entities
 {
     public class Driver : Employee
     {
-        public IEnumerable<DriversLicense> DriversLicenses { get; private set; } = new List<DriversLicense>();
+        public List<DriversLicense> DriversLicenses { get; private set; } = new();
 
-        public IEnumerable<Transportation> AssignedTransportations { get; private set; } = new List<Transportation>();
+        public List<Transportation> AssignedTransportations { get; private set; } = new();
 
         [ForeignKey(nameof(VehicleId))]
         public Vehicle? Vehicle { get; private set; }

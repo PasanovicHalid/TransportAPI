@@ -1,19 +1,16 @@
 ﻿using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Licences.DriverLicences.Commands.Delete
+namespace Application.Drivers.Commands.DriverLicenses.Delete
 {
     public class DeleteDriversLicenseCommand : IRequest<Result>
     {
         public ulong Id { get; set; }
 
         public string AdminIdentityId { get; set; }
+
+        public ulong DriverId { get; set; }
 
         public DeleteDriversLicenseCommand(ulong id, string adminIdentityId)
         {
@@ -28,10 +25,11 @@ namespace Application.Licences.DriverLicences.Commands.Delete
 
     public class DeleteDriversLicenseValidator : AbstractValidator<DeleteDriversLicenseCommand>
     {
-        public DeleteDriversLicenseValidator() 
+        public DeleteDriversLicenseValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
             RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.DriverId).NotEmpty();
         }
     }
 }

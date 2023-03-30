@@ -19,7 +19,7 @@ namespace Domain.Entities
 
         public Dimensions Dimensions { get; private set; }
 
-        public IEnumerable<Trailer> Trailers { get; private set; } = new List<Trailer>();
+        public List<Trailer> Trailers { get; private set; } = new();
 
         public Company OwnedBy { get; private set; }
 

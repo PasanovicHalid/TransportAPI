@@ -1,13 +1,8 @@
 ﻿using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.Licences.DriverLicences.Commands.Update
+namespace Application.Drivers.Commands.DriverLicenses.Update
 {
     public class UpdateDriversLicenseCommand : IRequest<Result>
     {
@@ -19,6 +14,8 @@ namespace Application.Licences.DriverLicences.Commands.Update
         public DateTime ExpirationDate { get; set; }
 
         public string AdminIdentityId { get; set; }
+
+        public ulong DriverId { get; set; }
     }
 
     public class UpdateDriversLicenseValidator : AbstractValidator<UpdateDriversLicenseCommand>
@@ -30,6 +27,7 @@ namespace Application.Licences.DriverLicences.Commands.Update
             RuleFor(x => x.IssuingDate).NotEmpty().LessThan(x => x.ExpirationDate);
             RuleFor(x => x.ExpirationDate).NotEmpty().GreaterThan(x => x.IssuingDate);
             RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.DriverId).NotEmpty();
         }
-    } 
+    }
 }

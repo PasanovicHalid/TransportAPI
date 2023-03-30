@@ -5,18 +5,18 @@ using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 
-namespace Application.Companies.Commands.Update
+namespace Application.Companies.Commands.UpdateInformation
 {
-    public class UpdateCompanyCommandHandler : IRequestHandler<UpdateCompanyCommand, Result>
+    public class UpdateCompanyInformationCommandHandler : IRequestHandler<UpdateCompanyInformationCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateCompanyCommandHandler(IUnitOfWork unitOfWork)
+        public UpdateCompanyInformationCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(UpdateCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateCompanyInformationCommand request, CancellationToken cancellationToken)
         {
             Company? companyFromDb = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.Id);
 
@@ -31,7 +31,7 @@ namespace Application.Companies.Commands.Update
             return Result.Ok();
         }
 
-        private static void SetupUpdatedCompany(UpdateCompanyCommand request, Company companyFromDb)
+        private static void SetupUpdatedCompany(UpdateCompanyInformationCommand request, Company companyFromDb)
         {
             companyFromDb.Name = request.Name;
             companyFromDb.Address = new Address(request.Street,

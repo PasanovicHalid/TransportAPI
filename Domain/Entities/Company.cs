@@ -9,16 +9,16 @@ namespace Domain.Entities
 
         public Address Address { get; set; }
 
-        public IEnumerable<Employee> Employees { get; private set; } = new List<Employee>();
+        public List<Employee> Employees { get; private set; } = new();
 
-        public IEnumerable<Vehicle> Vehicles { get; private set; } = new List<Vehicle>();
+        public List<Vehicle> Vehicles { get; private set; } = new();
 
-        public IEnumerable<Trailer> Trailers { get; private set; } = new List<Trailer>();
+        public List<Trailer> Trailers { get; private set; } = new();
 
         public Company(string name,
-                       IEnumerable<Employee> employees,
-                       IEnumerable<Vehicle> vehicles,
-                       IEnumerable<Trailer> trailers,
+                       List<Employee> employees,
+                       List<Vehicle> vehicles,
+                       List<Trailer> trailers,
                        Address address)
         {
             Name = name;
