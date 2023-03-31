@@ -76,7 +76,7 @@ namespace Presentation.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get([FromRoute] ulong id)
         {
-            Result<Company> response = await _mediator.Send(new FindCompanyByIdCommand(id));
+            Result<Company> response = await _mediator.Send(new FindCompanyByIdQuery(id));
 
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);
@@ -107,7 +107,7 @@ namespace Presentation.Controllers
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
 
-            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+            return CreatedAtAction(nameof(RegisterInitialAdminForCompany), _mapper.Map<AutheticationResponse>(result.Value));
         }
 
         [HttpPost("{id}/register/admin")]
@@ -137,7 +137,7 @@ namespace Presentation.Controllers
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
 
-            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+            return CreatedAtAction(nameof(RegisterDriver), _mapper.Map<AutheticationResponse>(result.Value));
         }
     }
 }

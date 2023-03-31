@@ -2,7 +2,7 @@
 using FluentValidation;
 using MediatR;
 
-namespace Application.Drivers.Commands.DriverLicenses.Delete
+namespace Application.DriverLicenses.Commands.Delete
 {
     public class DeleteDriversLicenseCommand : IRequest<Result>
     {

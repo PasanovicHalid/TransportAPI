@@ -39,7 +39,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Employee", b =>
@@ -84,7 +84,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("IdentityId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
 
                     b.HasDiscriminator<string>("Role").HasValue("Employee");
 
@@ -109,7 +109,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TransportationId");
 
-                    b.ToTable("Stops");
+                    b.ToTable("Stops", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Trailer", b =>
@@ -135,7 +135,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("VehicleId");
 
-                    b.ToTable("Trailers");
+                    b.ToTable("Trailers", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Transportation", b =>
@@ -167,7 +167,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("DriverId");
 
-                    b.ToTable("Transportations");
+                    b.ToTable("Transportations", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>
@@ -203,7 +203,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Vehicles");
+                    b.ToTable("Vehicles", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Vehicle");
 
@@ -443,7 +443,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Company", b =>
                 {
-                    b.OwnsOne("Domain.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.Entities.Company.Address#Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<decimal>("CompanyId")
                                 .HasColumnType("decimal(20,0)");
@@ -470,12 +470,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("CompanyId");
 
-                            b1.ToTable("Companies");
+                            b1.ToTable("Companies", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("CompanyId");
 
-                            b1.OwnsOne("Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
+                            b1.OwnsOne("Domain.Entities.Company.Address#Domain.ValueObjects.Address.GpsCoordinate#Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
                                 {
                                     b2.Property<decimal>("AddressCompanyId")
                                         .HasColumnType("decimal(20,0)");
@@ -488,7 +488,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("AddressCompanyId");
 
-                                    b2.ToTable("Companies");
+                                    b2.ToTable("Companies", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressCompanyId");
@@ -515,7 +515,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Address", "Address", b1 =>
+                    b.OwnsOne("Domain.Entities.Employee.Address#Domain.ValueObjects.Address", "Address", b1 =>
                         {
                             b1.Property<decimal>("EmployeeId")
                                 .HasColumnType("decimal(20,0)");
@@ -542,12 +542,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("EmployeeId");
 
-                            b1.ToTable("Employees");
+                            b1.ToTable("Employees", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("EmployeeId");
 
-                            b1.OwnsOne("Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
+                            b1.OwnsOne("Domain.Entities.Employee.Address#Domain.ValueObjects.Address.GpsCoordinate#Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
                                 {
                                     b2.Property<decimal>("AddressEmployeeId")
                                         .HasColumnType("decimal(20,0)");
@@ -560,7 +560,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("AddressEmployeeId");
 
-                                    b2.ToTable("Employees");
+                                    b2.ToTable("Employees", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressEmployeeId");
@@ -585,7 +585,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Address", "Destination", b1 =>
+                    b.OwnsOne("Domain.Entities.Stop.Destination#Domain.ValueObjects.Address", "Destination", b1 =>
                         {
                             b1.Property<decimal>("StopId")
                                 .HasColumnType("decimal(20,0)");
@@ -612,12 +612,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("StopId");
 
-                            b1.ToTable("Stops");
+                            b1.ToTable("Stops", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("StopId");
 
-                            b1.OwnsOne("Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
+                            b1.OwnsOne("Domain.Entities.Stop.Destination#Domain.ValueObjects.Address.GpsCoordinate#Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
                                 {
                                     b2.Property<decimal>("AddressStopId")
                                         .HasColumnType("decimal(20,0)");
@@ -630,7 +630,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("AddressStopId");
 
-                                    b2.ToTable("Stops");
+                                    b2.ToTable("Stops", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("AddressStopId");
@@ -657,7 +657,7 @@ namespace Infrastructure.Migrations
                         .WithMany("Trailers")
                         .HasForeignKey("VehicleId");
 
-                    b.OwnsOne("Domain.ValueObjects.Capacity", "Capacity", b1 =>
+                    b.OwnsOne("Domain.Entities.Trailer.Capacity#Domain.ValueObjects.Capacity", "Capacity", b1 =>
                         {
                             b1.Property<decimal>("TrailerId")
                                 .HasColumnType("decimal(20,0)");
@@ -667,12 +667,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("TrailerId");
 
-                            b1.ToTable("Trailers");
+                            b1.ToTable("Trailers", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TrailerId");
 
-                            b1.OwnsOne("Domain.ValueObjects.Volume", "Volume", b2 =>
+                            b1.OwnsOne("Domain.Entities.Trailer.Capacity#Domain.ValueObjects.Capacity.Volume#Domain.ValueObjects.Volume", "Volume", b2 =>
                                 {
                                     b2.Property<decimal>("CapacityTrailerId")
                                         .HasColumnType("decimal(20,0)");
@@ -688,7 +688,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("CapacityTrailerId");
 
-                                    b2.ToTable("Trailers");
+                                    b2.ToTable("Trailers", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("CapacityTrailerId");
@@ -718,7 +718,7 @@ namespace Infrastructure.Migrations
                         .WithMany("AssignedTransportations")
                         .HasForeignKey("DriverId");
 
-                    b.OwnsOne("Domain.ValueObjects.Cargo", "Transporting", b1 =>
+                    b.OwnsOne("Domain.Entities.Transportation.Transporting#Domain.ValueObjects.Cargo", "Transporting", b1 =>
                         {
                             b1.Property<decimal>("TransportationId")
                                 .HasColumnType("decimal(20,0)");
@@ -732,12 +732,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("TransportationId");
 
-                            b1.ToTable("Transportations");
+                            b1.ToTable("Transportations", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("TransportationId");
 
-                            b1.OwnsOne("Domain.ValueObjects.Volume", "Volume", b2 =>
+                            b1.OwnsOne("Domain.Entities.Transportation.Transporting#Domain.ValueObjects.Cargo.Volume#Domain.ValueObjects.Volume", "Volume", b2 =>
                                 {
                                     b2.Property<decimal>("CargoTransportationId")
                                         .HasColumnType("decimal(20,0)");
@@ -753,7 +753,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("CargoTransportationId");
 
-                                    b2.ToTable("Transportations");
+                                    b2.ToTable("Transportations", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("CargoTransportationId");
@@ -779,7 +779,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Domain.ValueObjects.Dimensions", "Dimensions", b1 =>
+                    b.OwnsOne("Domain.Entities.Vehicle.Dimensions#Domain.ValueObjects.Dimensions", "Dimensions", b1 =>
                         {
                             b1.Property<decimal>("VehicleId")
                                 .HasColumnType("decimal(20,0)");
@@ -792,7 +792,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("VehicleId");
 
-                            b1.ToTable("Vehicles");
+                            b1.ToTable("Vehicles", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("VehicleId");
@@ -861,7 +861,7 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("VehicleId");
 
-                    b.OwnsMany("Domain.Entities.DriversLicense", "DriversLicenses", b1 =>
+                    b.OwnsMany("Domain.Entities.Driver.DriversLicenses#Domain.Entities.DriversLicense", "DriversLicenses", b1 =>
                         {
                             b1.Property<decimal>("Id")
                                 .ValueGeneratedOnAdd()
@@ -889,7 +889,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasIndex("DriverId");
 
-                            b1.ToTable("DriversLicense");
+                            b1.ToTable("DriversLicense", (string)null);
 
                             b1.WithOwner("Driver")
                                 .HasForeignKey("DriverId");
@@ -904,7 +904,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Van", b =>
                 {
-                    b.OwnsOne("Domain.ValueObjects.Capacity", "Capacity", b1 =>
+                    b.OwnsOne("Domain.Entities.Van.Capacity#Domain.ValueObjects.Capacity", "Capacity", b1 =>
                         {
                             b1.Property<decimal>("VanId")
                                 .HasColumnType("decimal(20,0)");
@@ -914,12 +914,12 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("VanId");
 
-                            b1.ToTable("Vehicles");
+                            b1.ToTable("Vehicles", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("VanId");
 
-                            b1.OwnsOne("Domain.ValueObjects.Volume", "Volume", b2 =>
+                            b1.OwnsOne("Domain.Entities.Van.Capacity#Domain.ValueObjects.Capacity.Volume#Domain.ValueObjects.Volume", "Volume", b2 =>
                                 {
                                     b2.Property<decimal>("CapacityVanId")
                                         .HasColumnType("decimal(20,0)");
@@ -935,7 +935,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("CapacityVanId");
 
-                                    b2.ToTable("Vehicles");
+                                    b2.ToTable("Vehicles", (string)null);
 
                                     b2.WithOwner()
                                         .HasForeignKey("CapacityVanId");

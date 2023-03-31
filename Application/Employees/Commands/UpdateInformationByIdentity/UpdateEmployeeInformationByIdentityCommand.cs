@@ -12,7 +12,6 @@ namespace Application.Employees.Commands.UpdateInformationByIdentity
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public double Salary { get; set; }
         public Address Address { get; set; }
     }
 
@@ -29,9 +28,6 @@ namespace Application.Employees.Commands.UpdateInformationByIdentity
             RuleFor(x => x.MiddleName).NotEmpty();
 
             RuleFor(x => x.LastName).NotEmpty();
-
-            RuleFor(x => x.Salary).NotEmpty()
-                                  .GreaterThan(0);
 
             RuleFor(x => x.Address).NotEmpty();
         }

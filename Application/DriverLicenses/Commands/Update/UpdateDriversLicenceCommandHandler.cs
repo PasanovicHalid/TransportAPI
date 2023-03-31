@@ -7,7 +7,7 @@ using Domain.Errors;
 using FluentResults;
 using MediatR;
 
-namespace Application.Drivers.Commands.DriverLicenses.Update
+namespace Application.DriverLicenses.Commands.Update
 {
     internal class UpdateDriversLicenceCommandHandler : IRequestHandler<UpdateDriversLicenseCommand, Result>
     {
@@ -23,7 +23,7 @@ namespace Application.Drivers.Commands.DriverLicenses.Update
             Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
 
             if (driver is null)
-                return Result.Fail(new DriverIsntWorkingForAdmin());
+                return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());
 
             DriversLicense? driversLicense = driver.DriversLicenses.Find(e => e.Id == request.Id);
 

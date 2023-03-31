@@ -21,9 +21,8 @@
   <ItemGroup>
     <Folder Include="Drivers\Queries\" />
     <Folder Include="Trailers\Queries\" />
-    <Folder Include="Vehicles\Truck\Commands\" />
-    <Folder Include="Vehicles\Truck\Queries\" />
-    <Folder Include="Vehicles\Van\Queries\" />
+    <Folder Include="Trucks\Queries\" />
+    <Folder Include="Vans\Queries\" />
   </ItemGroup>
 
 </Project>

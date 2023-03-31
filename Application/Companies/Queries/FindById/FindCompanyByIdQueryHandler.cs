@@ -6,16 +6,16 @@ using MediatR;
 
 namespace Application.Companies.Queries.FindById
 {
-    public class FindCompanyByIdCommandHandler : IRequestHandler<FindCompanyByIdCommand, Result<Company>>
+    public class FindCompanyByIdQueryHandler : IRequestHandler<FindCompanyByIdQuery, Result<Company>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public FindCompanyByIdCommandHandler(IUnitOfWork unitOfWork)
+        public FindCompanyByIdQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<Company>> Handle(FindCompanyByIdCommand request, CancellationToken cancellationToken)
+        public async Task<Result<Company>> Handle(FindCompanyByIdQuery request, CancellationToken cancellationToken)
         {
             Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id);
 

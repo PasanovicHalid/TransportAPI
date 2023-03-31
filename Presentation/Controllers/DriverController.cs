@@ -1,6 +1,7 @@
-﻿using Application.Drivers.Commands.DriverLicenses.Create;
-using Application.Drivers.Commands.DriverLicenses.Delete;
-using Application.Drivers.Commands.DriverLicenses.Update;
+﻿using Application.DriverLicenses.Commands.Create;
+using Application.DriverLicenses.Commands.Delete;
+using Application.DriverLicenses.Commands.Update;
+using Application.Drivers.Commands.Fire;
 using AutoMapper;
 using Domain.Constants;
 using FluentResults;
@@ -73,6 +74,24 @@ namespace Presentation.Controllers
             command.DriverId = driverId;
             command.Id = licenseId;
             command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+
+            Result response = await _mediator.Send(command);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok();
+        }
+
+        [HttpDelete("fire/{id}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> Fire([FromRoute] ulong id)
+        {
+            FireDriverCommand command = new()
+            {
+                Id = id,
+                AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!
+            };
 
             Result response = await _mediator.Send(command);
 

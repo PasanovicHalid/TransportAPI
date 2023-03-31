@@ -14,7 +14,7 @@ namespace Domain.Entities
         [ForeignKey(nameof(VehicleId))]
         public Vehicle? Vehicle { get; private set; }
 
-        public ulong? VehicleId { get; private set; }
+        public ulong? VehicleId { get; set; }
 
         public Driver(string identityId,
                       string firstName,

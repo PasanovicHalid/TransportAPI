@@ -17,7 +17,7 @@ namespace Domain.Entities
         [ForeignKey(nameof(DriverId))]
         public Driver? Driver { get; private set; }
 
-        public ulong? DriverId { get; private set; }
+        public ulong DriverId { get; private set; }
 
         public DriversLicense(string category,
                               DateTime expirationDate,

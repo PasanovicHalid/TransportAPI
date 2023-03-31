@@ -6,7 +6,7 @@ using Domain.Entities;
 using FluentResults;
 using MediatR;
 
-namespace Application.Drivers.Commands.DriverLicenses.Delete
+namespace Application.DriverLicenses.Commands.Delete
 {
     public class DeleteDriversLicenseCommandHandler : IRequestHandler<DeleteDriversLicenseCommand, Result>
     {
@@ -22,7 +22,7 @@ namespace Application.Drivers.Commands.DriverLicenses.Delete
             Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
 
             if (driver is null)
-                return Result.Fail(new DriverIsntWorkingForAdmin());
+                return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());
 
             DriversLicense? driversLicense = driver.DriversLicenses.Find(e => e.Id == request.Id);
 

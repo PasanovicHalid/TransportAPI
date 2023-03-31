@@ -4,13 +4,13 @@ using FluentResults;
 
 namespace Application.Drivers.Errors
 {
-    public class DriverIsntWorkingForAdmin : IStatusCodeError
+    public class DriverIsntWorkingForAdminOrDoesntExist : IStatusCodeError
     {
         public HttpStatusCode Code => HttpStatusCode.BadRequest;
 
         public List<IError> Reasons => new();
 
-        public string Message => "Driver doesn't work for Admin";
+        public string Message => "Driver doesn't work for Admin or doesn't exist";
 
         public Dictionary<string, object> Metadata => new();
     }

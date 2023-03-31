@@ -1,4 +1,4 @@
-﻿using Application.Drivers.Commands.DriverLicenses.Create;
+﻿using Application.DriverLicenses.Commands.Create;
 using AutoMapper;
 
 namespace Presentation.Contracts.Licences.DriversLicences

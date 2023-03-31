@@ -5,21 +5,21 @@ using MediatR;
 
 namespace Application.Companies.Queries.FindById
 {
-    public class FindCompanyByIdCommand : IRequest<Result<Company>>
+    public class FindCompanyByIdQuery : IRequest<Result<Company>>
     {
         public ulong Id { get; set; }
 
-        public FindCompanyByIdCommand()
+        public FindCompanyByIdQuery()
         {
         }
 
-        public FindCompanyByIdCommand(ulong id)
+        public FindCompanyByIdQuery(ulong id)
         {
             Id = id;
         }
     }
 
-    public class FindCompanyByIdValidator : AbstractValidator<FindCompanyByIdCommand>
+    public class FindCompanyByIdValidator : AbstractValidator<FindCompanyByIdQuery>
     {
         public FindCompanyByIdValidator()
         {

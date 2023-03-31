@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Drivers.Commands.DriverLicenses.Update;
+using Application.DriverLicenses.Commands.Update;
 
 namespace Presentation.Contracts.Licences.DriversLicences
 {

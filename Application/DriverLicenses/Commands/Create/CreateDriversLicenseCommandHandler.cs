@@ -6,7 +6,7 @@ using Domain.Entities;
 using FluentResults;
 using MediatR;
 
-namespace Application.Drivers.Commands.DriverLicenses.Create
+namespace Application.DriverLicenses.Commands.Create
 {
     public class CreateDriversLicenseCommandHandler : IRequestHandler<CreateDriversLicenseCommand, Result>
     {
@@ -24,7 +24,7 @@ namespace Application.Drivers.Commands.DriverLicenses.Create
                 && c.Employees.Any(e => e.Id == request.DriverId && e.Role.Equals(ApplicationRolesConstants.Driver)));
 
             if (adminAndDriverCompany is null)
-                return Result.Fail(new DriverIsntWorkingForAdmin());
+                return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());
 
             Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId);
 
