@@ -54,7 +54,7 @@ namespace Application.Authentication.Commands.Register.Admins
                 company.Employees.Add(admin);
 
                 _unitOfWork.Companies.Update(company);
-                await _unitOfWork.SaveAsync();
+                await _unitOfWork.SaveAsync(cancellationToken);
 
                 transtaction.Commit();
 

@@ -54,7 +54,7 @@ namespace Application.Authentication.Commands.Register.Drivers
                 adminCompany.Employees.Add(driver);
 
                 _unitOfWork.Companies.Update(adminCompany);
-                await _unitOfWork.SaveAsync();
+                await _unitOfWork.SaveAsync(cancellationToken);
 
                 transtaction.Commit();
 

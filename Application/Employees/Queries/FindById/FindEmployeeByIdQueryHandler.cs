@@ -20,7 +20,7 @@ namespace Application.Employees.Queries.FindById
 
         public async Task<Result<Employee>> Handle(FindEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
-            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId));
+            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId), cancellationToken: cancellationToken);
 
             if (employee is null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Employee)));

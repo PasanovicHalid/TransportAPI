@@ -67,9 +67,9 @@ namespace Infrastructure.Common.Persistence
             return _context.Database.BeginTransaction().GetDbTransaction();
         }
 
-        public async Task SaveAsync()
+        public async Task SaveAsync(CancellationToken cancellationToken = default)
         {
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -24,8 +24,8 @@ namespace Application.Companies.Commands.Create
                                               request.PostalCode,
                                               request.Country));
 
-            await _unitOfWork.Companies.AddAsync(company);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.Companies.AddAsync(company, cancellationToken);
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }

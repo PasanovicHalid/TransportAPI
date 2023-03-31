@@ -21,12 +21,12 @@ namespace Application.DriverLicenses.Commands.Create
         {
             Company? adminAndDriverCompany = await _unitOfWork.Companies.GetFirstOrDefaultAsync(
                 c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId && e.Role.Equals(ApplicationRolesConstants.Admin))
-                && c.Employees.Any(e => e.Id == request.DriverId && e.Role.Equals(ApplicationRolesConstants.Driver)));
+                && c.Employees.Any(e => e.Id == request.DriverId && e.Role.Equals(ApplicationRolesConstants.Driver)), cancellationToken: cancellationToken);
 
             if (adminAndDriverCompany is null)
                 return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());
 
-            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId);
+            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId, cancellationToken: cancellationToken);
 
             if (driver is null)
                 return Result.Fail(new EntityDoesntExist(request.DriverId, nameof(Driver)));
@@ -38,7 +38,7 @@ namespace Application.DriverLicenses.Commands.Create
             driver.DriversLicenses.Add(driversLicense);
 
             _unitOfWork.Drivers.Update(driver);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }

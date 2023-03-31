@@ -10,7 +10,7 @@ namespace Application.Common.Interfaces.Persistence
 {
     public interface IUnitOfWork
     {
-        public Task SaveAsync();
+        public Task SaveAsync(CancellationToken cancellationToken = default);
 
         public IDbTransaction BeginTransaction();
 

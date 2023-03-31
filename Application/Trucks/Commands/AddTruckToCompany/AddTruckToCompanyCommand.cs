@@ -3,7 +3,7 @@ using FluentResults;
 using FluentValidation;
 using Domain.ValueObjects;
 
-namespace Application.Vehicles.Truck.Commands.AddTruckToCompany
+namespace Application.Trucks.Commands.AddTruckToCompany
 {
     public class AddTruckToCompanyCommand : IRequest<Result>
     {

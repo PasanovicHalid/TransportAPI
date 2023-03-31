@@ -11,13 +11,13 @@ namespace Domain.Entities
 {
     public class Vehicle : EntityObject
     {
-        public string Manufacturer { get; private set; }
+        public string Manufacturer { get;  set; }
 
-        public string Model { get; private set; }
+        public string Model { get; set; }
 
-        public DateTime DateOfManufacturing { get; private set; }
+        public DateTime DateOfManufacturing { get; set; }
 
-        public Dimensions Dimensions { get; private set; }
+        public Dimensions Dimensions { get; set; }
 
         public List<Trailer> Trailers { get; private set; } = new();
 

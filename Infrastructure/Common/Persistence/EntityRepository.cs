@@ -17,9 +17,10 @@ namespace Infrastructure.Common.Persistence
             _dbSet = _db.Set<T>();
         }
 
-        public async Task AddAsync(T item)
+        public async Task AddAsync(T item,
+                                   CancellationToken cancellationToken = default)
         {
-            await _dbSet.AddAsync(item);
+            await _dbSet.AddAsync(item, cancellationToken);
         }
 
         public void RemovePermanent(T item)
@@ -39,7 +40,8 @@ namespace Infrastructure.Common.Persistence
                                       bool withDeleted = false,
                                       bool tracked = true,
                                       int pageIndex = 1,
-                                      int pageSize = 10)
+                                      int pageSize = 10, 
+                                      CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = SetupTracking(tracked);
 
@@ -52,13 +54,14 @@ namespace Infrastructure.Common.Persistence
 
             query = IncludeProperties(includeProperties, query);
 
-            return await PaginatedList<T>.CreateAsync(query, pageIndex, pageSize);
+            return await PaginatedList<T>.CreateAsync(query, pageIndex, pageSize, cancellationToken);
         }
 
         public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
                                     List<string>? includeProperties = null,
                                     bool canBeDeleted = false,
-                                    bool tracked = true)
+                                    bool tracked = true, 
+                                    CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = SetupTracking(tracked);
 
@@ -68,7 +71,7 @@ namespace Infrastructure.Common.Persistence
 
             query = IncludeProperties(includeProperties, query);
 
-            return await query.FirstOrDefaultAsync();
+            return await query.FirstOrDefaultAsync(cancellationToken);
         }
 
         public void Remove(T item)

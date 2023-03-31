@@ -18,7 +18,7 @@ namespace Application.Employees.Commands.UpdateInformationById
         }
         public async Task<Result> Handle(UpdateEmployeeInformationByIdCommand request, CancellationToken cancellationToken)
         {
-            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId));
+            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId), cancellationToken: cancellationToken);
 
             if (employee is null)
                 return Result.Fail(new EmployeeIsntWorkingForAdminOrDoesntExist());
@@ -26,7 +26,7 @@ namespace Application.Employees.Commands.UpdateInformationById
             SetupEmployee(request, employee);
 
             _unitOfWork.Employees.Update(employee);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }

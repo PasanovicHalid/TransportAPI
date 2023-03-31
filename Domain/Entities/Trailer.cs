@@ -11,7 +11,7 @@ namespace Domain.Entities
 {
     public class Trailer : EntityObject
     {
-        public Capacity Capacity { get; private set; }
+        public Capacity Capacity { get; set; }
 
         [ForeignKey(nameof(CompanyId))]
         public Company OwnedBy { get; private set; }
@@ -20,8 +20,14 @@ namespace Domain.Entities
         public Vehicle? UsedBy { get; private set; }
 
         public ulong CompanyId { get; private set; }
-        public ulong? VehicleId { get; private set; }
+        public ulong? VehicleId { get;  set; }
 
         protected Trailer() { }
+
+        public Trailer(Capacity capacity, ulong companyId)
+        {
+            Capacity = capacity;
+            CompanyId = companyId;
+        }
     }
 }

@@ -8,7 +8,8 @@ namespace Application.Common.Interfaces.Persistence
         Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
                              List<string>? includeProperties = null,
                              bool canBeDeleted = false,
-                             bool tracked = true);
+                             bool tracked = true,
+                             CancellationToken cancellationToken = default);
 
         Task<PaginatedList<T>> GetPageAsync(Expression<Func<T, bool>>? filter = null,
                                        Expression<Func<T, object>>? orderBy = null,
@@ -17,7 +18,8 @@ namespace Application.Common.Interfaces.Persistence
                                        bool withDeleted = false,
                                        bool tracked = true,
                                        int pageIndex = 1,
-                                       int pageSize = 10);
+                                       int pageSize = 10,
+                                       CancellationToken cancellationToken = default);
 
         void RemovePermanent(T item);
 
@@ -27,7 +29,8 @@ namespace Application.Common.Interfaces.Persistence
 
         void RemoveRange(IEnumerable<T> items);
 
-        Task AddAsync(T item);
+        Task AddAsync(T item,
+                      CancellationToken cancellationToken = default);
 
         void Update(T item);
     }

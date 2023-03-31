@@ -20,7 +20,7 @@ namespace Application.Drivers.Commands.Fire
 
         public async Task<Result> Handle(FireDriverCommand request, CancellationToken cancellationToken)
         {
-            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId), new List<string> { "Vehicle", "DriversLicenses" });
+            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId), new List<string> { "Vehicle", "DriversLicenses" }, cancellationToken: cancellationToken);
 
             if (driver is null)
                 return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());
@@ -28,7 +28,7 @@ namespace Application.Drivers.Commands.Fire
             SetupDriverForDeletion(driver!);
 
             _unitOfWork.Drivers.Remove(driver!);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }

@@ -20,7 +20,7 @@ namespace Application.Employees.Commands.UpdateInformationByIdentity
 
         public async Task<Result> Handle(UpdateEmployeeInformationByIdentityCommand request, CancellationToken cancellationToken)
         {
-            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.IdentityId == request.IdentityId);
+            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.IdentityId == request.IdentityId, cancellationToken: cancellationToken);
 
             if (employee is null)
                 return Result.Fail(new EmployeeIsntWorkingForAdminOrDoesntExist());
@@ -28,7 +28,7 @@ namespace Application.Employees.Commands.UpdateInformationByIdentity
             SetupEmployee(request, employee);
 
             _unitOfWork.Employees.Update(employee);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }

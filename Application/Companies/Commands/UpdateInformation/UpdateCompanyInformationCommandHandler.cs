@@ -18,7 +18,7 @@ namespace Application.Companies.Commands.UpdateInformation
 
         public async Task<Result> Handle(UpdateCompanyInformationCommand request, CancellationToken cancellationToken)
         {
-            Company? companyFromDb = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id);
+            Company? companyFromDb = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken: cancellationToken);
 
             if (companyFromDb == null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Company)));
@@ -26,7 +26,7 @@ namespace Application.Companies.Commands.UpdateInformation
             SetupUpdatedCompany(request, companyFromDb);
 
             _unitOfWork.Companies.Update(companyFromDb);
-            await _unitOfWork.SaveAsync();
+            await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();
         }
