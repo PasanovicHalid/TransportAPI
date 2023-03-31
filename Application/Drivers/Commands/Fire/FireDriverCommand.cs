@@ -1,6 +1,6 @@
-using MediatR;
 using FluentResults;
 using FluentValidation;
+using MediatR;
 
 namespace Application.Drivers.Commands.Fire
 {

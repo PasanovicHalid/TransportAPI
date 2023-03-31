@@ -1,10 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
 using Application.Common.Interfaces.Persistence;
-using Domain.Entities;
 using Application.Vans.Errors;
+using Domain.Entities;
+using FluentResults;
+using MediatR;
 
 namespace Application.Vans.Commands.UpdateInformation
 {

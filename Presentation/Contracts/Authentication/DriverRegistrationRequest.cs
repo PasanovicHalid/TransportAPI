@@ -6,7 +6,7 @@ namespace Presentation.Contracts.Authentication
 {
     public class DriverRegistrationAdapter : Profile
     {
-        public DriverRegistrationAdapter() 
+        public DriverRegistrationAdapter()
         {
             CreateMap<DriverRegistrationRequest, RegisterDriverCommand>();
         }

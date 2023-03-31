@@ -1,5 +1,4 @@
 ﻿using Domain.Common;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domain.ValueObjects
 {
@@ -45,7 +44,7 @@ namespace Domain.ValueObjects
             Country = country;
         }
 
-        protected Address() {}
+        protected Address() { }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

@@ -1,10 +1,4 @@
 ﻿using Domain.Common;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.ValueObjects
 {
@@ -23,7 +17,7 @@ namespace Domain.ValueObjects
 
         protected override IEnumerable<object> GetEqualityComponents()
         {
-            yield return Width; 
+            yield return Width;
             yield return Depth;
         }
     }

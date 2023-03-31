@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Application.Common.Interfaces.Persistence.Companies;
 using Application.Common.Interfaces.Persistence.Employees;
 using Application.Common.Interfaces.Persistence.Licences;
@@ -14,6 +13,7 @@ using Infrastructure.Persistence.Repositories.Trailers;
 using Infrastructure.Persistence.Repositories.Transportations;
 using Infrastructure.Persistence.Repositories.Vehicles;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 
 namespace Infrastructure.Common.Persistence
 {

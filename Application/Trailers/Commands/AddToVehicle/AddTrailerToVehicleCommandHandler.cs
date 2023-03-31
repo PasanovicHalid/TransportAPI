@@ -1,10 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
+using Application.Common.Errors;
 using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
-using Application.Common.Errors;
+using FluentResults;
+using MediatR;
 
 namespace Application.Trailers.Commands.AddToVehicle
 {
@@ -25,7 +23,7 @@ namespace Application.Trailers.Commands.AddToVehicle
                 return Result.Fail(new EntityDoesntExist(request.VehicleId, nameof(Vehicle)));
 
             Trailer? trailer = await _unitOfWork.Trailers.GetFirstOrDefaultAsync(t => t.Id == request.TrailerId, cancellationToken: cancellationToken);
-            
+
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));
 
@@ -34,7 +32,7 @@ namespace Application.Trailers.Commands.AddToVehicle
             _unitOfWork.Vehicles.Update(vehicle);
             await _unitOfWork.SaveAsync(cancellationToken);
 
-            return Result.Ok(); 
+            return Result.Ok();
         }
     }
 }

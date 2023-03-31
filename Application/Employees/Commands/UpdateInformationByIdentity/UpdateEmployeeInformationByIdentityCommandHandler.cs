@@ -1,11 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
 using Application.Common.Interfaces.Persistence;
 using Application.Employees.Errors;
 using Domain.Entities;
-using Application.Employees.Commands.UpdateInformationById;
+using FluentResults;
+using MediatR;
 
 namespace Application.Employees.Commands.UpdateInformationByIdentity
 {

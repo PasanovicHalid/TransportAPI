@@ -1,11 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
+using Application.Common.Errors;
 using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
-using Application.Common.Errors;
-using Domain.ValueObjects;
+using FluentResults;
+using MediatR;
 
 namespace Application.Trucks.Commands.AddTruckToCompany
 {

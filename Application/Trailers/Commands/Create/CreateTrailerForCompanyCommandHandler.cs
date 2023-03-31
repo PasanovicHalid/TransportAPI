@@ -1,10 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
+using Application.Common.Errors;
 using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
-using Application.Common.Errors;
+using FluentResults;
+using MediatR;
 
 namespace Application.Trailers.Commands.Create
 {
@@ -19,9 +17,9 @@ namespace Application.Trailers.Commands.Create
 
         public async Task<Result> Handle(CreateTrailerForCompanyCommand request, CancellationToken cancellationToken)
         {
-            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id ==  request.CompanyId, cancellationToken: cancellationToken); 
+            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.CompanyId, cancellationToken: cancellationToken);
 
-            if(company == null)
+            if (company == null)
                 return Result.Fail(new EntityDoesntExist(request.CompanyId, nameof(Company)));
 
             Trailer trailer = new Trailer(request.Capacity, request.CompanyId);

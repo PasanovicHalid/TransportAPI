@@ -1,10 +1,10 @@
-﻿using System.Data;
-using Application.Common.Interfaces.Persistence.Companies;
+﻿using Application.Common.Interfaces.Persistence.Companies;
 using Application.Common.Interfaces.Persistence.Employees;
 using Application.Common.Interfaces.Persistence.Licences;
 using Application.Common.Interfaces.Persistence.Trailers;
 using Application.Common.Interfaces.Persistence.Transportations;
 using Application.Common.Interfaces.Persistence.Vehicles;
+using System.Data;
 
 namespace Application.Common.Interfaces.Persistence
 {

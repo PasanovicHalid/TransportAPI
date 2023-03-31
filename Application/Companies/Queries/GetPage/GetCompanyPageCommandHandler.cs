@@ -25,7 +25,7 @@ namespace Application.Companies.Queries.GetPage
                                                 withDeleted: request.WithDeleted,
                                                 tracked: request.Tracked,
                                                 pageIndex: request.PageIndex,
-                                                pageSize: request.PageSize, 
+                                                pageSize: request.PageSize,
                                                 cancellationToken: cancellationToken);
 
             return companyPage;

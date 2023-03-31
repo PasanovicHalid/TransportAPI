@@ -3,7 +3,6 @@ using Application.Authentication.Contracts;
 using Application.Common.Errors;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Domain;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.ValueObjects;

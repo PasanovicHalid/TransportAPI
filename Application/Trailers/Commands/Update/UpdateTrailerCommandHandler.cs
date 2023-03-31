@@ -1,10 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
+using Application.Common.Errors;
 using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
-using Application.Common.Errors;
+using FluentResults;
+using MediatR;
 
 namespace Application.Trailers.Commands.Update
 {
@@ -23,12 +21,12 @@ namespace Application.Trailers.Commands.Update
 
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));
-    
+
             SetupTrailer(request, trailer);
-    
+
             _unitOfWork.Trailers.Update(trailer);
             await _unitOfWork.SaveAsync(cancellationToken);
-    
+
             return Result.Ok();
         }
 

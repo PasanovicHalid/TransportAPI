@@ -1,6 +1,4 @@
-﻿using Application.Authentication.Commands.Register.Admins;
-using Application.Authentication.Commands.Register.Drivers;
-using Application.Authentication.Commands.Register.SuperAdmins;
+﻿using Application.Authentication.Commands.Register.SuperAdmins;
 using Application.Authentication.Contracts;
 using Application.Authentication.Queries.Login;
 using AutoMapper;
@@ -11,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
 using Presentation.Contracts.Authentication;
-using System.Security.Claims;
 
 namespace Presentation.Controllers
 {

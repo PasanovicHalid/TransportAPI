@@ -1,7 +1,7 @@
-using MediatR;
+using Domain.Entities;
 using FluentResults;
 using FluentValidation;
-using Domain.Entities;
+using MediatR;
 
 namespace Application.Employees.Queries.FindById
 {

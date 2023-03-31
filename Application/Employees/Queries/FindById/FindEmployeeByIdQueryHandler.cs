@@ -1,11 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
-using Domain.Entities;
-using Application.Common.Interfaces.Persistence;
-using Application.Employees.Errors;
 using Application.Common.Errors;
+using Application.Common.Interfaces.Persistence;
+using Domain.Entities;
+using FluentResults;
+using MediatR;
 
 namespace Application.Employees.Queries.FindById
 {

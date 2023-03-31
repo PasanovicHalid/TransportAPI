@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Domain.Common;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure.Common.Persistence
 {
@@ -40,7 +40,7 @@ namespace Infrastructure.Common.Persistence
                                       bool withDeleted = false,
                                       bool tracked = true,
                                       int pageIndex = 1,
-                                      int pageSize = 10, 
+                                      int pageSize = 10,
                                       CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = SetupTracking(tracked);
@@ -60,7 +60,7 @@ namespace Infrastructure.Common.Persistence
         public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
                                     List<string>? includeProperties = null,
                                     bool canBeDeleted = false,
-                                    bool tracked = true, 
+                                    bool tracked = true,
                                     CancellationToken cancellationToken = default)
         {
             IQueryable<T> query = SetupTracking(tracked);

@@ -1,11 +1,6 @@
 ﻿using Domain.Common;
 using Domain.ValueObjects;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -20,7 +15,7 @@ namespace Domain.Entities
         public Vehicle? UsedBy { get; private set; }
 
         public ulong CompanyId { get; private set; }
-        public ulong? VehicleId { get;  set; }
+        public ulong? VehicleId { get; set; }
 
         protected Trailer() { }
 

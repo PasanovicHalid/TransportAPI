@@ -1,7 +1,7 @@
-using MediatR;
+using Domain.ValueObjects;
 using FluentResults;
 using FluentValidation;
-using Domain.ValueObjects;
+using MediatR;
 
 namespace Application.Trucks.Commands.AddTruckToCompany
 {

@@ -1,19 +1,13 @@
-﻿using Application.Companies.Commands.UpdateInformation;
-using Application.Employees.Commands.UpdateInformationById;
+﻿using Application.Employees.Commands.UpdateInformationById;
 using Application.Employees.Commands.UpdateInformationByIdentity;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Employees
 {
     public class UpdateEmployeeInformationAdapter : Profile
     {
-        public UpdateEmployeeInformationAdapter() 
-        { 
+        public UpdateEmployeeInformationAdapter()
+        {
             CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdCommand>();
             CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdentityCommand>();
         }

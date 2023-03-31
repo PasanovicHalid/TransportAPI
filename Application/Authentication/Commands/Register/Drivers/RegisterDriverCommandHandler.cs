@@ -1,9 +1,7 @@
 ﻿using Application.Authentication.Commands.Register.Errors;
 using Application.Authentication.Contracts;
-using Application.Common.Errors;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Domain;
 using Domain.Constants;
 using Domain.Entities;
 using Domain.ValueObjects;
@@ -74,11 +72,11 @@ namespace Application.Authentication.Commands.Register.Drivers
         private static Driver SetupDriver(RegisterDriverCommand request, Company company)
         {
             return new Driver(new IdentityUser()
-                              {
-                                  UserName = request.Email,
-                                  Email = request.Email,
-                                  PhoneNumber = request.PhoneNumber
-                              },
+            {
+                UserName = request.Email,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber
+            },
                               request.FirstName,
                               request.MiddleName,
                               request.LastName,

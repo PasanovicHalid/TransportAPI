@@ -1,10 +1,8 @@
-using MediatR;
-using FluentResults;
-using System.Threading;
-using System.Threading.Tasks;
-using Application.Common.Interfaces.Persistence;
 using Application.Common.Errors;
+using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
+using FluentResults;
+using MediatR;
 
 namespace Application.Vans.Commands.AddVanToCompany
 {

@@ -1,5 +1,4 @@
-﻿using Application.Drivers.Commands.Fire;
-using Application.Employees.Commands.UpdateInformationById;
+﻿using Application.Employees.Commands.UpdateInformationById;
 using Application.Employees.Commands.UpdateInformationByIdentity;
 using Application.Employees.Queries.FindById;
 using AutoMapper;
@@ -12,12 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
 using Presentation.Contracts.Employees;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
