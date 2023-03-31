@@ -1,4 +1,7 @@
-﻿using Application.Common.Commands;
+﻿using Application.Authentication.Commands.Register.Admins;
+using Application.Authentication.Commands.Register.Drivers;
+using Application.Authentication.Contracts;
+using Application.Common.Commands;
 using Application.Common.Interfaces.Persistence;
 using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Remove;
@@ -12,7 +15,9 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
+using Presentation.Contracts.Authentication;
 using Presentation.Contracts.Companies;
+using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
@@ -42,7 +47,7 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(Create), null);
         }
 
-        [HttpPut("update/superAdmin")]
+        [HttpPut]
         [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
         public async Task<IActionResult> Update([FromBody] UpdateCompanyRequest request)
         {
@@ -88,6 +93,51 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok(response.Value);
+        }
+
+        [HttpPost("{id}/register/initial/admin")]
+        [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
+        public async Task<IActionResult> RegisterInitialAdminForCompany([FromBody] AdminRegistrationRequest request, [FromRoute(Name = "id")] ulong companyId)
+        {
+            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
+            command.CompanyId = companyId;
+
+            Result<AuthenticationResult> result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        [HttpPost("{id}/register/admin")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request, [FromRoute(Name = "id")] ulong companyId)
+        {
+            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
+            command.CompanyId = companyId;
+
+            Result<AuthenticationResult> result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        [HttpPost("register/driver")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
+        {
+            RegisterDriverCommand command = _mapper.Map<RegisterDriverCommand>(request);
+            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+
+            Result<AuthenticationResult> result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
         }
     }
 }

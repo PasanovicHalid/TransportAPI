@@ -17,7 +17,5 @@ namespace Presentation.Contracts.Licences.DriversLicences
         public DateTime IssuingDate { get; set; }
 
         public DateTime ExpirationDate { get; set; }
-
-        public ulong DriverId { get; set; }
     }
 }

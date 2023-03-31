@@ -30,11 +30,12 @@ namespace Presentation.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("licenses")]
+        [HttpPost("{id}/licenses")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> AddLicense([FromBody] CreateDriversLicenceRequest request)
+        public async Task<IActionResult> AddLicense([FromBody] CreateDriversLicenceRequest request, [FromRoute(Name = "id")] ulong driverId)
         {
             CreateDriversLicenseCommand command = _mapper.Map<CreateDriversLicenseCommand>(request);
+            command.DriverId = driverId;
             command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);
@@ -45,12 +46,16 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(AddLicense), null);
         }
 
-        [HttpDelete("licenses")]
+        [HttpDelete("{id}/licenses/{licenseId}")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> DeleteLicense([FromBody] DeleteDriversLicenceRequest request)
+        public async Task<IActionResult> DeleteLicense([FromRoute(Name = "licenseId")] ulong licenseId, [FromRoute(Name = "id")] ulong driverId)
         {
-            DeleteDriversLicenseCommand command = _mapper.Map<DeleteDriversLicenseCommand>(request);
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            DeleteDriversLicenseCommand command = new()
+            {
+                DriverId = driverId,
+                Id = licenseId,
+                AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!
+            };
 
             Result response = await _mediator.Send(command);
 
@@ -60,11 +65,13 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPut("licenses")]
+        [HttpPut("{id}/licenses/{licenseId}")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> UpdateLicense([FromBody] UpdateDriversLicenceRequest request)
+        public async Task<IActionResult> UpdateLicense([FromBody] UpdateDriversLicenceRequest request, [FromRoute(Name = "licenseId")] ulong licenseId, [FromRoute(Name = "id")] ulong driverId)
         {
             UpdateDriversLicenseCommand command = _mapper.Map<UpdateDriversLicenseCommand>(request);
+            command.DriverId = driverId;
+            command.Id = licenseId;
             command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);

@@ -10,16 +10,16 @@ namespace Application.Authentication.Commands.Register.Admins
         public string Email { get; set; }
         public string Password { get; set; }
         public string PhoneNumber { get; set; }
-        public string FirstName { get; private set; }
-        public string? MiddleName { get; private set; }
-        public string LastName { get; private set; }
-        public double Salary { get; private set; }
-        public string Street { get; private set; }
-        public string City { get; private set; }
-        public string State { get; private set; }
-        public string PostalCode { get; private set; }
-        public string Country { get; private set; }
-        public ulong CompanyId { get; private set; }
+        public string FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public string LastName { get; set; }
+        public double Salary { get; set; }
+        public string Street { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PostalCode { get; set; }
+        public string Country { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class RegisterAdminValidator : AbstractValidator<RegisterAdminCommand>

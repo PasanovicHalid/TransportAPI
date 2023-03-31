@@ -52,48 +52,5 @@ namespace Presentation.Controllers
 
             return CreatedAtAction(nameof(RegisterSuperAdmin), _mapper.Map<AutheticationResponse>(result.Value));
         }
-
-        [HttpPost("register/initial/admin")]
-        [Authorize(Roles = ApplicationRolesConstants.SuperAdmin)]
-        public async Task<IActionResult> RegisterInitialAdminForCompany([FromBody] AdminRegistrationRequest request)
-        {
-            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
-
-            Result<AuthenticationResult> result = await _mediator.Send(command);
-
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
-
-            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
-        }
-
-        [HttpPost("register/admin")]
-        [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request)
-        {
-            RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
-
-            Result<AuthenticationResult> result = await _mediator.Send(command);
-
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
-
-            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
-        }
-
-        [HttpPost("register/driver")]
-        [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
-        {
-            RegisterDriverCommand command = _mapper.Map<RegisterDriverCommand>(request);
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
-
-            Result<AuthenticationResult> result = await _mediator.Send(command);
-
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
-
-            return CreatedAtAction(nameof(RegisterAdmin), _mapper.Map<AutheticationResponse>(result.Value));
-        }
     }
 }

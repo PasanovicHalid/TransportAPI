@@ -18,10 +18,8 @@ namespace Presentation.Contracts.Licences.DriversLicences
     }
     public class UpdateDriversLicenceRequest
     {
-        public ulong Id { get; set; }
         public string Category { get; set; }
         public DateTime IssuingDate { get; set; }
         public DateTime ExpirationDate { get; set; }
-        public ulong DriverId { get; set; }
     }
 }
