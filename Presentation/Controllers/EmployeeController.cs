@@ -5,6 +5,7 @@ using Application.Employees.Queries.FindById;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -36,6 +37,11 @@ namespace Presentation.Controllers
         {
             UpdateEmployeeInformationByIdCommand command = _mapper.Map<UpdateEmployeeInformationByIdCommand>(request);
             command.Id = employeeId;
+            command.Address = new Address(request.Street,
+                                          request.City,
+                                          request.State,
+                                          request.PostalCode,
+                                          request.Country);
             command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);
@@ -51,6 +57,11 @@ namespace Presentation.Controllers
         public async Task<IActionResult> UpdateInformationByDrvier([FromBody] UpdateEmployeeInformationRequest request)
         {
             UpdateEmployeeInformationByIdentityCommand command = _mapper.Map<UpdateEmployeeInformationByIdentityCommand>(request);
+            command.Address = new Address(request.Street,
+                                          request.City,
+                                          request.State,
+                                          request.PostalCode,
+                                          request.Country);
             command.IdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
 
             Result response = await _mediator.Send(command);
