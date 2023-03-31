@@ -53,9 +53,9 @@ namespace Infrastructure.Persistence
                     EmailConfirmed = true,
                 }, "admin123");
 
-                IdentityUser user = await _userManager.FindByEmailAsync("admin@gmail.com");
+                IdentityUser? user = await _userManager.FindByEmailAsync("admin@gmail.com");
 
-                await _userManager.AddToRoleAsync(user, ApplicationRolesConstants.SuperAdmin);
+                await _userManager.AddToRoleAsync(user!, ApplicationRolesConstants.SuperAdmin);
             }
         }
 

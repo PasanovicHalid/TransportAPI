@@ -19,7 +19,7 @@ namespace Application.Drivers.Commands.DriverLicenses.Delete
 
         public async Task<Result> Handle(DeleteDriversLicenseCommand request, CancellationToken cancellationToken)
         {
-            Driver? driver = _unitOfWork.Drivers.GetFirstOrDefault(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
+            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId && d.Company!.Employees.Any(e => e.IdentityId == request.AdminIdentityId), new List<string> { "DriversLicenses" });
 
             if (driver is null)
                 return Result.Fail(new DriverIsntWorkingForAdmin());
@@ -32,7 +32,7 @@ namespace Application.Drivers.Commands.DriverLicenses.Delete
             driversLicense.Deleted = true;
 
             _unitOfWork.Drivers.Update(driver);
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
 
             return Result.Ok();
         }

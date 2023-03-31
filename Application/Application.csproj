@@ -20,9 +20,9 @@
 
   <ItemGroup>
     <Folder Include="Drivers\Queries\" />
+    <Folder Include="Trailers\Queries\" />
     <Folder Include="Vehicles\Truck\Commands\" />
     <Folder Include="Vehicles\Truck\Queries\" />
-    <Folder Include="Vehicles\Van\Commands\" />
     <Folder Include="Vehicles\Van\Queries\" />
   </ItemGroup>
 

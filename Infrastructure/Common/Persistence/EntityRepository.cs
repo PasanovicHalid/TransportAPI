@@ -17,9 +17,9 @@ namespace Infrastructure.Common.Persistence
             _dbSet = _db.Set<T>();
         }
 
-        public void Add(T item)
+        public async Task AddAsync(T item)
         {
-            _dbSet.Add(item);
+            await _dbSet.AddAsync(item);
         }
 
         public void RemovePermanent(T item)
@@ -32,28 +32,7 @@ namespace Infrastructure.Common.Persistence
             _dbSet.RemoveRange(items);
         }
 
-        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null,
-                                     Expression<Func<T, object>>? orderBy = null,
-                                     bool desc = false,
-                                     List<string>? includeProperties = null,
-                                     bool withDeleted = false,
-                                     bool tracked = true)
-        {
-            IQueryable<T> query = SetupTracking(tracked);
-
-            query = SetupSorting(orderBy, desc, query);
-
-            if (filter != null)
-                query = query.Where(filter);
-
-            query = FilterDeleted(withDeleted, query);
-
-            query = IncludeProperties(includeProperties, query);
-
-            return query.ToList();
-        }
-
-        public async Task<PaginatedList<T>> GetPage(Expression<Func<T, bool>>? filter = null,
+        public async Task<PaginatedList<T>> GetPageAsync(Expression<Func<T, bool>>? filter = null,
                                       Expression<Func<T, object>>? orderBy = null,
                                       bool desc = false,
                                       List<string>? includeProperties = null,
@@ -76,7 +55,7 @@ namespace Infrastructure.Common.Persistence
             return await PaginatedList<T>.CreateAsync(query, pageIndex, pageSize);
         }
 
-        public T? GetFirstOrDefault(Expression<Func<T, bool>> filter,
+        public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
                                     List<string>? includeProperties = null,
                                     bool canBeDeleted = false,
                                     bool tracked = true)
@@ -89,7 +68,7 @@ namespace Infrastructure.Common.Persistence
 
             query = IncludeProperties(includeProperties, query);
 
-            return query.FirstOrDefault();
+            return await query.FirstOrDefaultAsync();
         }
 
         public void Remove(T item)

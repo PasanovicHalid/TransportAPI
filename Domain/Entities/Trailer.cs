@@ -19,7 +19,7 @@ namespace Domain.Entities
         [ForeignKey(nameof(VehicleId))]
         public Vehicle? UsedBy { get; private set; }
 
-        public ulong? CompanyId { get; private set; }
+        public ulong CompanyId { get; private set; }
         public ulong? VehicleId { get; private set; }
 
         protected Trailer() { }

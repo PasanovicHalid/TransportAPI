@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TransportDbContext))]
-    [Migration("20230330181315_Initial_domain_setup")]
+    [Migration("20230331082622_Initial_domain_setup")]
     partial class Initial_domain_setup
     {
         /// <inheritdoc />
@@ -206,7 +206,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.ToTable("Vehicle");
+                    b.ToTable("Vehicles");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Vehicle");
 
@@ -795,7 +795,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("VehicleId");
 
-                            b1.ToTable("Vehicle");
+                            b1.ToTable("Vehicles");
 
                             b1.WithOwner()
                                 .HasForeignKey("VehicleId");
@@ -917,7 +917,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("VanId");
 
-                            b1.ToTable("Vehicle");
+                            b1.ToTable("Vehicles");
 
                             b1.WithOwner()
                                 .HasForeignKey("VanId");
@@ -938,7 +938,7 @@ namespace Infrastructure.Migrations
 
                                     b2.HasKey("CapacityVanId");
 
-                                    b2.ToTable("Vehicle");
+                                    b2.ToTable("Vehicles");
 
                                     b2.WithOwner()
                                         .HasForeignKey("CapacityVanId");

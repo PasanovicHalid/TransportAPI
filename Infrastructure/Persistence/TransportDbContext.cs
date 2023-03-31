@@ -12,9 +12,11 @@ namespace Infrastructure.Persistence
         public DbSet<Driver> Drivers { get; set; }
         public DbSet<Admininistrator> Admininistrators { get; set; }
         public DbSet<Transportation> Transportations { get; set; }
-        public DbSet<Trailer> Trailers { get; set; }
+        public DbSet<Stop> Stops { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Truck> Trucks { get; set; }
         public DbSet<Van> Vans { get; set; }
+        public DbSet<Trailer> Trailers { get; set; }
 
         public TransportDbContext(DbContextOptions options) : base(options)
         {

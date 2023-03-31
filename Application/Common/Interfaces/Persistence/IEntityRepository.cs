@@ -5,19 +5,12 @@ namespace Application.Common.Interfaces.Persistence
 {
     public interface IEntityRepository<T> where T : EntityObject
     {
-        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null,
-                              Expression<Func<T, object>>? orderBy = null,
-                              bool desc = false,
-                              List<string>? includeProperties = null,
-                              bool withDeleted = false,
-                              bool tracked = true);
-
-        T? GetFirstOrDefault(Expression<Func<T, bool>> filter,
+        Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
                              List<string>? includeProperties = null,
                              bool canBeDeleted = false,
                              bool tracked = true);
 
-        Task<PaginatedList<T>> GetPage(Expression<Func<T, bool>>? filter = null,
+        Task<PaginatedList<T>> GetPageAsync(Expression<Func<T, bool>>? filter = null,
                                        Expression<Func<T, object>>? orderBy = null,
                                        bool desc = false,
                                        List<string>? includeProperties = null,
@@ -34,7 +27,7 @@ namespace Application.Common.Interfaces.Persistence
 
         void RemoveRange(IEnumerable<T> items);
 
-        void Add(T item);
+        Task AddAsync(T item);
 
         void Update(T item);
     }

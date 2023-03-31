@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public abstract class Vehicle : EntityObject
+    public class Vehicle : EntityObject
     {
         public string Manufacturer { get; private set; }
 
@@ -21,10 +21,9 @@ namespace Domain.Entities
 
         public List<Trailer> Trailers { get; private set; } = new();
 
+        [ForeignKey(nameof(CompanyId))]
         public Company OwnedBy { get; private set; }
 
-        [ForeignKey(nameof(OwnedBy))]
-        
         public ulong CompanyId { get; private set; }
 
         public Vehicle(string manufacturer, string model, DateTime dateOfManufacturing, Dimensions dimensions)

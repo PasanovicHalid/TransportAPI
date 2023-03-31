@@ -28,7 +28,7 @@ namespace Application.Authentication.Commands.Register.Drivers
 
         public async Task<Result<AuthenticationResult>> Handle(RegisterDriverCommand request, CancellationToken cancellationToken)
         {
-            Company? adminCompany = _unitOfWork.Companies.GetFirstOrDefault(c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId));
+            Company? adminCompany = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId));
 
             if (adminCompany is null)
                 return Result.Fail(new AdminCompanyDoesntExist());
@@ -54,7 +54,7 @@ namespace Application.Authentication.Commands.Register.Drivers
                 adminCompany.Employees.Add(driver);
 
                 _unitOfWork.Companies.Update(adminCompany);
-                _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
 
                 transtaction.Commit();
 

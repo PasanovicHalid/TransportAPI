@@ -18,7 +18,7 @@ namespace Application.Companies.Queries.GetPage
         public async Task<Result<PaginatedList<Company>>> Handle(PageCommand<Company> request, CancellationToken cancellationToken)
         {
             PaginatedList<Company> companyPage =
-            await _unitOfWork.Companies.GetPage(filter: request.Filter,
+            await _unitOfWork.Companies.GetPageAsync(filter: request.Filter,
                                                 orderBy: request.OrderBy,
                                                 desc: request.Desc,
                                                 includeProperties: request.IncludeProperties,

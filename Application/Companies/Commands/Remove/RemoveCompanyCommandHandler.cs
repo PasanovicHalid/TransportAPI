@@ -16,13 +16,13 @@ namespace Application.Companies.Commands.Remove
 
         public async Task<Result> Handle(RemoveCompanyCommand request, CancellationToken cancellationToken)
         {
-            Company? company = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.Id);
+            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id);
 
             if (company == null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Company)));
 
             _unitOfWork.Companies.Remove(company);
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
 
             return Result.Ok();
         }

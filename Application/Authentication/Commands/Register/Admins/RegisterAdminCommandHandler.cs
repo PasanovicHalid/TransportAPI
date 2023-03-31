@@ -28,7 +28,7 @@ namespace Application.Authentication.Commands.Register.Admins
 
         public async Task<Result<AuthenticationResult>> Handle(RegisterAdminCommand request, CancellationToken cancellationToken)
         {
-            Company? company = _unitOfWork.Companies.GetFirstOrDefault(c => c.Id == request.CompanyId);
+            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.CompanyId);
 
             if (company is null)
                 return Result.Fail(new EntityDoesntExist(request.CompanyId, nameof(Company)));
@@ -54,7 +54,7 @@ namespace Application.Authentication.Commands.Register.Admins
                 company.Employees.Add(admin);
 
                 _unitOfWork.Companies.Update(company);
-                _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
 
                 transtaction.Commit();
 

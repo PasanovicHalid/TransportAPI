@@ -24,8 +24,8 @@ namespace Application.Companies.Commands.Create
                                               request.PostalCode,
                                               request.Country));
 
-            _unitOfWork.Companies.Add(company);
-            _unitOfWork.Save();
+            await _unitOfWork.Companies.AddAsync(company);
+            await _unitOfWork.SaveAsync();
 
             return Result.Ok();
         }
