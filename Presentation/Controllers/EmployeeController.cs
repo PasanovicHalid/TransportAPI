@@ -36,7 +36,7 @@ namespace Presentation.Controllers
                                           request.State,
                                           request.PostalCode,
                                           request.Country);
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result response = await _mediator.Send(command);
 
@@ -48,7 +48,7 @@ namespace Presentation.Controllers
 
         [HttpPut("information")]
         [Authorize(Roles = ApplicationRolesConstants.Driver)]
-        public async Task<IActionResult> UpdateInformationByDrvier([FromBody] UpdateEmployeeInformationRequest request)
+        public async Task<IActionResult> UpdateInformationByDriver([FromBody] UpdateEmployeeInformationRequest request)
         {
             UpdateEmployeeInformationByIdentityCommand command = _mapper.Map<UpdateEmployeeInformationByIdentityCommand>(request);
             command.Address = new Address(request.Street,
@@ -56,7 +56,7 @@ namespace Presentation.Controllers
                                           request.State,
                                           request.PostalCode,
                                           request.Country);
-            command.IdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            command.IdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!;
 
             Result response = await _mediator.Send(command);
 
@@ -73,7 +73,7 @@ namespace Presentation.Controllers
             FindEmployeeByIdQuery query = new()
             {
                 Id = employeeId,
-                AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
             };
 
             Result<Employee> response = await _mediator.Send(query);

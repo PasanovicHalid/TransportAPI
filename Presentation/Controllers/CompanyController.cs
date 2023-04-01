@@ -7,21 +7,31 @@ using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Remove;
 using Application.Companies.Commands.UpdateInformation;
 using Application.Companies.Queries.FindById;
+using Application.Trailers.Commands.Create;
+using Application.Trailers.Commands.Delete;
+using Application.Trailers.Commands.Update;
+using Application.Trucks.Commands.AddToCompany;
+using Application.Vans.Commands.AddToCompany;
+using Application.Vans.Commands.UpdateInformation;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
 using Presentation.Contracts.Authentication;
+using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Companies;
+using Presentation.Contracts.Trailers;
+using Presentation.Contracts.Trucks;
+using Presentation.Contracts.Vans;
 using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
-    [Authorize]
     public class CompanyController : ApiController
     {
         private readonly ISender _mediator;
@@ -81,7 +91,7 @@ namespace Presentation.Controllers
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);
 
-            return Ok(response.Value);
+            return Ok(_mapper.Map<CompanyResponse>(response.Value));
         }
 
         [HttpGet]
@@ -110,12 +120,12 @@ namespace Presentation.Controllers
             return CreatedAtAction(nameof(RegisterInitialAdminForCompany), _mapper.Map<AutheticationResponse>(result.Value));
         }
 
-        [HttpPost("{id}/register/admin")]
+        [HttpPost("register/admin")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request, [FromRoute(Name = "id")] ulong companyId)
+        public async Task<IActionResult> RegisterAdmin([FromBody] AdminRegistrationRequest request)
         {
             RegisterAdminCommand command = _mapper.Map<RegisterAdminCommand>(request);
-            command.CompanyId = companyId;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result<AuthenticationResult> result = await _mediator.Send(command);
 
@@ -130,7 +140,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> RegisterDriver([FromBody] DriverRegistrationRequest request)
         {
             RegisterDriverCommand command = _mapper.Map<RegisterDriverCommand>(request);
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result<AuthenticationResult> result = await _mediator.Send(command);
 
@@ -138,6 +148,127 @@ namespace Presentation.Controllers
                 return HandleErrors(result.Errors[0]);
 
             return CreatedAtAction(nameof(RegisterDriver), _mapper.Map<AutheticationResponse>(result.Value));
+        }
+
+        [HttpPost("trailer")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> CreateTrailer([FromBody] CreateTrailerRequest request)
+        {
+            CreateTrailerForCompanyCommand command = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                Capacity = new Capacity(request.Width, request.Depth, request.Height, request.MaxCarryWeight)
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(CreateTrailer), null);
+        }
+
+        [HttpDelete("trailer/{id}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> DeleteTrailer([FromBody] CreateTrailerRequest request, [FromRoute(Name = "id")] ulong trailerId)
+        {
+            DeleteTrailerCommand command = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                TrailerId = trailerId
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return Ok();
+        }
+
+        [HttpPut("trailer/{id}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> UpdateTrailer([FromBody] UpdateTrailerRequest request, [FromRoute(Name = "id")] ulong trailerId)
+        {
+            UpdateTrailerCommand command = new()
+            {
+                Capacity = new Capacity(request.Width, request.Depth, request.Height, request.MaxCarryWeight),
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                TrailerId = trailerId
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return Ok();
+        }
+
+        [HttpPost("truck")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> CreateTruck([FromBody] CreateTruckRequest request)
+        {
+            AddTruckToCompanyCommand command = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                DateOfManufacturing = request.DateOfManufacturing,
+                Manufacturer = request.Manufacturer,
+                Model = request.Model,
+                Dimensions = new Dimensions(request.Width, request.Depth)
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(CreateTruck), null);
+        }
+
+        [HttpPost("van")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> CreateVan([FromBody] CreateVanRequest request)
+        {
+            AddVanToCompanyCommand command = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                DateOfManufacturing = request.DateOfManufacturing,
+                Manufacturer = request.Manufacturer,
+                Model = request.Model,
+                Dimensions = new Dimensions(request.Width, request.Depth),
+                Capacity = new Capacity(request.WidthCompartment, request.DepthCompartment, request.HeightCompartment, request.MaxCarryWeight)
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(CreateVan), null);
+        }
+
+        [HttpPut("van/{id}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> UpdateVan([FromBody] UpdateVanRequest request, [FromRoute(Name = "id")] ulong vanId)
+        {
+            UpdateVanInformationCommand command = new()
+            {
+                Id = vanId,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+                DateOfManufacturing = request.DateOfManufacturing,
+                Manufacturer = request.Manufacturer,
+                Model = request.Model,
+                Dimensions = new Dimensions(request.Width, request.Depth),
+                Capacity = new Capacity(request.WidthCompartment, request.DepthCompartment, request.HeightCompartment, request.MaxCarryWeight)
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return Ok();
         }
     }
 }

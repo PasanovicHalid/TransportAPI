@@ -17,7 +17,8 @@ namespace Application.Vehicles.Commands.UpdateInformation
 
         public async Task<Result> Handle(UpdateVehicleInformationCommand request, CancellationToken cancellationToken)
         {
-            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.Id && v.OwnedBy.Employees.Any(e => e.IdentityId == request.AdminIdentityId), cancellationToken: cancellationToken);
+            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.Id && v.CompanyId == request.CompanyId,
+                                                                                 cancellationToken: cancellationToken);
 
             if (vehicle == null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Vehicle)));
@@ -31,7 +32,7 @@ namespace Application.Vehicles.Commands.UpdateInformation
 
         }
 
-        private static void SetupVehicle(UpdateVehicleInformationCommand request, Vehicle? vehicle)
+        private static void SetupVehicle(UpdateVehicleInformationCommand request, Vehicle vehicle)
         {
             vehicle.Manufacturer = request.Manufacturer;
             vehicle.Model = request.Model;

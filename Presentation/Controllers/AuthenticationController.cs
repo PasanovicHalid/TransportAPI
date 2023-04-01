@@ -12,6 +12,7 @@ using Presentation.Contracts.Authentication;
 
 namespace Presentation.Controllers
 {
+    [AllowAnonymous]
     public class AuthenticationController : ApiController
     {
         private readonly ISender _mediator;

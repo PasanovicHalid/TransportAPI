@@ -3,7 +3,7 @@ using FluentResults;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Trucks.Commands.AddTruckToCompany
+namespace Application.Trucks.Commands.AddToCompany
 {
     public class AddTruckToCompanyCommand : IRequest<Result>
     {

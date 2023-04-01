@@ -26,7 +26,7 @@ namespace Application.Authentication.Commands.Register.Drivers
 
         public async Task<Result<AuthenticationResult>> Handle(RegisterDriverCommand request, CancellationToken cancellationToken)
         {
-            Company? adminCompany = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId));
+            Company? adminCompany = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.CompanyId);
 
             if (adminCompany is null)
                 return Result.Fail(new AdminCompanyDoesntExist());
@@ -58,7 +58,7 @@ namespace Application.Authentication.Commands.Register.Drivers
 
                 return new AuthenticationResult
                 {
-                    Token = await _jwtGenerator.GenerateTokenAsync(driver.User!),
+                    Token = await _jwtGenerator.GenerateTokenAsync(driver.User!, adminCompany.Id),
                     ExpirationDate = _jwtGenerator.GetExpirationDate()
                 };
             }

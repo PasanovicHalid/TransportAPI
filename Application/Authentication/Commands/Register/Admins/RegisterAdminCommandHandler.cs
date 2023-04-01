@@ -59,7 +59,7 @@ namespace Application.Authentication.Commands.Register.Admins
 
                 return new AuthenticationResult
                 {
-                    Token = await _jwtGenerator.GenerateTokenAsync(admin.User!),
+                    Token = await _jwtGenerator.GenerateTokenAsync(admin.User!, company.Id),
                     ExpirationDate = _jwtGenerator.GetExpirationDate()
                 };
             }

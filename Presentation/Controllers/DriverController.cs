@@ -14,7 +14,6 @@ using System.Security.Claims;
 
 namespace Presentation.Controllers
 {
-    [Authorize]
     public class DriverController : ApiController
     {
         private readonly ISender _mediator;
@@ -32,7 +31,7 @@ namespace Presentation.Controllers
         {
             CreateDriversLicenseCommand command = _mapper.Map<CreateDriversLicenseCommand>(request);
             command.DriverId = driverId;
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result response = await _mediator.Send(command);
 
@@ -50,7 +49,7 @@ namespace Presentation.Controllers
             {
                 DriverId = driverId,
                 Id = licenseId,
-                AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
             };
 
             Result response = await _mediator.Send(command);
@@ -68,7 +67,7 @@ namespace Presentation.Controllers
             UpdateDriversLicenseCommand command = _mapper.Map<UpdateDriversLicenseCommand>(request);
             command.DriverId = driverId;
             command.Id = licenseId;
-            command.AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result response = await _mediator.Send(command);
 
@@ -85,7 +84,7 @@ namespace Presentation.Controllers
             FireDriverCommand command = new()
             {
                 Id = id,
-                AdminIdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
             };
 
             Result response = await _mediator.Send(command);

@@ -17,7 +17,9 @@ namespace Application.Vehicles.Commands.DeleteVehicle
 
         public async Task<Result> Handle(DeleteVehicleCommand request, CancellationToken cancellationToken)
         {
-            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.VehicleId && v.OwnedBy.Employees.Any(e => e.IdentityId == request.AdminIdentityId), includeProperties: new List<string> { "Trailers" }, cancellationToken: cancellationToken);
+            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.VehicleId && v.CompanyId == request.CompanyId,
+                                                                                 includeProperties: new List<string> { "Trailers" },
+                                                                                 cancellationToken: cancellationToken);
 
             if (vehicle == null)
                 return Result.Fail(new VehicleDoesntBelongToCompanyOrDoesntExist());

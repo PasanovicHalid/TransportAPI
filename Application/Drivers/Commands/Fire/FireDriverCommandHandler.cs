@@ -17,7 +17,9 @@ namespace Application.Drivers.Commands.Fire
 
         public async Task<Result> Handle(FireDriverCommand request, CancellationToken cancellationToken)
         {
-            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.Company!.Employees.Any(w => w.IdentityId == request.AdminIdentityId), new List<string> { "Vehicle", "DriversLicenses" }, cancellationToken: cancellationToken);
+            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.CompanyId == request.CompanyId,
+                                                                              new List<string> { "DriversLicenses" },
+                                                                              cancellationToken: cancellationToken);
 
             if (driver is null)
                 return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());

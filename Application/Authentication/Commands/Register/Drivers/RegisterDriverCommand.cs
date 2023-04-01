@@ -19,7 +19,7 @@ namespace Application.Authentication.Commands.Register.Drivers
         public string State { get; set; }
         public string PostalCode { get; set; }
         public string Country { get; set; }
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class RegisterDriverValidator : AbstractValidator<RegisterDriverCommand>
@@ -49,6 +49,8 @@ namespace Application.Authentication.Commands.Register.Drivers
             RuleFor(x => x.PostalCode).NotEmpty();
 
             RuleFor(x => x.Country).NotEmpty();
+
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 }

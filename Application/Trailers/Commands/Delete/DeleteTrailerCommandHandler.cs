@@ -17,7 +17,8 @@ namespace Application.Trailers.Commands.Delete
 
         public async Task<Result> Handle(DeleteTrailerCommand request, CancellationToken cancellationToken)
         {
-            Trailer? trailer = await _unitOfWork.Trailers.GetFirstOrDefaultAsync(t => t.Id == request.TrailerId, cancellationToken: cancellationToken);
+            Trailer? trailer = await _unitOfWork.Trailers.GetFirstOrDefaultAsync(t => t.Id == request.TrailerId && t.CompanyId == request.CompanyId,
+                                                                                 cancellationToken: cancellationToken);
 
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));

@@ -19,9 +19,9 @@ namespace Infrastructure.Authentication
             _userManager = userManager;
         }
 
-        public async Task<string> GenerateTokenAsync(IdentityUser user)
+        public async Task<string> GenerateTokenAsync(IdentityUser user, ulong companyId)
         {
-            SecurityTokenDescriptor tokenDescriptor = SetupTokenDescriptor(await GetUserClaimsAsync(user));
+            SecurityTokenDescriptor tokenDescriptor = SetupTokenDescriptor(await GetUserClaimsAsync(user, companyId));
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
@@ -42,13 +42,14 @@ namespace Infrastructure.Authentication
             return tokenDescriptor;
         }
 
-        private async Task<List<Claim>> GetUserClaimsAsync(IdentityUser user)
+        private async Task<List<Claim>> GetUserClaimsAsync(IdentityUser user, ulong companyId)
         {
             List<Claim> userClaims = new()
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.UserName!),
                 new Claim(ClaimTypes.Email, user.Email!),
+                new Claim(ClaimTypes.GroupSid, companyId.ToString()),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

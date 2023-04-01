@@ -2,12 +2,14 @@
 using Domain.Common.Errors;
 using Domain.Errors;
 using FluentResults;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Presentation.Common.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class ApiController : ControllerBase
     {

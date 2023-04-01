@@ -17,7 +17,7 @@ namespace Application.Companies.Queries.FindById
 
         public async Task<Result<Company>> Handle(FindCompanyByIdQuery request, CancellationToken cancellationToken)
         {
-            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id, cancellationToken: cancellationToken);
+            Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.Id, includeProperties: new List<string> { "Employees", "Vehicles", "Trailers" } , cancellationToken: cancellationToken);
 
             if (company == null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Company)));

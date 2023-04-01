@@ -8,7 +8,6 @@ using Presentation.Common.Controllers;
 
 namespace Presentation.Controllers
 {
-    [Authorize]
     public class WeatherForecastController : ApiController
     {
         private static readonly string[] Summaries = new[]
@@ -45,7 +44,7 @@ namespace Presentation.Controllers
         public async Task<string> GetNo()
         {
             var user = await _userManager.FindByEmailAsync("admin@gmail.com");
-            return await _jwtTokenGenerator.GenerateTokenAsync(user);
+            return await _jwtTokenGenerator.GenerateTokenAsync(user, 0);
         }
 
         [HttpGet("TestException")]

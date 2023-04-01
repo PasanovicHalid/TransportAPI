@@ -3,7 +3,7 @@ using FluentResults;
 using FluentValidation;
 using MediatR;
 
-namespace Application.Vans.Commands.AddVanToCompany
+namespace Application.Vans.Commands.AddToCompany
 {
     public class AddVanToCompanyCommand : IRequest<Result>
     {

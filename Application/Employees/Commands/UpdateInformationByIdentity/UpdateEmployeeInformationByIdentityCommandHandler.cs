@@ -17,7 +17,8 @@ namespace Application.Employees.Commands.UpdateInformationByIdentity
 
         public async Task<Result> Handle(UpdateEmployeeInformationByIdentityCommand request, CancellationToken cancellationToken)
         {
-            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.IdentityId == request.IdentityId, cancellationToken: cancellationToken);
+            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.IdentityId == request.IdentityId,
+                                                                                    cancellationToken: cancellationToken);
 
             if (employee is null)
                 return Result.Fail(new EmployeeIsntWorkingForAdminOrDoesntExist());

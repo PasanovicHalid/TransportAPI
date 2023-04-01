@@ -14,7 +14,7 @@ namespace Application.DriverLicenses.Commands.Create
 
         public ulong DriverId { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class CreateDriversLicenseValidator : AbstractValidator<CreateDriversLicenseCommand>
@@ -25,7 +25,7 @@ namespace Application.DriverLicenses.Commands.Create
             RuleFor(x => x.IssuingDate).NotEmpty().LessThan(x => x.ExpirationDate);
             RuleFor(x => x.ExpirationDate).NotEmpty().GreaterThan(x => x.IssuingDate);
             RuleFor(x => x.DriverId).NotEmpty();
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Application.Vehicles.Commands.DeleteVehicle
     {
         public ulong VehicleId { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class DeleteVehicleValidator : AbstractValidator<DeleteVehicleCommand>
@@ -16,7 +16,7 @@ namespace Application.Vehicles.Commands.DeleteVehicle
         public DeleteVehicleValidator()
         {
             RuleFor(x => x.VehicleId).NotEmpty();
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

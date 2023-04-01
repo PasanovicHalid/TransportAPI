@@ -4,27 +4,27 @@ using Domain.Entities;
 using FluentResults;
 using MediatR;
 
-namespace Application.Trucks.Commands.AddTruckToCompany
+namespace Application.Vans.Commands.AddToCompany
 {
-    public class AddTruckToCompanyCommandHandler : IRequestHandler<AddTruckToCompanyCommand, Result>
+    public class AddVanToCompanyCommandHandler : IRequestHandler<AddVanToCompanyCommand, Result>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddTruckToCompanyCommandHandler(IUnitOfWork unitOfWork)
+        public AddVanToCompanyCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(AddTruckToCompanyCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(AddVanToCompanyCommand request, CancellationToken cancellationToken)
         {
             Company? company = await _unitOfWork.Companies.GetFirstOrDefaultAsync(c => c.Id == request.CompanyId, cancellationToken: cancellationToken);
 
             if (company == null)
                 return Result.Fail(new EntityDoesntExist(request.CompanyId, nameof(Company)));
 
-            Truck truck = new Truck(request.Manufacturer, request.Model, request.DateOfManufacturing, request.Dimensions);
+            Van van = new Van(request.Manufacturer, request.Model, request.DateOfManufacturing, request.Dimensions, request.Capacity);
 
-            company.Vehicles.Add(truck);
+            company.Vehicles.Add(van);
 
             _unitOfWork.Companies.Update(company);
             await _unitOfWork.SaveAsync(cancellationToken);

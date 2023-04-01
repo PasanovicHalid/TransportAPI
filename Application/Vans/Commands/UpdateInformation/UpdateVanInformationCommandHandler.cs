@@ -17,7 +17,7 @@ namespace Application.Vans.Commands.UpdateInformation
 
         public async Task<Result> Handle(UpdateVanInformationCommand request, CancellationToken cancellationToken)
         {
-            Van? van = await _unitOfWork.Vans.GetFirstOrDefaultAsync(v => v.Id == request.Id && v.OwnedBy.Employees.Any(e => e.IdentityId == request.AdminIdentityId));
+            Van? van = await _unitOfWork.Vans.GetFirstOrDefaultAsync(v => v.Id == request.Id && v.CompanyId == request.CompanyId, cancellationToken: cancellationToken);
 
             if (van == null)
                 return Result.Fail(new VanDoesntBelongToCompanyOrDoenstExist());
@@ -31,7 +31,7 @@ namespace Application.Vans.Commands.UpdateInformation
 
         }
 
-        private static void SetupVan(UpdateVanInformationCommand request, Van? van)
+        private static void SetupVan(UpdateVanInformationCommand request, Van van)
         {
             van.Manufacturer = request.Manufacturer;
             van.Model = request.Model;

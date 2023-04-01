@@ -7,6 +7,7 @@ namespace Application.Trailers.Commands.Delete
     public class DeleteTrailerCommand : IRequest<Result>
     {
         public ulong TrailerId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class DeleteTrailerValidator : AbstractValidator<DeleteTrailerCommand>
@@ -14,6 +15,7 @@ namespace Application.Trailers.Commands.Delete
         public DeleteTrailerValidator()
         {
             RuleFor(x => x.TrailerId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

@@ -20,8 +20,7 @@ namespace Application.DriverLicenses.Commands.Create
         public async Task<Result> Handle(CreateDriversLicenseCommand request, CancellationToken cancellationToken)
         {
             Company? adminAndDriverCompany = await _unitOfWork.Companies.GetFirstOrDefaultAsync(
-                c => c.Employees.Any(e => e.IdentityId == request.AdminIdentityId && e.Role.Equals(ApplicationRolesConstants.Admin))
-                && c.Employees.Any(e => e.Id == request.DriverId && e.Role.Equals(ApplicationRolesConstants.Driver)), cancellationToken: cancellationToken);
+                c => c.Id == request.CompanyId && c.Employees.Any(e => e.Id == request.DriverId), cancellationToken: cancellationToken);
 
             if (adminAndDriverCompany is null)
                 return Result.Fail(new DriverIsntWorkingForAdminOrDoesntExist());

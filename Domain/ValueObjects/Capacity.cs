@@ -13,6 +13,12 @@ namespace Domain.ValueObjects
             MaxCarryWeight = maxCarryWeight;
         }
 
+        public Capacity(double width, double depth, double height, double maxCarryWeight)
+        {
+            Volume = new Volume(width, depth, height);
+            MaxCarryWeight = maxCarryWeight;
+        }
+
         protected Capacity() { }
 
         protected override IEnumerable<object> GetEqualityComponents()

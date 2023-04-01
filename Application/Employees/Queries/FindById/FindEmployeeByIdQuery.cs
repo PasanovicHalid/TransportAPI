@@ -9,7 +9,7 @@ namespace Application.Employees.Queries.FindById
     {
         public ulong Id { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class FindEmployeeByIdValidator : AbstractValidator<FindEmployeeByIdQuery>
@@ -17,6 +17,7 @@ namespace Application.Employees.Queries.FindById
         public FindEmployeeByIdValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

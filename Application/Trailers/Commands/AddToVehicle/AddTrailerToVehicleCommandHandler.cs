@@ -17,12 +17,14 @@ namespace Application.Trailers.Commands.AddToVehicle
 
         public async Task<Result> Handle(AddTrailerToVehicleCommand request, CancellationToken cancellationToken)
         {
-            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.VehicleId, cancellationToken: cancellationToken);
+            Vehicle? vehicle = await _unitOfWork.Vehicles.GetFirstOrDefaultAsync(v => v.Id == request.VehicleId && v.CompanyId == request.CompanyId,
+                                                                                 cancellationToken: cancellationToken);
 
             if (vehicle == null)
                 return Result.Fail(new EntityDoesntExist(request.VehicleId, nameof(Vehicle)));
 
-            Trailer? trailer = await _unitOfWork.Trailers.GetFirstOrDefaultAsync(t => t.Id == request.TrailerId, cancellationToken: cancellationToken);
+            Trailer? trailer = await _unitOfWork.Trailers.GetFirstOrDefaultAsync(t => t.Id == request.TrailerId && t.CompanyId == request.CompanyId,
+                                                                                 cancellationToken: cancellationToken);
 
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));

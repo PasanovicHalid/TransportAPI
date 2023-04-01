@@ -9,6 +9,7 @@ namespace Application.Trailers.Commands.Update
     {
         public ulong TrailerId { get; set; }
         public Capacity Capacity { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class UpdateTrailerValidator : AbstractValidator<UpdateTrailerCommand>
@@ -17,6 +18,7 @@ namespace Application.Trailers.Commands.Update
         {
             RuleFor(x => x.TrailerId).NotEmpty();
             RuleFor(x => x.Capacity).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

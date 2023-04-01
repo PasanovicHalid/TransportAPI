@@ -8,7 +8,7 @@ namespace Application.Drivers.Commands.Fire
     {
         public ulong Id { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class FireDriverValidator : AbstractValidator<FireDriverCommand>
@@ -16,7 +16,7 @@ namespace Application.Drivers.Commands.Fire
         public FireDriverValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 }

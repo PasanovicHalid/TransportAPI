@@ -8,15 +8,9 @@ namespace Application.DriverLicenses.Commands.Delete
     {
         public ulong Id { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
 
         public ulong DriverId { get; set; }
-
-        public DeleteDriversLicenseCommand(ulong id, string adminIdentityId)
-        {
-            Id = id;
-            AdminIdentityId = adminIdentityId;
-        }
 
         public DeleteDriversLicenseCommand()
         {
@@ -28,7 +22,7 @@ namespace Application.DriverLicenses.Commands.Delete
         public DeleteDriversLicenseValidator()
         {
             RuleFor(x => x.Id).NotEmpty();
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.DriverId).NotEmpty();
         }
     }

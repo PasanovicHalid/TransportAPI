@@ -13,7 +13,7 @@ namespace Application.Employees.Commands.UpdateInformationById
         public string LastName { get; set; }
         public double Salary { get; set; }
         public Address Address { get; set; }
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class UpdateEmployeeInformationByIdValidator : AbstractValidator<UpdateEmployeeInformationByIdCommand>
@@ -33,7 +33,7 @@ namespace Application.Employees.Commands.UpdateInformationById
 
             RuleFor(x => x.Address).NotEmpty();
 
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 }

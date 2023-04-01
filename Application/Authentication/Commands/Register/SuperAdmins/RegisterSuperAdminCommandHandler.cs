@@ -47,7 +47,7 @@ namespace Application.Authentication.Commands.Register.SuperAdmins
 
                 return new AuthenticationResult
                 {
-                    Token = await _jwtGenerator.GenerateTokenAsync(user),
+                    Token = await _jwtGenerator.GenerateTokenAsync(user, 0),
                     ExpirationDate = _jwtGenerator.GetExpirationDate()
                 };
             }

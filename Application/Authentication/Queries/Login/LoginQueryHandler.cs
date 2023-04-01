@@ -1,6 +1,8 @@
 ﻿using Application.Authentication.Contracts;
 using Application.Authentication.Queries.Login.Errors;
 using Application.Common.Interfaces.Authentication;
+using Application.Common.Interfaces.Persistence;
+using Domain.Entities;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -12,12 +14,14 @@ namespace Application.Authentication.Queries.Login
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IJwtTokenGenerator _jwtGenerator;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public LoginQueryHandler(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IJwtTokenGenerator jwtGenerator)
+        public LoginQueryHandler(SignInManager<IdentityUser> signInManager, UserManager<IdentityUser> userManager, IJwtTokenGenerator jwtGenerator, IUnitOfWork unitOfWork)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtGenerator = jwtGenerator;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<AuthenticationResult>> Handle(LoginQuery request, CancellationToken cancellationToken)
@@ -32,9 +36,16 @@ namespace Application.Authentication.Queries.Login
             if (!result.Succeeded)
                 return Result.Fail(new LoginFailed());
 
+
+            Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.IdentityId == user.Id);
+
+            string token = employee is null
+                ? await _jwtGenerator.GenerateTokenAsync(user, 0)
+                : await _jwtGenerator.GenerateTokenAsync(user, employee.CompanyId);
+
             return new AuthenticationResult
             {
-                Token = await _jwtGenerator.GenerateTokenAsync(user),
+                Token = token,
                 ExpirationDate = _jwtGenerator.GetExpirationDate()
             };
         }

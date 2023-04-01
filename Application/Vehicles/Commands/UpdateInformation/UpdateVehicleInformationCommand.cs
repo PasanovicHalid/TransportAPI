@@ -12,7 +12,7 @@ namespace Application.Vehicles.Commands.UpdateInformation
         public string Model { get; set; }
         public DateTime DateOfManufacturing { get; set; }
         public Dimensions Dimensions { get; set; }
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class UpdateVehicleInformationValidator : AbstractValidator<UpdateVehicleInformationCommand>
@@ -24,7 +24,7 @@ namespace Application.Vehicles.Commands.UpdateInformation
             RuleFor(x => x.Model).NotEmpty();
             RuleFor(x => x.DateOfManufacturing).NotEmpty();
             RuleFor(x => x.Dimensions).NotEmpty();
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

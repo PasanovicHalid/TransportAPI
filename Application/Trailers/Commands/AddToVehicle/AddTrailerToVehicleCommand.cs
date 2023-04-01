@@ -8,6 +8,7 @@ namespace Application.Trailers.Commands.AddToVehicle
     {
         public ulong VehicleId { get; set; }
         public ulong TrailerId { get; set; }
+        public ulong CompanyId { get; set; }
     }
 
     public class AddTrailerToVehicleValidator : AbstractValidator<AddTrailerToVehicleCommand>
@@ -16,6 +17,7 @@ namespace Application.Trailers.Commands.AddToVehicle
         {
             RuleFor(x => x.VehicleId).NotEmpty();
             RuleFor(x => x.TrailerId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
 

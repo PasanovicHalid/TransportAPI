@@ -13,7 +13,7 @@ namespace Application.DriverLicenses.Commands.Update
 
         public DateTime ExpirationDate { get; set; }
 
-        public string AdminIdentityId { get; set; }
+        public ulong CompanyId { get; set; }
 
         public ulong DriverId { get; set; }
     }
@@ -26,7 +26,7 @@ namespace Application.DriverLicenses.Commands.Update
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.IssuingDate).NotEmpty().LessThan(x => x.ExpirationDate);
             RuleFor(x => x.ExpirationDate).NotEmpty().GreaterThan(x => x.IssuingDate);
-            RuleFor(x => x.AdminIdentityId).NotEmpty();
+            RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.DriverId).NotEmpty();
         }
     }
