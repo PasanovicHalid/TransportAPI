@@ -9,6 +9,9 @@ namespace Domain.Common
 
         public bool Deleted { get; set; }
 
+        [Timestamp]
+        public byte[] Version { get; set; }
+
         protected EntityObject()
         {
         }

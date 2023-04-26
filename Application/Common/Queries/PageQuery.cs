@@ -4,9 +4,9 @@ using FluentValidation;
 using MediatR;
 using System.Linq.Expressions;
 
-namespace Application.Common.Commands
+namespace Application.Common.Queries
 {
-    public class PageCommand<T> : IRequest<Result<PaginatedList<T>>> where T : class
+    public class PageQuery<T> : IRequest<Result<PaginatedList<T>>> where T : class
     {
         public Expression<Func<T, bool>>? Filter { get; set; }
 
@@ -20,17 +20,8 @@ namespace Application.Common.Commands
 
         public bool Tracked { get; set; }
 
-        public int PageIndex { get; set; }
+        public int PageIndex { get; set; } = 1;
 
-        public int PageSize { get; set; }
-    }
-
-    public class PageValidator<T> : AbstractValidator<PageCommand<T>> where T : class
-    {
-        public PageValidator()
-        {
-            RuleFor(x => x.PageIndex).GreaterThan(0);
-            RuleFor(x => x.PageSize).GreaterThan(0);
-        }
+        public int PageSize { get; set; } = 10;
     }
 }

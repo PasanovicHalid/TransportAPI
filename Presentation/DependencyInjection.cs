@@ -10,7 +10,6 @@ namespace Presentation
             services.AddControllers()
                 .AddApplicationPart(typeof(DependencyInjection).Assembly);
 
-
             services.AddAutoMapper(typeof(DependencyInjection).Assembly);
 
             services.AddSwaggerGen(options =>

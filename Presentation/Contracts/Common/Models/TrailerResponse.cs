@@ -18,6 +18,7 @@ namespace Presentation.Contracts.Common.Models
     }
     public class TrailerResponse
     {
+        public ulong Id { get; set; }
         public Capacity Capacity { get; set; }
         public ulong CompanyId { get; private set; }
         public ulong? VehicleId { get; set; }

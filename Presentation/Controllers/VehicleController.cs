@@ -1,12 +1,16 @@
-﻿using Application.Vehicles.Commands.DeleteVehicle;
+﻿using Application.Trailers.Commands.AddToVehicle;
+using Application.Trailers.Commands.Create;
+using Application.Vehicles.Commands.DeleteVehicle;
 using Application.Vehicles.Commands.UpdateInformation;
 using AutoMapper;
+using Domain.Constants;
 using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
+using Presentation.Contracts.Trailers;
 using Presentation.Contracts.Vehicles;
 using System;
 using System.Collections.Generic;
@@ -64,6 +68,25 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok();
+        }
+
+        [HttpPost("{id}/trailer/{trailerId}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> CreateTrailer([FromRoute(Name = "id")] ulong vehicleId, [FromRoute(Name = "trailerId")] ulong trailerId)
+        {
+            AddTrailerToVehicleCommand command = new()
+            {
+                TrailerId = trailerId,
+                VehicleId = vehicleId,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return CreatedAtAction(nameof(CreateTrailer), null);
         }
 
     }

@@ -21,6 +21,10 @@ namespace Application.Common.Interfaces.Persistence
                                        int pageSize = 10,
                                        CancellationToken cancellationToken = default);
 
+        IQueryable<T> FinalizeQuery(IQueryable<T> query,
+                                          bool includeDeleted,
+                                          bool isTracked);
+
         void RemovePermanent(T item);
 
         void RemoveRangePermanent(IEnumerable<T> items);

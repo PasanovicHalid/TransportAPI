@@ -1,12 +1,13 @@
 ﻿using Application.Authentication.Commands.Register.Admins;
 using Application.Authentication.Commands.Register.Drivers;
 using Application.Authentication.Contracts;
-using Application.Common.Commands;
+using Application.Common.Queries;
 using Application.Common.Interfaces.Persistence;
 using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Remove;
 using Application.Companies.Commands.UpdateInformation;
 using Application.Companies.Queries.FindById;
+using Application.Companies.Queries.GetPage;
 using Application.Trailers.Commands.Create;
 using Application.Trailers.Commands.Delete;
 using Application.Trailers.Commands.Update;
@@ -94,15 +95,15 @@ namespace Presentation.Controllers
             return Ok(_mapper.Map<CompanyResponse>(response.Value));
         }
 
-        [HttpGet]
+        [HttpPost("page")]
         public async Task<IActionResult> GetPage()
         {
-            Result<PaginatedList<Company>> response = await _mediator.Send(new PageCommand<Company>());
+            Result<PaginatedList<Company>> response = await _mediator.Send(new CompanyPageQuery());
 
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);
 
-            return Ok(response.Value);
+            return Ok(_mapper.Map<List<CompanyResponse>>(response.Value));
         }
 
         [HttpPost("{id}/register/initial/admin")]
@@ -170,7 +171,7 @@ namespace Presentation.Controllers
 
         [HttpDelete("trailer/{id}")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> DeleteTrailer([FromBody] CreateTrailerRequest request, [FromRoute(Name = "id")] ulong trailerId)
+        public async Task<IActionResult> DeleteTrailer([FromRoute(Name = "id")] ulong trailerId)
         {
             DeleteTrailerCommand command = new()
             {

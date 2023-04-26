@@ -2,6 +2,7 @@
 using Domain.Common;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Common.Persistence
@@ -15,6 +16,14 @@ namespace Infrastructure.Common.Persistence
         {
             _db = db;
             _dbSet = _db.Set<T>();
+        }
+
+        public IQueryable<T> FinalizeQuery(IQueryable<T> query,
+                                                 bool includeDeleted,
+                                                 bool isTracked)
+        {
+            query = isTracked ? query.AsNoTracking() : query;
+            return FilterDeleted(includeDeleted, query);
         }
 
         public async Task AddAsync(T item,
@@ -125,9 +134,7 @@ namespace Infrastructure.Common.Persistence
 
         private static IQueryable<T> FilterDeleted(bool deleted, IQueryable<T> query)
         {
-            if (!deleted)
-                query = query.Where(u => u.Deleted == false);
-            return query;
+            return deleted ? query : query.Where(u => u.Deleted == false);
         }
 
         private static IQueryable<T> SetupSorting(Expression<Func<T, object>>? orderBy, bool desc, IQueryable<T> query)
@@ -139,5 +146,6 @@ namespace Infrastructure.Common.Persistence
                     return query.OrderBy(orderBy);
             return query;
         }
+
     }
 }

@@ -11,13 +11,11 @@ namespace Application
         {
             services.AddMediatR(conf =>
             {
-                conf.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+                conf.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly)
+                .AddOpenBehavior(typeof(ValidationBehavior<,>), ServiceLifetime.Scoped);
             });
 
-
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-
-            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly, ServiceLifetime.Singleton);
 
             return services;
         }
