@@ -30,6 +30,9 @@ using Presentation.Contracts.Trailers;
 using Presentation.Contracts.Trucks;
 using Presentation.Contracts.Vans;
 using System.Security.Claims;
+using Application.Trailers.Queries.GetById;
+using Application.Trailers.Queries.GetPage;
+using Presentation.Contracts.Common;
 
 namespace Presentation.Controllers
 {
@@ -206,70 +209,39 @@ namespace Presentation.Controllers
             return Ok();
         }
 
-        [HttpPost("truck")]
+        [HttpGet("trailer/{id}")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> CreateTruck([FromBody] CreateTruckRequest request)
+        public async Task<IActionResult> GetTrailer(ulong id)
         {
-            AddTruckToCompanyCommand command = new()
+            GetTrailerByIdQuery request = new()
             {
-                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
-                DateOfManufacturing = request.DateOfManufacturing,
-                Manufacturer = request.Manufacturer,
-                Model = request.Model,
-                Dimensions = new Dimensions(request.Width, request.Depth)
+                Id = id,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
             };
 
-            Result result = await _mediator.Send(command);
+            Result<Trailer> response = await _mediator.Send(request);
 
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
 
-            return CreatedAtAction(nameof(CreateTruck), null);
+            return Ok(_mapper.Map<TrailerResponse>(response.Value));
         }
 
-        [HttpPost("van")]
+        [HttpPost("trailer/page")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> CreateVan([FromBody] CreateVanRequest request)
+        public async Task<IActionResult> GetTrailers([FromBody] TrailerPageRequest request)
         {
-            AddVanToCompanyCommand command = new()
-            {
-                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
-                DateOfManufacturing = request.DateOfManufacturing,
-                Manufacturer = request.Manufacturer,
-                Model = request.Model,
-                Dimensions = new Dimensions(request.Width, request.Depth),
-                Capacity = new Capacity(request.WidthCompartment, request.DepthCompartment, request.HeightCompartment, request.MaxCarryWeight)
-            };
+            TrailerPageQuery query = _mapper.Map<TrailerPageQuery>(request);
 
-            Result result = await _mediator.Send(command);
+            Result<PaginatedList<Trailer>> response = await _mediator.Send(query);
 
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
 
-            return CreatedAtAction(nameof(CreateVan), null);
-        }
-
-        [HttpPut("van/{id}")]
-        [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> UpdateVan([FromBody] UpdateVanRequest request, [FromRoute(Name = "id")] ulong vanId)
-        {
-            UpdateVanInformationCommand command = new()
-            {
-                Id = vanId,
-                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
-                DateOfManufacturing = request.DateOfManufacturing,
-                Manufacturer = request.Manufacturer,
-                Model = request.Model,
-                Dimensions = new Dimensions(request.Width, request.Depth),
-                Capacity = new Capacity(request.WidthCompartment, request.DepthCompartment, request.HeightCompartment, request.MaxCarryWeight)
-            };
-
-            Result result = await _mediator.Send(command);
-
-            if (result.IsFailed)
-                return HandleErrors(result.Errors[0]);
-
-            return Ok();
+            return Ok(new PaginatedResponse<TrailerResponse>(response.Value.Select(_mapper.Map<TrailerResponse>).ToList(),
+                                                             response.Value.PageIndex,
+                                                             request.PageSize,
+                                                             response.Value.TotalCount));
         }
     }
 }

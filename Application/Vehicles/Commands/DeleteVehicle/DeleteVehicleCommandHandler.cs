@@ -26,6 +26,8 @@ namespace Application.Vehicles.Commands.DeleteVehicle
 
             vehicle.Trailers.ForEach(t => t.VehicleId = null);
 
+            vehicle.DriverId = null;
+
             _unitOfWork.Vehicles.Remove(vehicle);
             await _unitOfWork.SaveAsync(cancellationToken);
 

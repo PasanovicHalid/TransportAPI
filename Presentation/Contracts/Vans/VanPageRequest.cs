@@ -25,6 +25,6 @@ namespace Presentation.Contracts.Vans
         public bool Desc { get; set; }
         public bool Tracked { get; set; }
         public bool WithDeleted { get; set; }
-        public List<string> IncludeProperties { get; set; }
+        public List<string>? IncludeProperties { get; set; }
     }
 }

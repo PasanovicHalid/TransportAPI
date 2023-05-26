@@ -17,7 +17,12 @@ namespace Application.Trailers.Commands.Update
         public UpdateTrailerValidator()
         {
             RuleFor(x => x.TrailerId).NotEmpty();
-            RuleFor(x => x.Capacity).NotEmpty();
+            RuleFor(x => x.Capacity).NotNull();
+            RuleFor(x => x.Capacity.MaxCarryWeight).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume).NotNull();
+            RuleFor(x => x.Capacity.Volume.Depth).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume.Width).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume.Height).NotEmpty().GreaterThan(0);
             RuleFor(x => x.CompanyId).NotEmpty();
         }
     }
