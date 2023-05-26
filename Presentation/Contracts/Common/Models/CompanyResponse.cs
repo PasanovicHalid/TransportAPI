@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Application.Companies.Commands.Create;
 using AutoMapper;
 using Domain.Entities;
-using Domain.ValueObjects;
+using Presentation.Contracts.Common.ValueObjects;
 using Presentation.Contracts.Companies;
 
 namespace Presentation.Contracts.Common.Models

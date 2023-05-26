@@ -1,6 +1,8 @@
-﻿using Application.Employees.Commands.UpdateInformationById;
+﻿using Application.Common.Interfaces.Persistence;
+using Application.Employees.Commands.UpdateInformationById;
 using Application.Employees.Commands.UpdateInformationByIdentity;
 using Application.Employees.Queries.FindById;
+using Application.Employees.Queries.GetPage;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
@@ -10,6 +12,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
+using Presentation.Contracts.Common;
+using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Employees;
 using System.Security.Claims;
 
@@ -31,11 +35,6 @@ namespace Presentation.Controllers
         {
             UpdateEmployeeInformationByIdCommand command = _mapper.Map<UpdateEmployeeInformationByIdCommand>(request);
             command.Id = employeeId;
-            command.Address = new Address(request.Street,
-                                          request.City,
-                                          request.State,
-                                          request.PostalCode,
-                                          request.Country);
             command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result response = await _mediator.Send(command);
@@ -51,11 +50,6 @@ namespace Presentation.Controllers
         public async Task<IActionResult> UpdateInformationByDriver([FromBody] UpdateEmployeeInformationRequest request)
         {
             UpdateEmployeeInformationByIdentityCommand command = _mapper.Map<UpdateEmployeeInformationByIdentityCommand>(request);
-            command.Address = new Address(request.Street,
-                                          request.City,
-                                          request.State,
-                                          request.PostalCode,
-                                          request.Country);
             command.IdentityId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!;
 
             Result response = await _mediator.Send(command);
@@ -81,7 +75,44 @@ namespace Presentation.Controllers
             if (response.IsFailed)
                 return HandleErrors(response.Errors[0]);
 
-            return Ok(response.Value);
+            return Ok(_mapper.Map<EmployeeResponse>(response.Value));
+        }
+
+        [HttpGet("information")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetInformationByEmployee()
+        {
+            throw new NotImplementedException();
+            FindEmployeeByIdQuery query = new()
+            {
+                Id = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value!),
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<Employee> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<EmployeeResponse>(response.Value));
+        }
+
+        [HttpPost("page")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetPage([FromBody] EmployeePageRequest request)
+        {
+            EmployeePageQuery query = _mapper.Map<EmployeePageQuery>(request);
+            Result<PaginatedList<Employee>> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+
+            return Ok(new PaginatedResponse<EmployeeResponse>(response.Value.Select(_mapper.Map<EmployeeResponse>).ToList(),
+                                                              response.Value.PageIndex,
+                                                              request.PageSize,
+                                                              response.Value.TotalCount));
+
         }
     }
 }

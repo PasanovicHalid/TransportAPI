@@ -1,5 +1,7 @@
-﻿using Application.Authentication.Commands.Register.Drivers;
+﻿using Application.Authentication.Commands.Register.Admins;
+using Application.Authentication.Commands.Register.Drivers;
 using AutoMapper;
+using Presentation.Contracts.Common.ValueObjects;
 using System.ComponentModel.DataAnnotations;
 
 namespace Presentation.Contracts.Authentication
@@ -8,7 +10,18 @@ namespace Presentation.Contracts.Authentication
     {
         public DriverRegistrationAdapter()
         {
-            CreateMap<DriverRegistrationRequest, RegisterDriverCommand>();
+            CreateMap<DriverRegistrationRequest, RegisterDriverCommand>()
+                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Domain.ValueObjects.Address(src.Address.Street,
+                                                                                                           src.Address.City,
+                                                                                                           src.Address.State,
+                                                                                                           src.Address.PostalCode,
+                                                                                                           src.Address.Country)))
+                .ForPath(dest => dest.Address.GpsCoordinate, opt =>
+                {
+                    opt.Condition(src => src.Source.Address.GpsCoordinate != null);
+                    opt.MapFrom(src => new Domain.ValueObjects.GpsCoordinate(src.Address.GpsCoordinate!.Longitude!.Value,
+                                                                             src.Address.GpsCoordinate!.Latitude!.Value));
+                });
         }
     }
 
@@ -30,14 +43,6 @@ namespace Presentation.Contracts.Authentication
 
         public double Salary { get; set; }
 
-        public string Street { get; set; }
-
-        public string City { get; set; }
-
-        public string State { get; set; }
-
-        public string PostalCode { get; set; }
-
-        public string Country { get; set; }
+        public Address Address { get; set; }
     }
 }

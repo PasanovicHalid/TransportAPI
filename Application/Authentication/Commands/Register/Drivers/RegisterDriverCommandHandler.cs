@@ -71,22 +71,45 @@ namespace Application.Authentication.Commands.Register.Drivers
 
         private static Driver SetupDriver(RegisterDriverCommand request, Company company)
         {
-            return new Driver(new IdentityUser()
+            if (request.Address.GpsCoordinate is not null)
             {
-                UserName = request.Email,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber
-            },
-                              request.FirstName,
-                              request.MiddleName,
-                              request.LastName,
-                              request.Salary,
-                              new Address(request.Street,
-                                          request.City,
-                                          request.State,
-                                          request.PostalCode,
-                                          request.Country),
-                              company.Id);
+                return new(user: new IdentityUser()
+                {
+                    UserName = request.Email,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber
+                },
+                                firstName: request.FirstName,
+                                middleName: request.MiddleName,
+                                lastName: request.LastName,
+                                salary: request.Salary,
+                                address: new Address(street: request.Address.Street,
+                                                     city: request.Address.City,
+                                                     state: request.Address.State,
+                                                     postalCode: request.Address.PostalCode,
+                                                     country: request.Address.Country,
+                                                     gpsCoordinate: new GpsCoordinate(request.Address.GpsCoordinate.Longitude, request.Address.GpsCoordinate.Latitude)),
+                                companyId: request.CompanyId);
+            }
+            else
+            {
+                return new(user: new IdentityUser()
+                {
+                    UserName = request.Email,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber
+                },
+                                firstName: request.FirstName,
+                                middleName: request.MiddleName,
+                                lastName: request.LastName,
+                                salary: request.Salary,
+                                address: new Address(street: request.Address.Street,
+                                                     city: request.Address.City,
+                                                     state: request.Address.State,
+                                                     postalCode: request.Address.PostalCode,
+                                                     country: request.Address.Country),
+                                companyId: request.CompanyId);
+            }
         }
     }
 }

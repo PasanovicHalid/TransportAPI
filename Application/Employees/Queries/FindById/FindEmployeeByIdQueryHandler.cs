@@ -18,7 +18,7 @@ namespace Application.Employees.Queries.FindById
         public async Task<Result<Employee>> Handle(FindEmployeeByIdQuery request, CancellationToken cancellationToken)
         {
             Employee? employee = await _unitOfWork.Employees.GetFirstOrDefaultAsync(e => e.Id == request.Id && e.CompanyId == request.CompanyId,
-                                                                                    cancellationToken: cancellationToken);
+                                                                                    cancellationToken: cancellationToken, includeProperties: new List<string>() { "User" });
 
             if (employee is null)
                 return Result.Fail(new EntityDoesntExist(request.Id, nameof(Employee)));

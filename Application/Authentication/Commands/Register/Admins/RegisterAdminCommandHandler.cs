@@ -72,24 +72,47 @@ namespace Application.Authentication.Commands.Register.Admins
 
         private static Admininistrator SetupAdmin(RegisterAdminCommand request)
         {
-            return new Admininistrator(
-                                user: new IdentityUser()
-                                {
-                                    UserName = request.Email,
-                                    Email = request.Email,
-                                    PhoneNumber = request.PhoneNumber
-                                },
+            if (request.Address.GpsCoordinate is not null)
+            {
+                return new(user: new IdentityUser()
+                {
+                    UserName = request.Email,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber
+                },
                                 role: ApplicationRolesConstants.Admin,
                                 firstName: request.FirstName,
                                 middleName: request.MiddleName,
                                 lastName: request.LastName,
                                 salary: request.Salary,
-                                address: new Address(street: request.Street,
-                                                     city: request.City,
-                                                     state: request.State,
-                                                     postalCode: request.PostalCode,
-                                                     country: request.Country),
+                                address: new Address(street: request.Address.Street,
+                                                     city: request.Address.City,
+                                                     state: request.Address.State,
+                                                     postalCode: request.Address.PostalCode,
+                                                     country: request.Address.Country,
+                                                     gpsCoordinate: new GpsCoordinate(request.Address.GpsCoordinate.Longitude, request.Address.GpsCoordinate.Latitude)),
                                 companyId: request.CompanyId);
+            }
+            else
+            {
+                return new(user: new IdentityUser()
+                {
+                    UserName = request.Email,
+                    Email = request.Email,
+                    PhoneNumber = request.PhoneNumber
+                },
+                                role: ApplicationRolesConstants.Admin,
+                                firstName: request.FirstName,
+                                middleName: request.MiddleName,
+                                lastName: request.LastName,
+                                salary: request.Salary,
+                                address: new Address(street: request.Address.Street,
+                                                     city: request.Address.City,
+                                                     state: request.Address.State,
+                                                     postalCode: request.Address.PostalCode,
+                                                     country: request.Address.Country),
+                                companyId: request.CompanyId);
+            }
         }
     }
 }

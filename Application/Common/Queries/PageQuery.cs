@@ -12,13 +12,13 @@ namespace Application.Common.Queries
 
         public Expression<Func<T, object>>? OrderBy { get; set; }
 
-        public bool Desc { get; set; }
+        public bool Desc { get; set; } = false;
 
         public List<string>? IncludeProperties { get; set; }
 
-        public bool WithDeleted { get; set; }
+        public bool WithDeleted { get; set; } = false;
 
-        public bool Tracked { get; set; }
+        public bool Tracked { get; set; } = false;
 
         public int PageIndex { get; set; } = 1;
 

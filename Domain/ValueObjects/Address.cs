@@ -14,7 +14,7 @@ namespace Domain.ValueObjects
 
         public string Country { get; private set; }
 
-        public GpsCoordinate? GpsCoordinate { get; private set; }
+        public GpsCoordinate? GpsCoordinate { get; set; }
 
         public Address(string street,
                        string city,

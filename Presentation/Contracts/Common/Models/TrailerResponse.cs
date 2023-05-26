@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Domain.ValueObjects;
+using Presentation.Contracts.Common.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
