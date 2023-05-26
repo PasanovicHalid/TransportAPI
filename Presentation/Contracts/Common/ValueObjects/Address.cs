@@ -24,5 +24,9 @@ namespace Presentation.Contracts.Common.ValueObjects
             Country = country;
             GpsCoordinate = gpsCoordinate;
         }
+
+        public Address()
+        {
+        }
     }
 }

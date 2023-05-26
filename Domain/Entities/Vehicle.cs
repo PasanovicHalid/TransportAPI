@@ -21,6 +21,10 @@ namespace Domain.Entities
 
         public ulong CompanyId { get; private set; }
 
+        public Employee Driver { get; private set; }
+
+        public ulong? DriverId { get; private set; }
+
         public Vehicle(string manufacturer, string model, DateTime dateOfManufacturing, Dimensions dimensions)
         {
             Manufacturer = manufacturer;

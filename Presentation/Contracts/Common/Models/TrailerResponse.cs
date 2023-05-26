@@ -13,7 +13,23 @@ namespace Presentation.Contracts.Common.Models
     {
         public TrailerResponseAdapter()
         {
-            CreateMap<Trailer, TrailerResponse>();
+            CreateMap<Trailer, TrailerResponse>()
+                .ForMember(dest => dest.Capacity, opt =>
+                {
+                    opt.MapFrom((src, dest) =>
+                    {
+                        return new Capacity
+                        {
+                            Volume = new Volume
+                            {
+                                Height = src.Capacity.Volume.Height,
+                                Width = src.Capacity.Volume.Width,
+                                Depth = src.Capacity.Volume.Depth
+                            },
+                            MaxCarryWeight = src.Capacity.MaxCarryWeight
+                        };
+                    });
+                });
         }
     }
     public class TrailerResponse

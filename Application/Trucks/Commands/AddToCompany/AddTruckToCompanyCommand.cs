@@ -22,7 +22,9 @@ namespace Application.Trucks.Commands.AddToCompany
             RuleFor(x => x.Manufacturer).NotEmpty();
             RuleFor(x => x.Model).NotEmpty();
             RuleFor(x => x.DateOfManufacturing).NotEmpty();
-            RuleFor(x => x.Dimensions).NotEmpty();
+            RuleFor(x => x.Dimensions).NotNull();
+            RuleFor(x => x.Dimensions.Width).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Dimensions.Depth).NotEmpty().GreaterThan(0);
         }
     }
 

@@ -23,8 +23,15 @@ namespace Application.Vans.Commands.AddToCompany
             RuleFor(x => x.Manufacturer).NotEmpty();
             RuleFor(x => x.Model).NotEmpty();
             RuleFor(x => x.DateOfManufacturing).NotEmpty();
-            RuleFor(x => x.Dimensions).NotEmpty();
-            RuleFor(x => x.Capacity).NotEmpty();
+            RuleFor(x => x.Dimensions).NotNull();
+            RuleFor(x => x.Dimensions.Width).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Dimensions.Depth).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity).NotNull();
+            RuleFor(x => x.Capacity.MaxCarryWeight).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume).NotNull();
+            RuleFor(x => x.Capacity.Volume.Depth).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume.Width).NotEmpty().GreaterThan(0);
+            RuleFor(x => x.Capacity.Volume.Height).NotEmpty().GreaterThan(0);
         }
     }
 
