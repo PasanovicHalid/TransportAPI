@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Presentation.Contracts.Common.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Common.Models
 {
@@ -44,7 +39,7 @@ namespace Presentation.Contracts.Common.Models
                 {
                     opt.MapFrom((src, dest) =>
                     {
-                        return src.User is not null ? src.User.PhoneNumber : null; 
+                        return src.User is not null ? src.User.PhoneNumber : null;
                     });
 
                 });

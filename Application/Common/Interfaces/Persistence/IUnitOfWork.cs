@@ -38,5 +38,7 @@ namespace Application.Common.Interfaces.Persistence
 
         public ITruckRepository Trucks { get; }
 
+        public ICostRepository Costs { get; }
+
     }
 }

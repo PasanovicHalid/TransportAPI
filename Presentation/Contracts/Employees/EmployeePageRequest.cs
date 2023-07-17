@@ -1,12 +1,5 @@
-﻿using Application.Companies.Commands.Create;
-using Application.Employees.Queries.GetPage;
+﻿using Application.Employees.Queries.GetPage;
 using AutoMapper;
-using Presentation.Contracts.Companies;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Employees
 {
@@ -25,7 +18,7 @@ namespace Presentation.Contracts.Employees
         public int PageSize { get; set; }
         public bool Desc { get; set; }
         public bool Tracked { get; set; }
-        public bool WithDeleted { get; set; } 
+        public bool WithDeleted { get; set; }
     }
 
 

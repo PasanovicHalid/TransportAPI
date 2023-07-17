@@ -13,7 +13,6 @@ namespace Domain.Entities
 
         public ulong TransportationId { get; private set; }
 
-
         protected Stop() { }
     }
 }

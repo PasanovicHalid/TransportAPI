@@ -6,7 +6,6 @@ using Application.Employees.Queries.GetPage;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
-using Domain.ValueObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

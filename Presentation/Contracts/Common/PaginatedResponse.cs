@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Presentation.Contracts.Common
+﻿namespace Presentation.Contracts.Common
 {
     public class PaginatedResponse<T>
     {
@@ -15,7 +9,7 @@ namespace Presentation.Contracts.Common
         public bool HasPreviousPage => PageIndex > 1;
         public bool HasNextPage => PageIndex < TotalPages;
         public List<T> Items { get; set; } = new();
-        public PaginatedResponse(List<T> items,int pageIndex, int pageSize, int totalCount)
+        public PaginatedResponse(List<T> items, int pageIndex, int pageSize, int totalCount)
         {
             Items = items;
             PageIndex = pageIndex;

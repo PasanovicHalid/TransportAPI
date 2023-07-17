@@ -1,11 +1,6 @@
 ﻿using Application.Common.Queries;
 using Domain.Entities;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Trucks.Queries.GetPage
 {
@@ -15,7 +10,7 @@ namespace Application.Trucks.Queries.GetPage
         {
         }
     }
-    
+
     public class TruckPageRequestValidator : AbstractValidator<TruckPageQuery>
     {
         private HashSet<string> _entityFields = new();

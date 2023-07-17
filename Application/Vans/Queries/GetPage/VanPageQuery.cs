@@ -1,11 +1,6 @@
 ﻿using Application.Common.Queries;
 using Domain.Entities;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Vans.Queries.GetPage
 {
@@ -29,5 +24,5 @@ namespace Application.Vans.Queries.GetPage
                                              .WithMessage("Included fields need to exist and shouldn't be duplicates.");
         }
     }
-    
+
 }

@@ -2,11 +2,6 @@
 using FluentResults;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Trailers.Queries.GetById
 {
@@ -15,7 +10,7 @@ namespace Application.Trailers.Queries.GetById
         public ulong Id { get; set; }
         public ulong CompanyId { get; set; }
     }
-    
+
     public class GetTrailerByIdValidator : AbstractValidator<GetTrailerByIdQuery>
     {
         public GetTrailerByIdValidator()

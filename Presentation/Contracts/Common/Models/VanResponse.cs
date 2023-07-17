@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
 using Domain.Entities;
 using Presentation.Contracts.Common.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Common.Models
 {
-    public class VanResponseAdapter: Profile
+    public class VanResponseAdapter : Profile
     {
         public VanResponseAdapter()
         {

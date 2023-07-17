@@ -1,11 +1,5 @@
-﻿using Application.Employees.Queries.GetPage;
-using Application.Vans.Queries.GetPage;
+﻿using Application.Vans.Queries.GetPage;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Vans
 {

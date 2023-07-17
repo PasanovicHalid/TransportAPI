@@ -1,6 +1,14 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Trailers.Commands.AddToVehicle;
-using Application.Trailers.Commands.Create;
+using Application.Trucks.Commands.AddToCompany;
+using Application.Trucks.Commands.Delete;
+using Application.Trucks.Commands.UpdateInformation;
+using Application.Trucks.Queries.GetById;
+using Application.Trucks.Queries.GetPage;
+using Application.Vans.Commands.AddToCompany;
+using Application.Vans.Commands.Delete;
+using Application.Vans.Commands.UpdateInformation;
+using Application.Vans.Queries.GetById;
 using Application.Vans.Queries.GetPage;
 using Application.Vehicles.Commands.DeleteVehicle;
 using Application.Vehicles.Commands.UpdateInformation;
@@ -13,29 +21,12 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
-using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Common;
-using Presentation.Contracts.Trailers;
+using Presentation.Contracts.Common.Models;
+using Presentation.Contracts.Trucks;
 using Presentation.Contracts.Vans;
 using Presentation.Contracts.Vehicles;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Trailers.Queries.GetPage;
-using Presentation.Contracts.Trucks;
-using Application.Trucks.Queries.GetPage;
-using Application.Trucks.Queries.GetById;
-using Application.Vans.Queries.GetById;
-using Application.Trailers.Queries.GetById;
-using Application.Trucks.Commands.AddToCompany;
-using Application.Vans.Commands.AddToCompany;
-using Application.Vans.Commands.UpdateInformation;
-using Application.Vans.Commands.Delete;
-using Application.Trucks.Commands.Delete;
-using Application.Trucks.Commands.UpdateInformation;
 
 namespace Presentation.Controllers
 {

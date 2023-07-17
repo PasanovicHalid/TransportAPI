@@ -1,5 +1,4 @@
-﻿using Application.Authentication.Commands.Register.Admins;
-using Application.Authentication.Commands.Register.Drivers;
+﻿using Application.Authentication.Commands.Register.Drivers;
 using AutoMapper;
 using Presentation.Contracts.Common.ValueObjects;
 using System.ComponentModel.DataAnnotations;

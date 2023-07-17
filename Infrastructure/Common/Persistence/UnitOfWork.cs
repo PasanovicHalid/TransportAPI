@@ -32,6 +32,7 @@ namespace Infrastructure.Common.Persistence
         private IVehicleRepository? _vehicleRepository;
         private IVanRepository? _vanRepository;
         private ITruckRepository? _truckRepository;
+        private ICostRepository? _costRepository;
 
         public UnitOfWork(TransportDbContext context)
         {
@@ -61,6 +62,8 @@ namespace Infrastructure.Common.Persistence
         public IVanRepository Vans => _vanRepository ??= new VanRepository(_context);
 
         public ITruckRepository Trucks => _truckRepository ??= new TruckRepository(_context);
+
+        public ICostRepository Costs => _costRepository ??= new CostRepository(_context);
 
         public IDbTransaction BeginTransaction()
         {

@@ -1,12 +1,4 @@
-﻿using Application.Trucks.Commands.AddToCompany;
-using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Presentation.Contracts.Trucks
+﻿namespace Presentation.Contracts.Trucks
 {
     public class CreateTruckRequest
     {

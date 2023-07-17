@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Application.Companies.Commands.Create;
-using AutoMapper;
+﻿using AutoMapper;
 using Domain.Entities;
 using Presentation.Contracts.Common.ValueObjects;
-using Presentation.Contracts.Companies;
 
 namespace Presentation.Contracts.Common.Models
 {

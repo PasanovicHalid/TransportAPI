@@ -1,10 +1,5 @@
 ﻿using Application.Trucks.Queries.GetPage;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Presentation.Contracts.Trucks
 {
@@ -22,7 +17,7 @@ namespace Presentation.Contracts.Trucks
         public int PageSize { get; set; }
         public bool Desc { get; set; }
         public bool Tracked { get; set; }
-        public bool WithDeleted { get; set;}
+        public bool WithDeleted { get; set; }
         public List<string>? IncludeProperties { get; set; }
     }
 }

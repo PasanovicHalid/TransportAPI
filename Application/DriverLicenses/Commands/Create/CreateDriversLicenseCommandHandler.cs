@@ -1,7 +1,6 @@
 ﻿using Application.Common.Errors;
 using Application.Common.Interfaces.Persistence;
 using Application.Drivers.Errors;
-using Domain.Constants;
 using Domain.Entities;
 using FluentResults;
 using MediatR;

@@ -1,7 +1,6 @@
 ﻿using Application.Authentication.Commands.Register.Admins;
 using Application.Authentication.Commands.Register.Drivers;
 using Application.Authentication.Contracts;
-using Application.Common.Queries;
 using Application.Common.Interfaces.Persistence;
 using Application.Companies.Commands.Create;
 using Application.Companies.Commands.Remove;
@@ -11,9 +10,8 @@ using Application.Companies.Queries.GetPage;
 using Application.Trailers.Commands.Create;
 using Application.Trailers.Commands.Delete;
 using Application.Trailers.Commands.Update;
-using Application.Trucks.Commands.AddToCompany;
-using Application.Vans.Commands.AddToCompany;
-using Application.Vans.Commands.UpdateInformation;
+using Application.Trailers.Queries.GetById;
+using Application.Trailers.Queries.GetPage;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
@@ -24,15 +22,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
 using Presentation.Contracts.Authentication;
+using Presentation.Contracts.Common;
 using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Companies;
 using Presentation.Contracts.Trailers;
-using Presentation.Contracts.Trucks;
-using Presentation.Contracts.Vans;
 using System.Security.Claims;
-using Application.Trailers.Queries.GetById;
-using Application.Trailers.Queries.GetPage;
-using Presentation.Contracts.Common;
 
 namespace Presentation.Controllers
 {

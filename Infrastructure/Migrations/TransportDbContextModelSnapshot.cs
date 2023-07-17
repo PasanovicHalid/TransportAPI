@@ -48,6 +48,43 @@ namespace Infrastructure.Migrations
                     b.ToTable("Companies");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cost", b =>
+                {
+                    b.Property<decimal>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("decimal(20,0)");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<decimal>("Id"));
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal?>("FromId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal?>("ToId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<decimal?>("TransportationId")
+                        .HasColumnType("decimal(20,0)");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FromId");
+
+                    b.HasIndex("ToId");
+
+                    b.HasIndex("TransportationId");
+
+                    b.ToTable("Costs");
+                });
+
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.Property<decimal>("Id")
@@ -542,6 +579,48 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.Entities.Cost", b =>
+                {
+                    b.HasOne("Domain.Entities.Stop", "From")
+                        .WithMany()
+                        .HasForeignKey("FromId");
+
+                    b.HasOne("Domain.Entities.Stop", "To")
+                        .WithMany()
+                        .HasForeignKey("ToId");
+
+                    b.HasOne("Domain.Entities.Transportation", null)
+                        .WithMany("Costs")
+                        .HasForeignKey("TransportationId");
+
+                    b.OwnsOne("Domain.ValueObjects.Money", "Expendature", b1 =>
+                        {
+                            b1.Property<decimal>("CostId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<double>("Amount")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("CostId");
+
+                            b1.ToTable("Costs");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CostId");
+                        });
+
+                    b.Navigation("Expendature")
+                        .IsRequired();
+
+                    b.Navigation("From");
+
+                    b.Navigation("To");
+                });
+
             modelBuilder.Entity("Domain.Entities.Employee", b =>
                 {
                     b.HasOne("Domain.Entities.Company", "Company")
@@ -759,6 +838,26 @@ namespace Infrastructure.Migrations
                         .WithMany("AssignedTransportations")
                         .HasForeignKey("DriverId");
 
+                    b.OwnsOne("Domain.ValueObjects.Money", "Received", b1 =>
+                        {
+                            b1.Property<decimal>("TransportationId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<double>("Amount")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TransportationId");
+
+                            b1.ToTable("Transportations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransportationId");
+                        });
+
                     b.OwnsOne("Domain.ValueObjects.Cargo", "Transporting", b1 =>
                         {
                             b1.Property<decimal>("TransportationId")
@@ -807,6 +906,9 @@ namespace Infrastructure.Migrations
                     b.Navigation("DesignatedTo");
 
                     b.Navigation("DrivenBy");
+
+                    b.Navigation("Received")
+                        .IsRequired();
 
                     b.Navigation("Transporting")
                         .IsRequired();
@@ -1027,6 +1129,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Transportation", b =>
                 {
+                    b.Navigation("Costs");
+
                     b.Navigation("Stops");
                 });
 

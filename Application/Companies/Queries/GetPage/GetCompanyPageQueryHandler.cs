@@ -1,5 +1,4 @@
-﻿using Application.Common.Queries;
-using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
 using FluentResults;
 using MediatR;

@@ -13,6 +13,7 @@ namespace Infrastructure.Persistence
         public DbSet<Admininistrator> Admininistrators { get; set; }
         public DbSet<Transportation> Transportations { get; set; }
         public DbSet<Stop> Stops { get; set; }
+        public DbSet<Cost> Costs { get; set; }
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<Truck> Trucks { get; set; }
         public DbSet<Van> Vans { get; set; }
@@ -28,7 +29,6 @@ namespace Infrastructure.Persistence
                 .HasDiscriminator(e => e.Role)
                 .HasValue<Driver>(ApplicationRolesConstants.Driver)
                 .HasValue<Admininistrator>(ApplicationRolesConstants.Admin);
-
 
             base.OnModelCreating(builder);
         }
