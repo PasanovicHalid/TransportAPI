@@ -22,12 +22,12 @@ namespace Application.Transportations.Commands.AddResolution
             if (transport is null)
                 return Result.Fail(new EntityDoesntExist(request.TransportationId, nameof(Transportation)));
 
-            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId);
+            Driver? driver = await _unitOfWork.Drivers.GetFirstOrDefaultAsync(d => d.Id == request.DriverId && d.CompanyId == transport.CompanyId);
 
             if (driver is null)
                 return Result.Fail(new EntityDoesntExist(request.DriverId, nameof(Driver)));
 
-            Result result = transport.AddResolution(request.Costs, request.DriverId);
+            Result result = transport.AddResolution(request.Cost, request.DriverId, request.StartLocation);
 
             if (result.IsFailed)
                 return result;

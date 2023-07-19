@@ -7,25 +7,13 @@ namespace Domain.Entities
 {
     public class Transportation : EntityObject
     {
-        public Transportation(DateTime start, DateTime requiredFor, Cargo transporting, List<Stop> stops, Money received, ulong companyId)
+        public Transportation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Money received, ulong companyId)
         {
             Start = start;
             RequiredFor = requiredFor;
             Transporting = transporting;
-            Stops = stops;
+            Destination = destination;
             Received = received;
-            CompanyId = companyId;
-        }
-
-        public Transportation(DateTime start, DateTime requiredFor, Cargo transporting, List<Stop> stops, List<Cost> costs, Money received, ulong? driverId, ulong companyId)
-        {
-            Start = start;
-            RequiredFor = requiredFor;
-            Transporting = transporting;
-            Stops = stops;
-            Costs = costs;
-            Received = received;
-            DriverId = driverId;
             CompanyId = companyId;
         }
 
@@ -37,11 +25,13 @@ namespace Domain.Entities
 
         public Cargo Transporting { get; private set; }
 
-        public List<Stop> Stops { get; private set; } = new();
+        public Address Destination { get; private set; }
 
-        public List<Cost>? Costs { get; private set; } = new();
+        public Money? Cost { get; private set; }
 
         public Money Received { get; private set; }
+
+        public GpsCoordinate? StartLocation { get; private set; }
 
         [ForeignKey(nameof(DriverId))]
         public Driver? DrivenBy { get; private set; }
@@ -52,11 +42,33 @@ namespace Domain.Entities
         public ulong? DriverId { get; private set; }
         public ulong CompanyId { get; private set; }
 
-        public Result AddResolution(List<Cost> costs, ulong drivenBy)
+        public Result AddResolution(Money cost, ulong drivenBy, GpsCoordinate startLocation)
         {
-            Costs = costs;
+            Cost = cost;
             DriverId = drivenBy;
+            StartLocation = startLocation;
             return Result.Ok();
+        }
+
+        public Result UpdateInformation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Money received)
+        {
+            Start = start;
+            RequiredFor = requiredFor;
+            Transporting = transporting;
+            Destination = destination;
+            Received = received;
+            return Result.Ok();
+        }
+
+        public Result<double> GetDistanceToDestination()
+        {
+            if (StartLocation is null)
+                return Result.Fail<double>("Transportation has no start location");
+
+            if (Destination.GpsCoordinate is null)
+                return Result.Fail<double>("Transportation has no gps coordinate");
+
+            return StartLocation.DistanceTo(Destination.GpsCoordinate);
         }
     }
 }

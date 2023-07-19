@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Trailers.Commands.AddToVehicle;
+using Application.Transportations.Queries.GetDashboardInfo;
 using Application.Trucks.Commands.AddToCompany;
 using Application.Trucks.Commands.Delete;
 using Application.Trucks.Commands.UpdateInformation;
@@ -12,6 +13,7 @@ using Application.Vans.Queries.GetById;
 using Application.Vans.Queries.GetPage;
 using Application.Vehicles.Commands.DeleteVehicle;
 using Application.Vehicles.Commands.UpdateInformation;
+using Application.Vehicles.Queries.GetDashboardInfo;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
@@ -77,6 +79,23 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok();
+        }
+
+        [HttpGet("dashboard")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetVehicleDashboardInfo()
+        {
+            GetVehicleDashboardInfoQuery query = new GetVehicleDashboardInfoQuery
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<VehicleDashboardInfo> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(response.Value);
         }
 
         [HttpPost("{id}/trailer/{trailerId}")]

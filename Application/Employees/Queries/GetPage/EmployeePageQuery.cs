@@ -6,6 +6,7 @@ namespace Application.Employees.Queries.GetPage
 {
     public class EmployeePageQuery : PageQuery<Employee>
     {
+        public ulong CompanyId { get; set; }
         public EmployeePageQuery() : base()
         {
         }

@@ -2,6 +2,7 @@
 using Domain.Common;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Common.Persistence
@@ -63,6 +64,28 @@ namespace Infrastructure.Common.Persistence
             query = IncludeProperties(includeProperties, query);
 
             return await PaginatedList<T>.CreateAsync(query, pageIndex, pageSize, cancellationToken);
+        }
+
+        public Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null,
+                                         Expression<Func<T, object>>? orderBy = null,
+                                         bool desc = false,
+                                         List<string>? includeProperties = null,
+                                         bool withDeleted = false,
+                                         bool tracked = true,
+                                         CancellationToken cancellationToken = default)
+        {
+            IQueryable<T> query = SetupTracking(tracked);
+
+            query = SetupSorting(orderBy, desc, query);
+
+            if (filter != null)
+                query = query.Where(filter);
+
+            query = FilterDeleted(withDeleted, query);
+
+            query = IncludeProperties(includeProperties, query);
+
+            return query.ToListAsync(cancellationToken);
         }
 
         public async Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter,
@@ -145,6 +168,5 @@ namespace Infrastructure.Common.Persistence
                     return query.OrderBy(orderBy);
             return query;
         }
-
     }
 }

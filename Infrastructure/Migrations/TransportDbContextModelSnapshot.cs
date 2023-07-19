@@ -65,9 +65,6 @@ namespace Infrastructure.Migrations
                     b.Property<decimal?>("ToId")
                         .HasColumnType("decimal(20,0)");
 
-                    b.Property<decimal?>("TransportationId")
-                        .HasColumnType("decimal(20,0)");
-
                     b.Property<byte[]>("Version")
                         .IsConcurrencyToken()
                         .IsRequired()
@@ -79,8 +76,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("FromId");
 
                     b.HasIndex("ToId");
-
-                    b.HasIndex("TransportationId");
 
                     b.ToTable("Costs");
                 });
@@ -589,10 +584,6 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ToId");
 
-                    b.HasOne("Domain.Entities.Transportation", null)
-                        .WithMany("Costs")
-                        .HasForeignKey("TransportationId");
-
                     b.OwnsOne("Domain.ValueObjects.Money", "Expendature", b1 =>
                         {
                             b1.Property<decimal>("CostId")
@@ -700,7 +691,7 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Stop", b =>
                 {
                     b.HasOne("Domain.Entities.Transportation", "For")
-                        .WithMany("Stops")
+                        .WithMany()
                         .HasForeignKey("TransportationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -838,6 +829,80 @@ namespace Infrastructure.Migrations
                         .WithMany("AssignedTransportations")
                         .HasForeignKey("DriverId");
 
+                    b.OwnsOne("Domain.ValueObjects.Money", "Cost", b1 =>
+                        {
+                            b1.Property<decimal>("TransportationId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<double>("Amount")
+                                .HasColumnType("float");
+
+                            b1.Property<string>("Currency")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TransportationId");
+
+                            b1.ToTable("Transportations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransportationId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.Address", "Destination", b1 =>
+                        {
+                            b1.Property<decimal>("TransportationId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Country")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("State")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("Street")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TransportationId");
+
+                            b1.ToTable("Transportations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransportationId");
+
+                            b1.OwnsOne("Domain.ValueObjects.GpsCoordinate", "GpsCoordinate", b2 =>
+                                {
+                                    b2.Property<decimal>("AddressTransportationId")
+                                        .HasColumnType("decimal(20,0)");
+
+                                    b2.Property<double>("Latitude")
+                                        .HasColumnType("float");
+
+                                    b2.Property<double>("Longitude")
+                                        .HasColumnType("float");
+
+                                    b2.HasKey("AddressTransportationId");
+
+                                    b2.ToTable("Transportations");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("AddressTransportationId");
+                                });
+
+                            b1.Navigation("GpsCoordinate");
+                        });
+
                     b.OwnsOne("Domain.ValueObjects.Money", "Received", b1 =>
                         {
                             b1.Property<decimal>("TransportationId")
@@ -849,6 +914,25 @@ namespace Infrastructure.Migrations
                             b1.Property<string>("Currency")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("TransportationId");
+
+                            b1.ToTable("Transportations");
+
+                            b1.WithOwner()
+                                .HasForeignKey("TransportationId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.GpsCoordinate", "StartLocation", b1 =>
+                        {
+                            b1.Property<decimal>("TransportationId")
+                                .HasColumnType("decimal(20,0)");
+
+                            b1.Property<double>("Latitude")
+                                .HasColumnType("float");
+
+                            b1.Property<double>("Longitude")
+                                .HasColumnType("float");
 
                             b1.HasKey("TransportationId");
 
@@ -903,12 +987,19 @@ namespace Infrastructure.Migrations
                                 .IsRequired();
                         });
 
+                    b.Navigation("Cost");
+
                     b.Navigation("DesignatedTo");
+
+                    b.Navigation("Destination")
+                        .IsRequired();
 
                     b.Navigation("DrivenBy");
 
                     b.Navigation("Received")
                         .IsRequired();
+
+                    b.Navigation("StartLocation");
 
                     b.Navigation("Transporting")
                         .IsRequired();
@@ -1125,13 +1216,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Trailers");
 
                     b.Navigation("Vehicles");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Transportation", b =>
-                {
-                    b.Navigation("Costs");
-
-                    b.Navigation("Stops");
                 });
 
             modelBuilder.Entity("Domain.Entities.Vehicle", b =>

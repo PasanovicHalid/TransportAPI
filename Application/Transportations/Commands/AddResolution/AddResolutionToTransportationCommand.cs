@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.ValueObjects;
 using FluentResults;
 using FluentValidation;
 using MediatR;
@@ -9,7 +10,8 @@ namespace Application.Transportations.Commands.AddResolution
     {
         public ulong TransportationId { get; set; }
         public ulong DriverId { get; set; }
-        public List<Cost> Costs { get; set; }
+        public Money Cost { get; set; }
+        public GpsCoordinate StartLocation { get; set; }
     }
 
     public class AddResolutionToTransportationValidator : AbstractValidator<AddResolutionToTransportationCommand>
@@ -18,7 +20,8 @@ namespace Application.Transportations.Commands.AddResolution
         {
             RuleFor(x => x.TransportationId).NotEmpty();
             RuleFor(x => x.DriverId).NotEmpty();
-            RuleFor(x => x.Costs).NotEmpty();
+            RuleFor(x => x.Cost).NotEmpty();
+            RuleFor(x => x.StartLocation).NotEmpty();
         }
     }
 }

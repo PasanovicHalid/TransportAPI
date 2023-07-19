@@ -8,15 +8,7 @@ namespace Presentation.Contracts.Trucks
     {
         public UpdateTruckInformationRequestAdapter()
         {
-            CreateMap<UpdateTruckInformationRequest, UpdateTruckInformationCommand>()
-                .ForMember(dest => dest.Dimensions, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return new Dimensions(src.Dimensions.Width,
-                                              src.Dimensions.Depth);
-                    });
-                });
+            CreateMap<UpdateTruckInformationRequest, UpdateTruckInformationCommand>();
         }
     }
     public class UpdateTruckInformationRequest

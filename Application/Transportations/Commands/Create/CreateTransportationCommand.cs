@@ -13,7 +13,7 @@ namespace Application.Transportations.Commands.Create
         public Cargo Cargo { get; set; }
         public ulong CompanyId { get; set; }
         public Money Received { get; set; }
-        public List<Stop> Stops { get; set; } = new();
+        public Address Destination { get; set; }
     }
 
     public class CreateTransportationValidator : AbstractValidator<CreateTransportationCommand>
@@ -25,7 +25,7 @@ namespace Application.Transportations.Commands.Create
             RuleFor(x => x.Cargo).NotEmpty();
             RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.Received).NotEmpty();
-            RuleFor(x => x.Stops).NotEmpty();
+            RuleFor(x => x.Destination).NotEmpty();
         }
     }
 }

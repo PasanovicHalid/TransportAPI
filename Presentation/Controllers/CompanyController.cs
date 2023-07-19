@@ -7,6 +7,7 @@ using Application.Companies.Commands.Remove;
 using Application.Companies.Commands.UpdateInformation;
 using Application.Companies.Queries.FindById;
 using Application.Companies.Queries.GetPage;
+using Application.Drivers.Queries.GetDriversByCompany;
 using Application.Trailers.Commands.Create;
 using Application.Trailers.Commands.Delete;
 using Application.Trailers.Commands.Update;
@@ -27,6 +28,7 @@ using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Companies;
 using Presentation.Contracts.Trailers;
 using System.Security.Claims;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Presentation.Controllers
 {
@@ -90,6 +92,18 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok(_mapper.Map<CompanyResponse>(response.Value));
+        }
+
+        [HttpGet("drivers-by-company")]
+        public async Task<IActionResult> GetDriversByCompany()
+        {
+            ulong companyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
+            Result<List<Driver>> response = await _mediator.Send(new GetDriversByCompanyQuery(companyId));
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<List<EmployeeResponse>>(response.Value));
         }
 
         [HttpPost("page")]

@@ -9,18 +9,7 @@ namespace Presentation.Contracts.Authentication
     {
         public DriverRegistrationAdapter()
         {
-            CreateMap<DriverRegistrationRequest, RegisterDriverCommand>()
-                .ForMember(dest => dest.Address, opt => opt.MapFrom(src => new Domain.ValueObjects.Address(src.Address.Street,
-                                                                                                           src.Address.City,
-                                                                                                           src.Address.State,
-                                                                                                           src.Address.PostalCode,
-                                                                                                           src.Address.Country)))
-                .ForPath(dest => dest.Address.GpsCoordinate, opt =>
-                {
-                    opt.Condition(src => src.Source.Address.GpsCoordinate != null);
-                    opt.MapFrom(src => new Domain.ValueObjects.GpsCoordinate(src.Address.GpsCoordinate!.Longitude!.Value,
-                                                                             src.Address.GpsCoordinate!.Latitude!.Value));
-                });
+            CreateMap<DriverRegistrationRequest, RegisterDriverCommand>();
         }
     }
 

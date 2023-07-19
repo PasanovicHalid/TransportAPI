@@ -2,7 +2,9 @@
 using Application.Employees.Commands.UpdateInformationById;
 using Application.Employees.Commands.UpdateInformationByIdentity;
 using Application.Employees.Queries.FindById;
+using Application.Employees.Queries.GetDashboardInfo;
 using Application.Employees.Queries.GetPage;
+using Application.Vehicles.Queries.GetDashboardInfo;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
@@ -96,11 +98,30 @@ namespace Presentation.Controllers
             return Ok(_mapper.Map<EmployeeResponse>(response.Value));
         }
 
+        [HttpGet("dashboard")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetEmployeeDashboardInfo()
+        {
+            GetEmployeeDashboardInfoQuery query = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<EmployeeDashboardInfo> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(response.Value);
+        }
+
         [HttpPost("page")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
         public async Task<IActionResult> GetPage([FromBody] EmployeePageRequest request)
         {
             EmployeePageQuery query = _mapper.Map<EmployeePageQuery>(request);
+            query.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
+
             Result<PaginatedList<Employee>> response = await _mediator.Send(query);
 
             if (response.IsFailed)

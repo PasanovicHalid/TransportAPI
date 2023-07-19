@@ -26,7 +26,7 @@ namespace Application.Transportations.Commands.Create
             Transportation transportation = new Transportation(request.DateOfDeparture,
                                                                request.DateOfArrival,
                                                                request.Cargo,
-                                                               request.Stops,
+                                                               request.Destination,
                                                                request.Received,
                                                                request.CompanyId);
 

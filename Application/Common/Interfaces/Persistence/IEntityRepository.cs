@@ -12,14 +12,22 @@ namespace Application.Common.Interfaces.Persistence
                              CancellationToken cancellationToken = default);
 
         Task<PaginatedList<T>> GetPageAsync(Expression<Func<T, bool>>? filter = null,
-                                       Expression<Func<T, object>>? orderBy = null,
-                                       bool desc = false,
-                                       List<string>? includeProperties = null,
-                                       bool withDeleted = false,
-                                       bool tracked = true,
-                                       int pageIndex = 1,
-                                       int pageSize = 10,
-                                       CancellationToken cancellationToken = default);
+                                            Expression<Func<T, object>>? orderBy = null,
+                                            bool desc = false,
+                                            List<string>? includeProperties = null,
+                                            bool withDeleted = false,
+                                            bool tracked = true,
+                                            int pageIndex = 1,
+                                            int pageSize = 10,
+                                            CancellationToken cancellationToken = default);
+
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? filter = null,
+                                  Expression<Func<T, object>>? orderBy = null,
+                                  bool desc = false,
+                                  List<string>? includeProperties = null,
+                                  bool withDeleted = false,
+                                  bool tracked = true,
+                                  CancellationToken cancellationToken = default);
 
         IQueryable<T> FinalizeQuery(IQueryable<T> query,
                                           bool includeDeleted,

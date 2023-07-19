@@ -1,5 +1,18 @@
-﻿namespace Presentation.Contracts.Common.ValueObjects
+﻿using AutoMapper;
+
+namespace Presentation.Contracts.Common.ValueObjects
 {
+    public class AddressAdapter : Profile
+    {
+        public AddressAdapter() 
+        {
+            CreateMap<Address, Domain.ValueObjects.Address>().ForMember(dest => dest.GpsCoordinate, opt =>
+            {
+                opt.Condition(src => src.GpsCoordinate != null && (src.GpsCoordinate.Latitude != null || src.GpsCoordinate.Longitude != null));
+            });
+            CreateMap<Address, Domain.ValueObjects.Address>().ReverseMap();
+        }
+    }
     public class Address
     {
         public string Street { get; set; }

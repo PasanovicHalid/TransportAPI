@@ -6,6 +6,7 @@ namespace Application.Transportations.Queries.GetPage
 {
     public class GetTransportPageQuery : PageQuery<Transportation>
     {
+        public ulong CompanyId { get; set; }
         public GetTransportPageQuery() : base()
         {
         }
@@ -16,7 +17,7 @@ namespace Application.Transportations.Queries.GetPage
         private HashSet<string> _entityFields = new();
         public GetTransportPageQueryValidator()
         {
-            _entityFields = new HashSet<string>(typeof(Truck).GetProperties().Select(x => x.Name));
+            _entityFields = new HashSet<string>(typeof(Transportation).GetProperties().Select(x => x.Name));
             RuleFor(x => x.PageIndex).GreaterThan(0);
             RuleFor(x => x.PageSize).GreaterThan(0);
             RuleFor(x => x.IncludeProperties).Must(x => _entityFields.IsSupersetOf(x!))

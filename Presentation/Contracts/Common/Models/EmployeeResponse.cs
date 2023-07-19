@@ -9,39 +9,12 @@ namespace Presentation.Contracts.Common.Models
         public EmployeeResponseAdapter()
         {
             CreateMap<Employee, EmployeeResponse>()
-                .ForMember(dest => dest.Address, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        if (src.Address.GpsCoordinate is null)
-                        {
-                            return new Address(src.Address.Street,
-                                               src.Address.City,
-                                               src.Address.State,
-                                               src.Address.PostalCode,
-                                               src.Address.Country,
-                                               null);
-                        }
-                        return new Address(src.Address.Street,
-                                               src.Address.City,
-                                               src.Address.State,
-                                               src.Address.PostalCode,
-                                               src.Address.Country,
-                                               new GpsCoordinate
-                                               {
-                                                   Longitude = src.Address.GpsCoordinate.Longitude,
-                                                   Latitude = src.Address.GpsCoordinate.Latitude
-                                               });
-                    });
-
-                })
                 .ForMember(dest => dest.PhoneNumber, opt =>
                 {
                     opt.MapFrom((src, dest) =>
                     {
                         return src.User is not null ? src.User.PhoneNumber : null;
                     });
-
                 });
         }
     }

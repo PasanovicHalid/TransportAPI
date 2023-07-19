@@ -8,24 +8,7 @@ namespace Presentation.Contracts.Vans
     {
         public UpdateVanInformationRequestAdapter()
         {
-            CreateMap<UpdateVanInformationRequest, UpdateVanInformationCommand>()
-                .ForMember(dest => dest.Dimensions, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return new Dimensions(src.Width,
-                                              src.Depth);
-                    });
-                })
-                .ForMember(dest => dest.Capacity, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return new Capacity(new Volume(src.WidthCompartment,
-                                                       src.DepthCompartment,
-                                                       src.HeightCompartment), src.MaxCarryWeight);
-                    });
-                });
+            CreateMap<UpdateVanInformationRequest, UpdateVanInformationCommand>();
         }
     }
     public class UpdateVanInformationRequest

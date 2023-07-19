@@ -9,50 +9,9 @@ namespace Presentation.Contracts.Employees
     {
         public UpdateEmployeeInformationAdapter()
         {
-            CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdCommand>()
-                .ForMember(dest => dest.Address, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return MapAddress(src);
-                    });
-                });
+            CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdCommand>();
 
-            CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdentityCommand>()
-                .ForMember(dest => dest.Address, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return MapAddress(src);
-                    });
-                });
-        }
-
-        private static Domain.ValueObjects.Address? MapAddress(UpdateEmployeeInformationRequest src)
-        {
-            if (src.Address != null)
-            {
-                Domain.ValueObjects.Address address = new Domain.ValueObjects.Address(src.Address.Street,
-                                                       src.Address.City,
-                                                       src.Address.State,
-                                                       src.Address.PostalCode,
-                                                       src.Address.Country);
-                if (src.Address.GpsCoordinate != null)
-                {
-                    if (src.Address.GpsCoordinate.Longitude != null && src.Address.GpsCoordinate.Latitude != null)
-                        address.GpsCoordinate = new Domain.ValueObjects.GpsCoordinate(src.Address.GpsCoordinate!.Longitude!.Value,
-                                                                                  src.Address.GpsCoordinate!.Latitude!.Value);
-                    return address;
-                }
-                else
-                {
-                    return address;
-                }
-            }
-            else
-            {
-                return null;
-            }
+            CreateMap<UpdateEmployeeInformationRequest, UpdateEmployeeInformationByIdentityCommand>();
         }
     }
 

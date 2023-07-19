@@ -8,52 +8,7 @@ namespace Presentation.Contracts.Common.Models
     {
         public VehicleResponseAdapter()
         {
-            CreateMap<Vehicle, VehicleResponse>()
-                .ForMember(dest => dest.Dimensions, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        return new Dimensions
-                        {
-                            Width = src.Dimensions.Width,
-                            Depth = src.Dimensions.Depth
-                        };
-                    });
-                })
-                .ForMember(dest => dest.Driver, opt =>
-                {
-                    opt.MapFrom((src, dest) =>
-                    {
-                        if (src.Driver is null)
-                        {
-                            return null;
-                        }
-                        return new EmployeeResponse
-                        {
-                            Id = src.Driver.Id,
-                            FirstName = src.Driver.FirstName,
-                            MiddleName = src.Driver.MiddleName,
-                            LastName = src.Driver.LastName,
-                            CompanyId = src.Driver.CompanyId,
-                            Role = src.Driver.Role,
-                            PhoneNumber = src.Driver.User is not null ? src.Driver.User.PhoneNumber : null,
-                            Salary = src.Driver.Salary,
-                            Address = new Address
-                            {
-                                Street = src.Driver.Address.Street,
-                                City = src.Driver.Address.City,
-                                State = src.Driver.Address.State,
-                                PostalCode = src.Driver.Address.PostalCode,
-                                Country = src.Driver.Address.Country,
-                                GpsCoordinate = src.Driver.Address.GpsCoordinate is not null ? new GpsCoordinate
-                                {
-                                    Longitude = src.Driver.Address.GpsCoordinate.Longitude,
-                                    Latitude = src.Driver.Address.GpsCoordinate.Latitude
-                                } : null
-                            }
-                        };
-                    });
-                });
+            CreateMap<Vehicle, VehicleResponse>();
         }
     }
     public class VehicleResponse

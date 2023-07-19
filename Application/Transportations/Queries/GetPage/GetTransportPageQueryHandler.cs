@@ -17,7 +17,7 @@ namespace Application.Transportations.Queries.GetPage
         public async Task<Result<PaginatedList<Transportation>>> Handle(GetTransportPageQuery request, CancellationToken cancellationToken)
         {
             PaginatedList<Transportation> transportationPage =
-            await _unitOfWork.Transportations.GetPageAsync(filter: request.Filter,
+            await _unitOfWork.Transportations.GetPageAsync(filter: x => x.CompanyId == request.CompanyId,
                                                   orderBy: request.OrderBy,
                                                   desc: request.Desc,
                                                   includeProperties: request.IncludeProperties,
