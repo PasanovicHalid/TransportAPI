@@ -121,6 +121,7 @@ namespace Presentation.Controllers
         {
             EmployeePageQuery query = _mapper.Map<EmployeePageQuery>(request);
             query.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
+            query.IncludeProperties = new() { "User" };
 
             Result<PaginatedList<Employee>> response = await _mediator.Send(query);
 

@@ -7,12 +7,16 @@ using Application.Companies.Commands.Remove;
 using Application.Companies.Commands.UpdateInformation;
 using Application.Companies.Queries.FindById;
 using Application.Companies.Queries.GetPage;
+using Application.Dashboard.Queries.GetDashboardInfo;
 using Application.Drivers.Queries.GetDriversByCompany;
+using Application.Drivers.Queries.GetDriversWithoutVehicles;
 using Application.Trailers.Commands.Create;
 using Application.Trailers.Commands.Delete;
 using Application.Trailers.Commands.Update;
 using Application.Trailers.Queries.GetById;
 using Application.Trailers.Queries.GetPage;
+using Application.Vehicles.Queries.GetAllByCompany;
+using Application.Vehicles.Queries.GetFreeVehicles;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
@@ -104,6 +108,54 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok(_mapper.Map<List<EmployeeResponse>>(response.Value));
+        }
+
+        [HttpGet("drivers-without-vehicles")]
+        public async Task<IActionResult> GetDriversWithoutVehicles()
+        {
+            GetDriversWithoutVehiclesQuery query = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<List<Driver>> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<List<EmployeeResponse>>(response.Value));
+        }
+
+        [HttpGet("free-vehicles-by-company")]
+        public async Task<IActionResult> GetFreeVehiclesByCompany()
+        {
+            GetFreeVehiclesByCompanyQuery query = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+            
+            Result<List<Vehicle>> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<List<VehicleResponse>>(response.Value));
+        }
+
+        [HttpGet("vehicles-of-company")]
+        public async Task<IActionResult> GetAllVehiclesByCompany()
+        {
+            GetAllVehiclesByCompanyQuery query = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<List<Vehicle>> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<List<VehicleResponse>>(response.Value));
         }
 
         [HttpPost("page")]
@@ -250,6 +302,41 @@ namespace Presentation.Controllers
                                                              response.Value.PageIndex,
                                                              request.PageSize,
                                                              response.Value.TotalCount));
+        }
+
+        [HttpPost("trailer/page-assigned-to-vehicle/{vehicleId}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetTrailersForVehicle([FromBody] TrailerPageRequest request, [FromRoute(Name = "vehicleId")] ulong vehicleId)
+        {
+            TrailerPageQuery query = _mapper.Map<TrailerPageQuery>(request);
+            query.Filter = x => x.VehicleId == vehicleId;
+
+            Result<PaginatedList<Trailer>> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(new PaginatedResponse<TrailerResponse>(response.Value.Select(_mapper.Map<TrailerResponse>).ToList(),
+                                                             response.Value.PageIndex,
+                                                             request.PageSize,
+                                                             response.Value.TotalCount));
+        }
+
+        [HttpGet("dashboard")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetDashboardInfo()
+        {
+            GetDashboardInfoQuery query = new()
+            {
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<DashboardInfo> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(response.Value);
         }
     }
 }

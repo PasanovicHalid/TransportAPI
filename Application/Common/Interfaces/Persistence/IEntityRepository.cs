@@ -1,4 +1,5 @@
 ﻿using Domain.Common;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Application.Common.Interfaces.Persistence
@@ -32,6 +33,8 @@ namespace Application.Common.Interfaces.Persistence
         IQueryable<T> FinalizeQuery(IQueryable<T> query,
                                           bool includeDeleted,
                                           bool isTracked);
+
+        DbSet<T> GetDbSet();
 
         void RemovePermanent(T item);
 

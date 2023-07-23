@@ -168,5 +168,10 @@ namespace Infrastructure.Common.Persistence
                     return query.OrderBy(orderBy);
             return query;
         }
+
+        public DbSet<T> GetDbSet()
+        {
+            return _dbSet;
+        }
     }
 }

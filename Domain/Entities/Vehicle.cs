@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.ValueObjects;
+using FluentResults;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
@@ -21,7 +22,7 @@ namespace Domain.Entities
 
         public ulong CompanyId { get; private set; }
 
-        public Employee Driver { get; private set; }
+        public Employee? Driver { get; private set; }
 
         public ulong? DriverId { get; set; }
 
@@ -39,6 +40,26 @@ namespace Domain.Entities
             Model = model;
             DateOfManufacturing = dateOfManufacturing;
             Dimensions = dimensions;
+        }
+
+        public Result AssignDriver(Driver driver)
+        {
+            Driver = driver;
+            DriverId = driver.Id;
+            return Result.Ok();
+        }
+
+        public Result UnassignDriver()
+        {
+            Driver = null;
+            DriverId = null;
+            return Result.Ok();
+        }
+
+        public Result AssignTrailer(Trailer trailer)
+        {
+            Trailers.Add(trailer);
+            return Result.Ok();
         }
 
         protected Vehicle() { }

@@ -29,9 +29,21 @@ namespace Application.Trailers.Commands.AddToVehicle
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));
 
-            vehicle.Trailers.Add(trailer);
+            Result result;
+
+            result = vehicle.AssignTrailer(trailer);
+
+            if (result.IsFailed)
+                return result;
+
+            result = trailer.AssignVehicle(vehicle);
+
+            if (result.IsFailed)
+                return result;
 
             _unitOfWork.Vehicles.Update(vehicle);
+            _unitOfWork.Trailers.Update(trailer);
+
             await _unitOfWork.SaveAsync(cancellationToken);
 
             return Result.Ok();

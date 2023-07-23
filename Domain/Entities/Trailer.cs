@@ -1,5 +1,6 @@
 ﻿using Domain.Common;
 using Domain.ValueObjects;
+using FluentResults;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
@@ -23,6 +24,20 @@ namespace Domain.Entities
         {
             Capacity = capacity;
             CompanyId = companyId;
+        }
+
+        public Result AssignVehicle(Vehicle vehicle)
+        {
+            UsedBy = vehicle;
+            VehicleId = vehicle.Id;
+            return Result.Ok();
+        }
+
+        public Result UnassignVehicle()
+        {
+            UsedBy = null;
+            VehicleId = null;
+            return Result.Ok();
         }
     }
 }

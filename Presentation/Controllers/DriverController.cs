@@ -1,7 +1,9 @@
 ﻿using Application.DriverLicenses.Commands.Create;
 using Application.DriverLicenses.Commands.Delete;
 using Application.DriverLicenses.Commands.Update;
+using Application.Drivers.Commands.AssignVehicle;
 using Application.Drivers.Commands.Fire;
+using Application.Drivers.Commands.UnassignVehicle;
 using AutoMapper;
 using Domain.Constants;
 using FluentResults;
@@ -84,6 +86,43 @@ namespace Presentation.Controllers
             FireDriverCommand command = new()
             {
                 Id = id,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result response = await _mediator.Send(command);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/assign-vehicle/{vehicleId}")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> AssignVehicleToDriver([FromRoute(Name = "id")] ulong driverId, [FromRoute(Name = "vehicleId")] ulong vehicleId)
+        {
+            AssignVehicleCommand command = new()
+            {
+                DriverId = driverId,
+                VehicleId = vehicleId,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result response = await _mediator.Send(command);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok();
+        }
+
+        [HttpPost("{id}/unassign-vehicle")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> UnassignVehicleToDriver([FromRoute(Name = "id")] ulong driverId)
+        {
+            UnassignVehicleCommand command = new()
+            {
+                DriverId = driverId,
                 CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
             };
 

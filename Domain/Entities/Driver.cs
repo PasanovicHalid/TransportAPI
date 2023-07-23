@@ -1,5 +1,6 @@
 ﻿using Domain.Constants;
 using Domain.ValueObjects;
+using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -90,6 +91,20 @@ namespace Domain.Entities
 
         protected Driver()
         {
+        }
+
+        public Result AssignVehicle(Vehicle vehicle)
+        {
+            Vehicle = vehicle;
+            VehicleId = vehicle.Id;
+            return Result.Ok();
+        }
+
+        public Result UnassignVehicle()
+        {
+            Vehicle = null;
+            VehicleId = null;
+            return Result.Ok();
         }
     }
 }

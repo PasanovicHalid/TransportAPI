@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Trailers.Commands.AddToVehicle;
+using Application.Trailers.Commands.UnassignVehicle;
 using Application.Transportations.Queries.GetDashboardInfo;
 using Application.Trucks.Commands.AddToCompany;
 using Application.Trucks.Commands.Delete;
@@ -13,6 +14,7 @@ using Application.Vans.Queries.GetById;
 using Application.Vans.Queries.GetPage;
 using Application.Vehicles.Commands.DeleteVehicle;
 using Application.Vehicles.Commands.UpdateInformation;
+using Application.Vehicles.Queries.GetById;
 using Application.Vehicles.Queries.GetDashboardInfo;
 using AutoMapper;
 using Domain.Constants;
@@ -43,7 +45,7 @@ namespace Presentation.Controllers
             _mapper = mapper;
         }
 
-        [HttpPut("id")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update([FromBody] UpdateVehicleRequest request, [FromRoute(Name = "id")] ulong vehicleId)
         {
             UpdateVehicleInformationCommand command = new()
@@ -81,6 +83,23 @@ namespace Presentation.Controllers
             return Ok();
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get([FromRoute(Name = "id")] ulong vehicleId)
+        {
+            GetVehicleByIdQuery query = new()
+            {
+                VehicleId = vehicleId,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
+            };
+
+            Result<Vehicle> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(_mapper.Map<VehicleResponse>(response.Value));
+        }
+
         [HttpGet("dashboard")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
         public async Task<IActionResult> GetVehicleDashboardInfo()
@@ -98,9 +117,9 @@ namespace Presentation.Controllers
             return Ok(response.Value);
         }
 
-        [HttpPost("{id}/trailer/{trailerId}")]
+        [HttpPost("{id}/assign-trailer/{trailerId}")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> CreateTrailer([FromRoute(Name = "id")] ulong vehicleId, [FromRoute(Name = "trailerId")] ulong trailerId)
+        public async Task<IActionResult> AddTrailerToVehicle([FromRoute(Name = "id")] ulong vehicleId, [FromRoute(Name = "trailerId")] ulong trailerId)
         {
             AddTrailerToVehicleCommand command = new()
             {
@@ -114,7 +133,25 @@ namespace Presentation.Controllers
             if (result.IsFailed)
                 return HandleErrors(result.Errors[0]);
 
-            return CreatedAtAction(nameof(CreateTrailer), null);
+            return Ok();
+        }
+
+        [HttpPost("{trailerid}/unassign-trailer")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> UnassignTrailerToVehicle( [FromRoute(Name = "trailerId")] ulong trailerId)
+        {
+            UnassignTrailerFromVehicleCommand command = new()
+            {
+                TrailerId = trailerId,
+                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!),
+            };
+
+            Result result = await _mediator.Send(command);
+
+            if (result.IsFailed)
+                return HandleErrors(result.Errors[0]);
+
+            return Ok();
         }
 
         [HttpPost("van/page")]

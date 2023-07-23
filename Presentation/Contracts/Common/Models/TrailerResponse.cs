@@ -8,7 +8,8 @@ namespace Presentation.Contracts.Common.Models
     {
         public TrailerResponseAdapter()
         {
-            CreateMap<Trailer, TrailerResponse>();
+            CreateMap<Trailer, TrailerResponse>()
+                .ForMember(dest => dest.Vehicle, opt => opt.MapFrom(src => src.UsedBy));
         }
     }
     public class TrailerResponse
@@ -16,6 +17,7 @@ namespace Presentation.Contracts.Common.Models
         public ulong Id { get; set; }
         public Capacity Capacity { get; set; }
         public ulong CompanyId { get; set; }
+        public VehicleResponse? Vehicle { get; set; }
         public ulong? VehicleId { get; set; }
     }
 }
