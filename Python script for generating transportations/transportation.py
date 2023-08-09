@@ -23,18 +23,26 @@ class Transportation:
     destination_state : str
     destination_latitude : float
     destination_longitude : float
+    origin_street : str
+    origin_city : str
+    origin_country : str
+    origin_postal_code : str
+    origin_state : str
+    origin_latitude : float
+    origin_longitude : float
     driverId : int
     cost_Amount : float
     cost_Currency : str
     start_location_longitude : float
     start_location_latitude : float
 
-    def __init__(self, companyId, start, requiredFor, transporting : TransportableItem, destination_address : Address, received_Amount, received_Currency, isDelivered = False, driverId = 0, cost_Amount = 0.0, cost_Currency = "EUR", start_location: Address = Address()):
+    def __init__(self, companyId, start, requiredFor, transporting : TransportableItem, destination_address : Address, origin_address : Address, received_Amount, received_Currency, isDelivered = False, driverId = 0, cost_Amount = 0.0, cost_Currency = "EUR", start_location: Address = Address()):
         self.companyId = companyId
         self.start = start
         self.requiredFor = requiredFor
         self.assign_transporting_item(transporting)
         self.assign_destination_address(destination_address)
+        self.assign_origin_address(origin_address)
         self.received_Amount = received_Amount
         self.received_Currency = received_Currency
 
@@ -56,6 +64,15 @@ class Transportation:
         self.destination_state = address.state
         self.destination_latitude = address.latitude
         self.destination_longitude = address.longitude
+
+    def assign_origin_address(self, address : Address):
+        self.origin_street = address.street
+        self.origin_city = address.city
+        self.origin_country = address.country
+        self.origin_postal_code = address.postal_code
+        self.origin_state = address.state
+        self.origin_latitude = address.latitude
+        self.origin_longitude = address.longitude
 
     def assign_transporting_item(self, item : TransportableItem):
         self.transporting_description = item.name
@@ -89,6 +106,13 @@ class Transportation:
         print("    DestinationState: " + self.destination_state)
         print("    DestinationLatitude: " + str(self.destination_latitude))
         print("    DestinationLongitude: " + str(self.destination_longitude))
+        print("    OriginStreet: " + self.origin_street)
+        print("    OriginCity: " + self.origin_city)
+        print("    OriginCountry: " + self.origin_country)
+        print("    OriginPostalCode: " + self.origin_postal_code)
+        print("    OriginState: " + self.origin_state)
+        print("    OriginLatitude: " + str(self.origin_latitude))
+        print("    OriginLongitude: " + str(self.origin_longitude))
         print("    ReceivedAmount: " + str(self.received_Amount))
         print("    ReceivedCurrency: " + self.received_Currency)
         print("    IsDelivered: " + str(self.isDelivered))

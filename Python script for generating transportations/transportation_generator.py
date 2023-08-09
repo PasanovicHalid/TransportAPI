@@ -61,7 +61,8 @@ def generate_random_transportation():
     requiredFor = start + datetime.timedelta(days=random.randint(0, 7))
     
     transporting_item = random.choice(transportable_item_list)
-    address = generate_random_german_address()
+    origin_address = generate_random_german_address()
+    destination_address = generate_random_german_address()
     driverId = random.choice(driverIds)
     received_Amount = random.uniform(minReceivedAmount, maxReceivedAmount)
     received_Currency = "EUR"
@@ -75,12 +76,12 @@ def generate_random_transportation():
         cost_Amount = 0.0
         start_location = Address()
 
-    transportation = Transportation(companyId, start, requiredFor, transporting_item, address, received_Amount, received_Currency, isDelivered, driverId, cost_Amount, cost_Currency, start_location)
+    transportation = Transportation(companyId, start, requiredFor, transporting_item, destination_address, origin_address, received_Amount, received_Currency, isDelivered, driverId, cost_Amount, cost_Currency, start_location)
 
     if isDelivered:
-        transportation.isValid = address.valid and start_location.valid
+        transportation.isValid = destination_address.valid and start_location.valid and origin_address.valid
     else:
-        transportation.isValid = address.valid
+        transportation.isValid = destination_address.valid and origin_address.valid
 
     return transportation
 
@@ -108,6 +109,13 @@ def generate_sql_insert_string(transportation : Transportation):
            ,[Destination_PostalCode]
            ,[Destination_State]
            ,[Destination_Street]
+           ,[Origin_City]
+           ,[Origin_Country]
+           ,[Origin_GpsCoordinate_Latitude]
+           ,[Origin_GpsCoordinate_Longitude]
+           ,[Origin_PostalCode]
+           ,[Origin_State]
+           ,[Origin_Street]
            ,[StartLocation_Latitude]
            ,[StartLocation_Longitude])
      VALUES
@@ -132,6 +140,13 @@ def generate_sql_insert_string(transportation : Transportation):
            ,'{transportation.destination_postal_code.replace("'", "")}'
            ,'{transportation.destination_state.replace("'", "")}'
            ,'{transportation.destination_street.replace("'", "")}'
+           ,'{transportation.origin_city.replace("'", "")}'
+           ,'{transportation.origin_country.replace("'", "")}'
+           ,{transportation.origin_latitude}
+           ,{transportation.origin_longitude}
+           ,'{transportation.origin_postal_code.replace("'", "")}'
+           ,'{transportation.origin_state.replace("'", "")}'
+           ,'{transportation.origin_street.replace("'", "")}'
            ,{transportation.start_location_latitude}
            ,{transportation.start_location_longitude});"""
     else:
@@ -153,7 +168,14 @@ def generate_sql_insert_string(transportation : Transportation):
            ,[Destination_GpsCoordinate_Longitude]
            ,[Destination_PostalCode]
            ,[Destination_State]
-           ,[Destination_Street])
+           ,[Destination_Street]
+           ,[Origin_City]
+           ,[Origin_Country]
+           ,[Origin_GpsCoordinate_Latitude]
+           ,[Origin_GpsCoordinate_Longitude]
+           ,[Origin_PostalCode]
+           ,[Origin_State]
+           ,[Origin_Street])
      VALUES
            ('{transportation.start.strftime('%Y-%m-%d %H:%M:%S.%f')}'
            ,'{transportation.requiredFor.strftime('%Y-%m-%d %H:%M:%S.%f')}'
@@ -172,7 +194,14 @@ def generate_sql_insert_string(transportation : Transportation):
            ,{transportation.destination_longitude}
            ,'{transportation.destination_postal_code.replace("'", "")}'
            ,'{transportation.destination_state.replace("'", "")}'
-           ,'{transportation.destination_street.replace("'", "")}');"""
+           ,'{transportation.destination_street.replace("'", "")}'
+           ,'{transportation.origin_city.replace("'", "")}'
+           ,'{transportation.origin_country.replace("'", "")}'
+           ,{transportation.origin_latitude}
+           ,{transportation.origin_longitude}
+           ,'{transportation.origin_postal_code.replace("'", "")}'
+           ,'{transportation.origin_state.replace("'", "")}'
+           ,'{transportation.origin_street.replace("'", "")}');"""
 
 if __name__ == "__main__":
     transportations = []

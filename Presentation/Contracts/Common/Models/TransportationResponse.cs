@@ -22,6 +22,7 @@ namespace Presentation.Contracts.Common.Models
         public DateTime RequiredFor { get; set; }
         public Cargo Transporting { get; set; }
         public Address Destination { get; set; }
+        public Address Origin { get; set; }
         public Money Cost { get; set; }
         public Money Received { get; set; }
         public GpsCoordinate StartLocation { get; set; }

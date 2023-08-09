@@ -27,6 +27,7 @@ namespace Application.Transportations.Commands.Create
                                                                request.DateOfArrival,
                                                                request.Cargo,
                                                                request.Destination,
+                                                               request.Origin,
                                                                request.Received,
                                                                request.CompanyId);
 

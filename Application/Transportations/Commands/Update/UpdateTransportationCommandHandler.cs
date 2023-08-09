@@ -35,6 +35,7 @@ namespace Application.Transportations.Commands.Update
                                              request.DateOfArrival,
                                              request.Cargo,
                                              request.Destination,
+                                             request.Origin,
                                              request.Received);
 
             if (result.IsFailed)

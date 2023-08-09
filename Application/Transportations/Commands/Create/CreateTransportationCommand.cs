@@ -14,6 +14,7 @@ namespace Application.Transportations.Commands.Create
         public ulong CompanyId { get; set; }
         public Money Received { get; set; }
         public Address Destination { get; set; }
+        public Address Origin { get; set; }
     }
 
     public class CreateTransportationValidator : AbstractValidator<CreateTransportationCommand>
@@ -26,6 +27,7 @@ namespace Application.Transportations.Commands.Create
             RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.Received).NotEmpty();
             RuleFor(x => x.Destination).NotEmpty();
+            RuleFor(x => x.Origin).NotEmpty();
         }
     }
 }

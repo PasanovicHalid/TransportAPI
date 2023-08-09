@@ -7,7 +7,7 @@ namespace Domain.Entities
 {
     public class Transportation : EntityObject
     {
-        public Transportation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Money received, ulong companyId)
+        public Transportation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Address origin, Money received, ulong companyId)
         {
             Start = start;
             RequiredFor = requiredFor;
@@ -15,6 +15,7 @@ namespace Domain.Entities
             Destination = destination;
             Received = received;
             CompanyId = companyId;
+            Origin = origin;
         }
 
         protected Transportation() { }
@@ -26,6 +27,8 @@ namespace Domain.Entities
         public Cargo Transporting { get; private set; }
 
         public Address Destination { get; private set; }
+
+        public Address Origin { get; private set; }
 
         public Money? Cost { get; private set; }
 
@@ -50,12 +53,13 @@ namespace Domain.Entities
             return Result.Ok();
         }
 
-        public Result UpdateInformation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Money received)
+        public Result UpdateInformation(DateTime start, DateTime requiredFor, Cargo transporting, Address destination, Address origin, Money received)
         {
             Start = start;
             RequiredFor = requiredFor;
             Transporting = transporting;
             Destination = destination;
+            Origin = origin;
             Received = received;
             return Result.Ok();
         }
@@ -66,9 +70,12 @@ namespace Domain.Entities
                 return Result.Fail<double>("Transportation has no start location");
 
             if (Destination.GpsCoordinate is null)
-                return Result.Fail<double>("Transportation has no gps coordinate");
+                return Result.Fail<double>("Transportation has no destination gps coordinate");
 
-            return StartLocation.DistanceTo(Destination.GpsCoordinate);
+            if (Origin.GpsCoordinate is null)
+                return Result.Fail<double>("Transportation has no origin gps coordinate");
+
+            return StartLocation.DistanceTo(Origin.GpsCoordinate) + Origin.GpsCoordinate.DistanceTo(Destination.GpsCoordinate) ;
         }
     }
 }

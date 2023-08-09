@@ -19,6 +19,7 @@ namespace Application.Transportations.Commands.Update
         public ulong CompanyId { get; set; }
         public Money Received { get; set; }
         public Address Destination { get; set; }
+        public Address Origin { get; set; }
     }
 
     public class UpdateTransportationValidator : AbstractValidator<UpdateTransportationCommand>
@@ -32,6 +33,7 @@ namespace Application.Transportations.Commands.Update
             RuleFor(x => x.CompanyId).NotEmpty();
             RuleFor(x => x.Received).NotEmpty();
             RuleFor(x => x.Destination).NotEmpty();
+            RuleFor(x => x.Origin).NotEmpty();
         }
     }
 }

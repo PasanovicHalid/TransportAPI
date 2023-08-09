@@ -24,5 +24,6 @@ namespace Presentation.Contracts.Transportation
         public Cargo Cargo { get; set; }
         public Money Received { get; set; }
         public Address Destination { get; set; } = new();
+        public Address Origin { get; set; } = new();
     }
 }
