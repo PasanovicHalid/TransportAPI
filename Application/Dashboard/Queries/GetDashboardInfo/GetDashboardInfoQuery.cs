@@ -12,6 +12,10 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
     public class GetDashboardInfoQuery : IRequest<Result<DashboardInfo>>
     {
         public ulong CompanyId { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
     }
 
     public class GetDashboardInfoQueryValidator : AbstractValidator<GetDashboardInfoQuery>
@@ -19,6 +23,8 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
         public GetDashboardInfoQueryValidator()
         {
             RuleFor(x => x.CompanyId).NotEmpty();
+            RuleFor(y => y.StartDate).NotEmpty();
+            RuleFor(z => z.EndDate).NotEmpty();
         }
     }
 }

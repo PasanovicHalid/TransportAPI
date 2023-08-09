@@ -30,7 +30,9 @@ using Presentation.Contracts.Authentication;
 using Presentation.Contracts.Common;
 using Presentation.Contracts.Common.Models;
 using Presentation.Contracts.Companies;
+using Presentation.Contracts.Dashboard;
 using Presentation.Contracts.Trailers;
+using System.ComponentModel.Design;
 using System.Security.Claims;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -322,14 +324,12 @@ namespace Presentation.Controllers
                                                              response.Value.TotalCount));
         }
 
-        [HttpGet("dashboard")]
+        [HttpPost("dashboard")]
         [Authorize(Roles = ApplicationRolesConstants.Admin)]
-        public async Task<IActionResult> GetDashboardInfo()
+        public async Task<IActionResult> GetDashboardInfo([FromBody] DashboardRequest request)
         {
-            GetDashboardInfoQuery query = new()
-            {
-                CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!)
-            };
+            GetDashboardInfoQuery query = _mapper.Map<GetDashboardInfoQuery>(request);
+            query.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result<DashboardInfo> response = await _mediator.Send(query);
 

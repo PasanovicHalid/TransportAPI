@@ -24,11 +24,7 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
         {
             DashboardInfo dashboardInfo = new();
 
-            DateTime now = DateTime.Now;
-            DateTime lastDayOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
-            DateTime firstDayOfMonth = new DateTime(now.Year, now.Month, 1);
-
-            List<Transportation> transportationsForMonth = await _unitOfWork.Transportations.GetAllAsync(x => x.CompanyId == request.CompanyId && x.RequiredFor <= lastDayOfMonth && x.RequiredFor >= firstDayOfMonth, cancellationToken: cancellationToken);
+            List<Transportation> transportationsForMonth = await _unitOfWork.Transportations.GetAllAsync(x => x.CompanyId == request.CompanyId && x.RequiredFor <= request.EndDate && x.RequiredFor >= request.StartDate, cancellationToken: cancellationToken);
             List<Employee> employees = await _unitOfWork.Employees.GetAllAsync(x => x.CompanyId == request.CompanyId, cancellationToken: cancellationToken);
 
             int vehicleCount = await _unitOfWork.Vehicles.GetDbSet().Where(x => x.CompanyId == request.CompanyId && x.Deleted == false).CountAsync(cancellationToken: cancellationToken);
@@ -36,7 +32,7 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
 
             double employeeExpenses = GetEmployeeExpenses(employees);
 
-            dashboardInfo = CreateChartData(dashboardInfo, transportationsForMonth);
+            dashboardInfo = CreateChartData(request, dashboardInfo, transportationsForMonth);
             dashboardInfo.EmployeeExpenses = employeeExpenses;
             dashboardInfo.Inflow = GetInflow(transportationsForMonth);
             dashboardInfo.Outflow = GetCostsFromTransportations(transportationsForMonth) + employeeExpenses;
@@ -46,10 +42,10 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
             return dashboardInfo;
         }
 
-        private static DashboardInfo CreateChartData(DashboardInfo dashboardInfo, List<Transportation> transportationsForMonth)
+        private static DashboardInfo CreateChartData(GetDashboardInfoQuery request, DashboardInfo dashboardInfo, List<Transportation> transportationsForMonth)
         {
-            Dictionary<DateTime, List<Transportation>> transportationsByDateForCurrentMonth = new(DateTime.DaysInMonth(DateTime.Now.Year,
-                                                                                                                                   DateTime.Now.Month));
+            int daysBetweenStartAndEnd = (request.EndDate - request.StartDate).Days;
+            Dictionary<DateTime, List<Transportation>> transportationsByDateForCurrentMonth = new(daysBetweenStartAndEnd);
 
             foreach (Transportation transportation in transportationsForMonth)
             {
@@ -59,9 +55,9 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
                     transportationsByDateForCurrentMonth.Add(transportation.RequiredFor.Date, new List<Transportation> { transportation });
             }
 
-            for (int i = 0; i < DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); i++)
+            for (int i = 0; i < daysBetweenStartAndEnd; i++)
             {
-                transportationsByDateForCurrentMonth.TryGetValue(new DateTime(DateTime.Now.Year, DateTime.Now.Month, i + 1), out List<Transportation>? transportationsForDay);
+                transportationsByDateForCurrentMonth.TryGetValue(request.StartDate.AddDays(i).Date, out List<Transportation>? transportationsForDay);
 
                 if (transportationsForDay is null)
                 {
