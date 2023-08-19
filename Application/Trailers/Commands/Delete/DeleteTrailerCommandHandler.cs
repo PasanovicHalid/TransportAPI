@@ -23,6 +23,7 @@ namespace Application.Trailers.Commands.Delete
             if (trailer == null)
                 return Result.Fail(new EntityDoesntExist(request.TrailerId, nameof(Trailer)));
 
+            trailer.UnassignVehicle();
             _unitOfWork.Trailers.Remove(trailer);
             await _unitOfWork.SaveAsync(cancellationToken);
 

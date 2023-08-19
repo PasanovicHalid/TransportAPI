@@ -4,13 +4,16 @@ using Application.DriverLicenses.Commands.Update;
 using Application.Drivers.Commands.AssignVehicle;
 using Application.Drivers.Commands.Fire;
 using Application.Drivers.Commands.UnassignVehicle;
+using Application.Drivers.Queries.GetPerformanceOfDriver;
 using AutoMapper;
 using Domain.Constants;
+using Domain.PlainObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Controllers;
+using Presentation.Contracts.Drivers;
 using Presentation.Contracts.Licences.DriversLicences;
 using System.Security.Claims;
 
@@ -132,6 +135,22 @@ namespace Presentation.Controllers
                 return HandleErrors(response.Errors[0]);
 
             return Ok();
+        }
+
+        [HttpGet("{id}/performance")]
+        [Authorize(Roles = ApplicationRolesConstants.Admin)]
+        public async Task<IActionResult> GetPerformance([FromRoute(Name = "id")] ulong driverId, [FromQuery] GetPerformanceDataOfDriverRequest request)
+        {
+            GetPerformanceDataOfDriverQuery query = _mapper.Map<GetPerformanceDataOfDriverQuery>(request);
+            query.DriverId = driverId;
+            query.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
+
+            Result<DriverPerformanceData> response = await _mediator.Send(query);
+
+            if (response.IsFailed)
+                return HandleErrors(response.Errors[0]);
+
+            return Ok(response.Value);
         }
     }
 }

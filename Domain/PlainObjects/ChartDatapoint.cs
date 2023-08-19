@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Dashboard.Queries.GetDashboardInfo
+namespace Domain.PlainObjects
 {
     public class ChartDatapoint
     {

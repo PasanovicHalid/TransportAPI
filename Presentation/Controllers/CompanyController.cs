@@ -20,6 +20,7 @@ using Application.Vehicles.Queries.GetFreeVehicles;
 using AutoMapper;
 using Domain.Constants;
 using Domain.Entities;
+using Domain.PlainObjects;
 using Domain.ValueObjects;
 using FluentResults;
 using MediatR;

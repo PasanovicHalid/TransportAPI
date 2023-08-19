@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Domain.Entities;
+using Domain.PlainObjects;
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -24,30 +25,42 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
         {
             DashboardInfo dashboardInfo = new();
 
-            List<Transportation> transportationsForMonth = await _unitOfWork.Transportations.GetAllAsync(x => x.CompanyId == request.CompanyId && x.RequiredFor <= request.EndDate && x.RequiredFor >= request.StartDate, cancellationToken: cancellationToken);
-            List<Employee> employees = await _unitOfWork.Employees.GetAllAsync(x => x.CompanyId == request.CompanyId, cancellationToken: cancellationToken);
+            List<Transportation> transportationsForRange = await _unitOfWork.Transportations.GetAllAsync(x => x.CompanyId == request.CompanyId 
+                                                                                                        && x.RequiredFor <= request.EndDate 
+                                                                                                        && x.RequiredFor >= request.StartDate, 
+                                                                                                        orderBy: x => x.RequiredFor,
+                                                                                                        cancellationToken: cancellationToken);
 
-            int vehicleCount = await _unitOfWork.Vehicles.GetDbSet().Where(x => x.CompanyId == request.CompanyId && x.Deleted == false).CountAsync(cancellationToken: cancellationToken);
-            int pendingTransportations = await _unitOfWork.Transportations.GetDbSet().Where(x => x.CompanyId == request.CompanyId && x.DriverId == null && x.Deleted == false).CountAsync(cancellationToken: cancellationToken);
+            List<Employee> employees = await _unitOfWork.Employees.GetAllAsync(x => x.CompanyId == request.CompanyId, 
+                                                                               cancellationToken: cancellationToken);
+
+            int vehicleCount = await _unitOfWork.Vehicles.GetDbSet().Where(x => x.CompanyId == request.CompanyId 
+                                                                           && x.Deleted == false)
+                                                                           .CountAsync(cancellationToken: cancellationToken);
+
+            int pendingTransportations = await _unitOfWork.Transportations.GetDbSet().Where(x => x.CompanyId == request.CompanyId 
+                                                                                            && x.DriverId == null 
+                                                                                            && x.Deleted == false)
+                                                                                            .CountAsync(cancellationToken: cancellationToken);
 
             double employeeExpenses = GetEmployeeExpenses(employees);
 
-            dashboardInfo = CreateChartData(request, dashboardInfo, transportationsForMonth);
+            dashboardInfo = CreateChartData(request, dashboardInfo, transportationsForRange);
             dashboardInfo.EmployeeExpenses = employeeExpenses;
-            dashboardInfo.Inflow = GetInflow(transportationsForMonth);
-            dashboardInfo.Outflow = GetCostsFromTransportations(transportationsForMonth) + employeeExpenses;
+            dashboardInfo.Inflow = GetInflow(transportationsForRange);
+            dashboardInfo.Outflow = GetCostsFromTransportations(transportationsForRange) + employeeExpenses;
             dashboardInfo.TransportationsInProgress = pendingTransportations;
             dashboardInfo.VehiclesCount = vehicleCount;
 
             return dashboardInfo;
         }
 
-        private static DashboardInfo CreateChartData(GetDashboardInfoQuery request, DashboardInfo dashboardInfo, List<Transportation> transportationsForMonth)
+        private static DashboardInfo CreateChartData(GetDashboardInfoQuery request, DashboardInfo dashboardInfo, List<Transportation> transportationsForRange)
         {
             int daysBetweenStartAndEnd = (request.EndDate - request.StartDate).Days;
             Dictionary<DateTime, List<Transportation>> transportationsByDateForCurrentMonth = new(daysBetweenStartAndEnd);
 
-            foreach (Transportation transportation in transportationsForMonth)
+            foreach (Transportation transportation in transportationsForRange)
             {
                 if (transportationsByDateForCurrentMonth.ContainsKey(transportation.RequiredFor.Date))
                     transportationsByDateForCurrentMonth[transportation.RequiredFor.Date].Add(transportation);
@@ -86,14 +99,14 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
             return dashboardInfo;
         }
 
-        private static double GetInflow(List<Transportation> transportationsForMonth)
+        private static double GetInflow(List<Transportation> transportationsForRange)
         {
-            return transportationsForMonth.Sum(x => x.Received.Amount);
+            return transportationsForRange.Sum(x => x.Received.Amount);
         }
 
-        private static double GetCostsFromTransportations(List<Transportation> transportationsForMonth)
+        private static double GetCostsFromTransportations(List<Transportation> transportationsForRange)
         {
-            return transportationsForMonth.Sum(x =>
+            return transportationsForRange.Sum(x =>
             {
                 if(x.Cost is null)
                     return 0;

@@ -1,4 +1,5 @@
-﻿using FluentResults;
+﻿using Domain.PlainObjects;
+using FluentResults;
 using FluentValidation;
 using MediatR;
 using System;
