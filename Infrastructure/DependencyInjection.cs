@@ -18,15 +18,27 @@ namespace Infrastructure
     {
         public static IServiceCollection SetupInfrastructureLayer(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<TransportDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TransportDB")));
+            SetupPersistance(services, configuration);
 
-            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
+            SetupAuthentification(services, configuration);
+
+            return services;
+        }
+
+        private static void SetupPersistance(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<TransportDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("TransportDB")));
 
             services.AddScoped<DbInitializer>();
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+        }
+
+        private static void SetupAuthentification(IServiceCollection services, IConfiguration configuration)
+        {
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
 
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.Configure<JwtSettings>(configuration.GetSection("Jwt"));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -35,8 +47,8 @@ namespace Infrastructure
                 options.Password.RequireUppercase = false;
 
             })
-                .AddEntityFrameworkStores<TransportDbContext>()
-                .AddDefaultTokenProviders();
+                            .AddEntityFrameworkStores<TransportDbContext>()
+                            .AddDefaultTokenProviders();
 
             services.AddAuthentication(options =>
             {
@@ -59,8 +71,6 @@ namespace Infrastructure
                     ValidateIssuerSigningKey = true
                 };
             });
-
-            return services;
         }
 
         public static async Task InitializeDb(this WebApplication app)

@@ -17,7 +17,7 @@ namespace Application.Transportations.Commands.AddResolution
 
         public async Task<Result> Handle(AddResolutionToTransportationCommand request, CancellationToken cancellationToken)
         {
-            Transportation? transport = await _unitOfWork.Transportations.GetFirstOrDefaultAsync(t => t.Id == request.TransportationId);
+            Transportation? transport = await _unitOfWork.Transportations.GetFirstOrDefaultAsync(t => t.Id == request.TransportationId && t.CompanyId == request.CompanyId);
 
             if (transport is null)
                 return Result.Fail(new EntityDoesntExist(request.TransportationId, nameof(Transportation)));

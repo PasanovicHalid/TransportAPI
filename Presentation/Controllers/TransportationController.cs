@@ -60,6 +60,7 @@ namespace Presentation.Controllers
         {
             AddResolutionToTransportationCommand command = _mapper.Map<AddResolutionToTransportationCommand>(request);
             command.TransportationId = transportationId;
+            command.CompanyId = ulong.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.GroupSid)?.Value!);
 
             Result response = await _mediator.Send(command);
 

@@ -27,8 +27,7 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
 
             List<Transportation> transportationsForRange = await _unitOfWork.Transportations.GetAllAsync(x => x.CompanyId == request.CompanyId 
                                                                                                         && x.RequiredFor <= request.EndDate 
-                                                                                                        && x.RequiredFor >= request.StartDate, 
-                                                                                                        orderBy: x => x.RequiredFor,
+                                                                                                        && x.RequiredFor >= request.StartDate,
                                                                                                         cancellationToken: cancellationToken);
 
             List<Employee> employees = await _unitOfWork.Employees.GetAllAsync(x => x.CompanyId == request.CompanyId, 
@@ -58,19 +57,12 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
         private static DashboardInfo CreateChartData(GetDashboardInfoQuery request, DashboardInfo dashboardInfo, List<Transportation> transportationsForRange)
         {
             int daysBetweenStartAndEnd = (request.EndDate - request.StartDate).Days;
-            Dictionary<DateTime, List<Transportation>> transportationsByDateForCurrentMonth = new(daysBetweenStartAndEnd);
 
-            foreach (Transportation transportation in transportationsForRange)
-            {
-                if (transportationsByDateForCurrentMonth.ContainsKey(transportation.RequiredFor.Date))
-                    transportationsByDateForCurrentMonth[transportation.RequiredFor.Date].Add(transportation);
-                else
-                    transportationsByDateForCurrentMonth.Add(transportation.RequiredFor.Date, new List<Transportation> { transportation });
-            }
+            Dictionary<DateTime, List<Transportation>> transportationsByDateForRange = PrepareData(transportationsForRange, daysBetweenStartAndEnd);
 
             for (int i = 0; i < daysBetweenStartAndEnd; i++)
             {
-                transportationsByDateForCurrentMonth.TryGetValue(request.StartDate.AddDays(i).Date, out List<Transportation>? transportationsForDay);
+                transportationsByDateForRange.TryGetValue(request.StartDate.AddDays(i).Date, out List<Transportation>? transportationsForDay);
 
                 if (transportationsForDay is null)
                 {
@@ -97,6 +89,21 @@ namespace Application.Dashboard.Queries.GetDashboardInfo
             }
 
             return dashboardInfo;
+        }
+
+        private static Dictionary<DateTime, List<Transportation>> PrepareData(List<Transportation> transportationsForRange, int daysBetweenStartAndEnd)
+        {
+            Dictionary<DateTime, List<Transportation>> transportationsByDateForRange = new(daysBetweenStartAndEnd);
+
+            foreach (Transportation transportation in transportationsForRange)
+            {
+                if (transportationsByDateForRange.ContainsKey(transportation.RequiredFor.Date))
+                    transportationsByDateForRange[transportation.RequiredFor.Date].Add(transportation);
+                else
+                    transportationsByDateForRange.Add(transportation.RequiredFor.Date, new List<Transportation> { transportation });
+            }
+
+            return transportationsByDateForRange;
         }
 
         private static double GetInflow(List<Transportation> transportationsForRange)

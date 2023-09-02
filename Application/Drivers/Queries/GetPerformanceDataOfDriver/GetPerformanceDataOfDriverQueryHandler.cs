@@ -35,7 +35,6 @@ namespace Application.Drivers.Queries.GetPerformanceDataOfDriver
                                                                                                         && x.DriverId == request.DriverId 
                                                                                                         && x.RequiredFor <= request.EndDate 
                                                                                                         && x.RequiredFor >= request.StartDate,
-                                                                                                        orderBy: x => x.RequiredFor,
                                                                                                         cancellationToken: cancellationToken);
 
             DriverPerformanceData driverPerformanceData = CreateChartData(request, transportationsForRange);
