@@ -6,12 +6,19 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["DeleteVehicle", "Placeholder", "VehicleId:ulong"]
+            "args": [
+                "C:\\Users\\halid\\Desktop\\solar_marketplace\\SolarMarketplace.BLL", 
+                "C:\\Users\\halid\\Desktop\\solar_marketplace\\SolarMarketplace.BLL\\UseCases\\SolarProducts\\Commands",
+                "Command",
+                "DeleteVehicle", 
+                "void", 
+                "VehicleId:ulong"
+            ]
         }
     ]
 }
